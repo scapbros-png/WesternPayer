@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Western Payer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid rgba(96, 165, 250, 0.3);
+            padding: 1.5rem 2rem;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-left h1 i {
+            color: #667eea;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .admin-info {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(96, 165, 250, 0.2);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-icon.messages {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .stat-icon.pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .stat-icon.withdrawals {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .stat-icon.approved {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #f1f5f9;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(96, 165, 250, 0.2);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover {
+            color: #60a5fa;
+        }
+
+        .tab-btn.active {
+            color: #60a5fa;
+            border-bottom-color: #60a5fa;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .content-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: rgba(96, 165, 250, 0.1);
+            color: #60a5fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-bottom: 2px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .data-table td {
+            padding: 1rem;
+            color: #cbd5e1;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+        }
+
+        .data-table tr:hover {
+            background: rgba(96, 165, 250, 0.05);
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-badge.pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .status-badge.approved {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-badge.rejected {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .action-btn.approve {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .action-btn.reject {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            margin-left: 0.5rem;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .detail-view {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #94a3b8;
+            font-weight: 600;
+            min-width: 150px;
+        }
+
+        .detail-value {
+            color: #cbd5e1;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-wrapper {
+                overflow-x: scroll;
+            }
+
+            .data-table {
+                min-width: 800px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="header-content">
+            <div class="header-left">
+                <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <div class="admin-info">
+                    <i class="fas fa-user"></i> <span id="adminName">Admin</span>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Contact Messages</span>
+                    <div class="stat-icon messages">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="totalMessages">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Pending Add Money</span>
+                    <div class="stat-icon pending">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="pendingAddMoney">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Regular Withdrawals</span>
+                    <div class="stat-icon withdrawals">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="totalWithdrawals">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Approved Today</span>
+                    <div class="stat-icon approved">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="approvedToday">0</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="messages">
+                <i class="fas fa-envelope"></i> Contact Messages
+            </button>
+            <button class="tab-btn" data-tab="addmoney">
+                <i class="fas fa-plus-circle"></i> Add Money Requests
+            </button>
+            <button class="tab-btn" data-tab="withdrawals">
+                <i class="fas fa-money-bill-wave"></i> Regular Withdrawals
+            </button>
+            <button class="tab-btn" onclick="window.location.href='orders.html'">
+                <i class="fas fa-shopping-bag"></i> Orders Management
+            </button>
+        </div>
+
+        <!-- Tab Contents -->
+        <!-- Contact Messages -->
+        <div class="tab-content active" id="messages">
+            <div class="content-card">
+                <div class="content-header">
+                    <h2 class="content-title">Contact Messages</h2>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="messagesTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messagesBody">
+                            <tr>
+                                <td colspan="4">
+                                    <div class="empty-state">
+                                        <i class="fas fa-inbox"></i>
+                                        <p>No messages yet</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Money Requests -->
+        <div class="tab-content" id="addmoney">
+            <div class="content-card">
+                <div class="content-header">
+                    <h2 class="content-title">Add Money Requests</h2>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Email</th>
+                                <th>Amount</th>
+                                <th>Transaction ID</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="addMoneyBody">
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <i class="fas fa-wallet"></i>
+                                        <p>No add money requests</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Regular Withdrawals -->
+        <div class="tab-content" id="withdrawals">
+            <div class="content-card">
+                <div class="content-header">
+                    <h2 class="content-title">Regular Withdrawal Requests</h2>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin: 0;">Product transactions are managed in Orders Management</p>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Email</th>
+                                <th>Amount</th>
+                                <th>Bank Details</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="withdrawalsBody">
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <p>No withdrawal requests</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="firebase-admin-helper.js"></script>
+    
+    <script src="../script.js"></script>
+    <script>
+        // Debug function to show errors on page
+        function showError(message, elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="color: #ef4444; text-align: center; padding: 2rem;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Error Loading Data</p>
+                            <p style="font-size: 0.9rem; color: #94a3b8;">${message}</p>
+                            <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 1rem;">Check browser console (F12) for details</p>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Check admin authentication
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Admin Dashboard Loading...');
+            
+            // Check Firebase
+            console.log('✓ Checking Firebase...');
+            if (typeof firebase === 'undefined') {
+                alert('❌ ERROR: Firebase is not loaded!\n\nCheck that firebase-config.js is loading correctly.');
+                return;
+            }
+            console.log('✅ Firebase loaded');
+
+            // Check Firebase Auth
+            if (typeof firebase.auth !== 'function') {
+                alert('❌ ERROR: Firebase Auth SDK is not loaded!\n\nMake sure you have firebase-auth-compat.js script tag loaded before firebase-config.js');
+                return;
+            }
+            console.log('✅ Firebase Auth loaded');
+
+            // Check Firebase Database
+            if (typeof window.firebaseDb === 'undefined') {
+                alert('❌ ERROR: Firebase Database is not initialized!\n\nCheck firebase-config.js for database initialization.');
+                return;
+            }
+            console.log('✅ Firebase Database initialized');
+
+            // Check AdminHelper
+            if (typeof window.adminHelper === 'undefined') {
+                alert('❌ ERROR: AdminHelper is not loaded!\n\nCheck that firebase-admin-helper.js is in the admin folder.');
+                return;
+            }
+            console.log('✅ AdminHelper loaded');
+
+            // Check admin authentication
+            const adminSession = JSON.parse(localStorage.getItem('adminSession') || '{}');
+            
+            if (!adminSession.isLoggedIn) {
+                console.log('❌ Not logged in, redirecting to login page');
+                window.location.href = 'login.html';
+                return;
+            }
+            console.log('✅ Admin logged in:', adminSession.adminId);
+
+            document.getElementById('adminName').textContent = adminSession.adminId;
+
+            // Load all data with error handling
+            console.log('📊 Loading dashboard data...');
+            
+            try {
+                await loadStatistics();
+                console.log('✅ Statistics loaded');
+            } catch (error) {
+                console.error('❌ Error loading statistics:', error);
+            }
+
+            loadMessages();
+            
+            try {
+                await loadAddMoneyRequests();
+                console.log('✅ Payment requests loaded');
+            } catch (error) {
+                console.error('❌ Error loading payment requests:', error);
+            }
+
+            try {
+                await loadWithdrawalRequests();
+                console.log('✅ Withdrawal requests loaded');
+            } catch (error) {
+                console.error('❌ Error loading withdrawal requests:', error);
+            }
+
+            console.log('✅ Dashboard fully loaded');
+
+            // Tab switching
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+
+                    this.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    localStorage.removeItem('adminSession');
+                    window.location.href = 'login.html';
+                }
+            });
+
+            // Auto-refresh every 30 seconds
+            setInterval(() => {
+                loadStatistics();
+                loadAddMoneyRequests();
+                loadWithdrawalRequests();
+            }, 30000);
+        });
+
+        async function loadStatistics() {
+            try {
+                console.log('📊 Fetching payment requests...');
+                const paymentRequests = await adminHelper.getAllPaymentRequests();
+                console.log('✓ Payment requests:', paymentRequests.length, 'found');
+
+                console.log('📊 Fetching withdrawal requests...');
+                const allWithdrawalRequests = await adminHelper.getAllWithdrawalRequests();
+                console.log('✓ All withdrawal requests:', allWithdrawalRequests.length, 'found');
+                
+                // Filter out product transactions from withdrawal count
+                const withdrawalRequests = allWithdrawalRequests.filter(req => 
+                    !req.withdrawalAmount && !req.processingFee
+                );
+                console.log('✓ Regular withdrawal requests:', withdrawalRequests.length, 'found');
+                console.log('✓ Product transactions:', allWithdrawalRequests.length - withdrawalRequests.length, 'excluded from count');
+
+                const pendingAddMoney = paymentRequests.filter(t => 
+                    t.paymentType === 'wallet_add' && t.status === 'pending'
+                ).length;
+                console.log('✓ Pending add money:', pendingAddMoney);
+
+                const today = new Date().toDateString();
+                const approvedToday = paymentRequests.filter(t => 
+                    t.paymentType === 'wallet_add' && 
+                    t.status === 'approved' && 
+                    t.approvedAt && new Date(t.approvedAt).toDateString() === today
+                ).length;
+                console.log('✓ Approved today:', approvedToday);
+
+                document.getElementById('totalMessages').textContent = '-';
+                document.getElementById('pendingAddMoney').textContent = pendingAddMoney;
+                document.getElementById('totalWithdrawals').textContent = withdrawalRequests.length;
+                document.getElementById('approvedToday').textContent = approvedToday;
+            } catch (error) {
+                console.error('❌ Error loading statistics:', error);
+                console.error('Error details:', error.message);
+                
+                // Show error on stats
+                document.getElementById('pendingAddMoney').textContent = 'ERR';
+                document.getElementById('totalWithdrawals').textContent = 'ERR';
+                document.getElementById('approvedToday').textContent = 'ERR';
+                
+                alert('Error loading statistics!\n\n' + error.message + 
+                      '\n\nPlease check:\n1. Firebase database rules are set to allow reading\n2. Database URL is correct in firebase-config.js\n3. Browser console (F12) for more details');
+            }
+        }
+
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+            const tbody = document.getElementById('messagesBody');
+
+            if (messages.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4">
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <p>No messages yet</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = messages.map(msg => {
+                const date = new Date(msg.timestamp).toLocaleString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                return `
+                    <tr>
+                        <td>${date}</td>
+                        <td>${msg.name}</td>
+                        <td>${msg.email}</td>
+                        <td>${msg.message}</td>
+                    </tr>
+                `;
+            }).reverse().join('');
+        }
+
+        async function loadAddMoneyRequests() {
+            const tbody = document.getElementById('addMoneyBody');
+            try {
+                console.log('💰 Loading add money requests...');
+                const paymentRequests = await adminHelper.getAllPaymentRequests();
+                console.log('✓ All payment requests:', paymentRequests);
+                
+                const addMoneyRequests = paymentRequests.filter(t => t.paymentType === 'wallet_add');
+                console.log('✓ Add money requests found:', addMoneyRequests.length);
+
+            if (addMoneyRequests.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <i class="fas fa-wallet"></i>
+                                <p>No add money requests</p>
+                                <p style="font-size: 0.9rem; color: #94a3b8; margin-top: 1rem;">
+                                    Create test data by:<br>
+                                    1. Signing up on your website<br>
+                                    2. Going to Wallet → Add Money<br>
+                                    3. Submitting a payment request
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                console.log('ℹ️ No add money requests to display');
+                return;
+            }
+
+            tbody.innerHTML = addMoneyRequests.map((req, index) => {
+                const date = new Date(req.timestamp).toLocaleString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const status = req.status || 'pending';
+                const customerName = req.userName || 'Guest';
+                const customerEmail = req.userEmail || 'N/A';
+
+                return `
+                    <tr>
+                        <td>${date}</td>
+                        <td>${customerName}</td>
+                        <td>${customerEmail}</td>
+                        <td style="font-weight: 700; color: #10b981;">₹${parseFloat(req.amount).toLocaleString('en-IN')}</td>
+                        <td>${req.transactionId}</td>
+                        <td><span class="status-badge ${status}">${status.toUpperCase()}</span></td>
+                        <td>
+                            ${status === 'pending' ? `
+                                <button class="action-btn approve" onclick="approveAddMoney('${req.userId}', '${req.id}', ${req.amount}, '${req.userName}', '${req.transactionId}')">
+                                    <i class="fas fa-check"></i> Approve
+                                </button>
+                                <button class="action-btn reject" onclick="rejectAddMoney('${req.userId}', '${req.id}', '${req.userName}', '${req.transactionId}')">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            ` : `<span style="color: #94a3b8;">-</span>`}
+                        </td>
+                    </tr>
+                `;
+            }).reverse().join('');
+            console.log('✅ Add money requests table updated');
+            } catch (error) {
+                console.error('❌ Error loading add money requests:', error);
+                console.error('Error details:', error.message);
+                console.error('Full error:', error);
+                
+                showError(
+                    error.message || 'Unknown error. Check Firebase database rules and console.', 
+                    'addMoneyBody'
+                );
+                
+                // Also alert the user
+                alert('Error loading add money requests!\n\n' + error.message + 
+                      '\n\nCommon fixes:\n' +
+                      '1. Update Firebase database rules to allow reading\n' +
+                      '2. Clear browser cache (Ctrl+Shift+R)\n' +
+                      '3. Check firebase-config.js has databaseURL\n' +
+                      '4. Check browser console (F12) for more details');
+            }
+        }
+
+        async function approveAddMoney(userId, requestId, amount, userName, transactionId) {
+            const addAmount = parseFloat(amount);
+            
+            if (isNaN(addAmount)) {
+                alert('Error: Invalid amount!');
+                return;
+            }
+
+            // Show confirmation
+            const confirmMessage = `Approve Add Money Request?\n\n` +
+                `Customer: ${userName}\n` +
+                `Transaction ID: ${transactionId}\n` +
+                `Amount to Add: ₹${addAmount.toLocaleString('en-IN')}\n\n` +
+                `This will add money to the customer's wallet.`;
+
+            if (!confirm(confirmMessage)) return;
+
+            try {
+                // Approve the payment and add money to wallet
+                const success = await adminHelper.approvePaymentRequest(userId, requestId, addAmount);
+                
+                if (success) {
+                    alert(`✅ Add Money Request Approved!\n\n` +
+                          `Customer: ${userName}\n` +
+                          `Amount Added: ₹${addAmount.toLocaleString('en-IN')}\n` +
+                          `Transaction ID: ${transactionId}`);
+                    
+                    // Reload data
+                    loadStatistics();
+                    loadAddMoneyRequests();
+                } else {
+                    alert('Error approving request. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error approving payment:', error);
+                alert('Error approving request: ' + error.message);
+            }
+        }
+
+        async function rejectAddMoney(userId, requestId, userName, transactionId) {
+            // Show confirmation
+            const confirmMessage = `Reject Add Money Request?\n\n` +
+                `Customer: ${userName}\n` +
+                `Transaction ID: ${transactionId}\n\n` +
+                `Are you sure you want to reject this request?`;
+
+            if (!confirm(confirmMessage)) return;
+
+            try {
+                const success = await adminHelper.rejectPaymentRequest(userId, requestId);
+                
+                if (success) {
+                    alert(`❌ Add Money Request Rejected!\n\n` +
+                          `Customer: ${userName}\n` +
+                          `Transaction ID: ${transactionId}`);
+                    
+                    // Reload data
+                    loadStatistics();
+                    loadAddMoneyRequests();
+                } else {
+                    alert('Error rejecting request. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error rejecting payment:', error);
+                alert('Error rejecting request: ' + error.message);
+            }
+        }
+
+        async function loadWithdrawalRequests() {
+            const tbody = document.getElementById('withdrawalsBody');
+            try {
+                console.log('💸 Loading withdrawal requests...');
+                const allWithdrawals = await adminHelper.getAllWithdrawalRequests();
+                console.log('✓ All withdrawal requests found:', allWithdrawals.length);
+                
+                // Filter out product transactions (which have withdrawalAmount field)
+                // Only show regular withdrawal requests here
+                const withdrawals = allWithdrawals.filter(req => {
+                    // Product withdrawals have 'withdrawalAmount' and 'processingFee' fields
+                    // Regular withdrawals only have basic withdrawal info
+                    return !req.withdrawalAmount && !req.processingFee;
+                });
+                console.log('✓ Regular withdrawal requests (filtered):', withdrawals.length);
+                console.log('✓ Product transactions (excluded):', allWithdrawals.length - withdrawals.length);
+
+                if (withdrawals.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <p>No regular withdrawal requests</p>
+                                    <p style="font-size: 0.9rem; color: #94a3b8; margin-top: 1rem;">
+                                        This shows only regular withdrawal requests from Wallet → Withdraw.<br>
+                                        <strong>Product transactions are shown in Orders Management.</strong>
+                                    </p>
+                                    <p style="font-size: 0.85rem; color: #60a5fa; margin-top: 0.5rem;">
+                                        💡 Tip: Click "Orders Management" tab to see product-related transactions
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    console.log('ℹ️ No withdrawal requests to display');
+                    return;
+                }
+
+                tbody.innerHTML = withdrawals.map(req => {
+                    const date = new Date(req.timestamp).toLocaleString('en-IN', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    const status = req.status || 'pending';
+                    const customerName = req.fullName || req.userName || 'Customer';
+                    const customerEmail = req.email || req.userEmail || 'N/A';
+
+                    return `
+                        <tr>
+                            <td>${date}</td>
+                            <td>${customerName}</td>
+                            <td>${customerEmail}</td>
+                            <td style="font-weight: 700; color: #f59e0b;">₹${parseFloat(req.amount).toLocaleString('en-IN')}</td>
+                            <td>
+                                <div class="detail-view">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Account Number:</span>
+                                        <span class="detail-value">${req.accountNumber}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">IFSC Code:</span>
+                                        <span class="detail-value">${req.ifscCode}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Account Holder:</span>
+                                        <span class="detail-value">${req.accountHolderName}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Mobile:</span>
+                                        <span class="detail-value">${req.mobile || 'N/A'}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge ${status}">${status.toUpperCase()}</span></td>
+                            <td>
+                                ${status === 'pending' ? `
+                                    <button class="action-btn approve" onclick="approveWithdrawal('${req.userId}', '${req.id}', '${customerName}', '${req.transactionId}')">
+                                        <i class="fas fa-check"></i> Approve
+                                    </button>
+                                    <button class="action-btn reject" onclick="rejectWithdrawal('${req.userId}', '${req.id}', '${customerName}', '${req.transactionId}')">
+                                        <i class="fas fa-times"></i> Reject
+                                    </button>
+                                ` : `<span style="color: #94a3b8;">-</span>`}
+                            </td>
+                        </tr>
+                    `;
+                }).reverse().join('');
+                console.log('✅ Withdrawal requests table updated');
+            } catch (error) {
+                console.error('❌ Error loading withdrawal requests:', error);
+                console.error('Error details:', error.message);
+                console.error('Full error:', error);
+                
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="color: #ef4444; text-align: center; padding: 2rem;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Error Loading Data</p>
+                            <p style="font-size: 0.9rem; color: #94a3b8;">${error.message || 'Unknown error'}</p>
+                            <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 1rem;">Check browser console (F12) for details</p>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        async function approveWithdrawal(userId, requestId, customerName, transactionId) {
+            // Show confirmation
+            const confirmMessage = `Approve Withdrawal Request?\n\n` +
+                `Customer: ${customerName}\n` +
+                `Transaction ID: ${transactionId || 'N/A'}\n\n` +
+                `Are you sure you want to approve this withdrawal?\n` +
+                `The payment should be processed manually to the customer's bank account.`;
+
+            if (!confirm(confirmMessage)) return;
+
+            try {
+                const success = await adminHelper.approveWithdrawalRequest(userId, requestId);
+                
+                if (success) {
+                    alert(`✅ Withdrawal Request Approved!\n\n` +
+                          `Customer: ${customerName}\n` +
+                          `Transaction ID: ${transactionId || 'N/A'}\n\n` +
+                          `Please process the payment to the customer's bank account.`);
+                    
+                    // Reload data
+                    loadStatistics();
+                    loadWithdrawalRequests();
+                } else {
+                    alert('Error approving request. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error approving withdrawal:', error);
+                alert('Error approving request: ' + error.message);
+            }
+        }
+
+        async function rejectWithdrawal(userId, requestId, customerName, transactionId) {
+            // Show confirmation
+            const confirmMessage = `Reject Withdrawal Request?\n\n` +
+                `Customer: ${customerName}\n` +
+                `Transaction ID: ${transactionId || 'N/A'}\n\n` +
+                `Are you sure you want to reject this request?`;
+
+            if (!confirm(confirmMessage)) return;
+
+            try {
+                const success = await adminHelper.rejectWithdrawalRequest(userId, requestId);
+                
+                if (success) {
+                    alert(`❌ Withdrawal Request Rejected!\n\n` +
+                          `Customer: ${customerName}\n` +
+                          `Transaction ID: ${transactionId || 'N/A'}`);
+                    
+                    // Reload data
+                    loadStatistics();
+                    loadWithdrawalRequests();
+                } else {
+                    alert('Error rejecting request. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error rejecting withdrawal:', error);
+                alert('Error rejecting request: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
+
