@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw Money - Western Payer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .withdraw-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 120px 2rem 4rem;
+        }
+
+        .withdraw-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .withdraw-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .withdraw-icon-large {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);
+        }
+
+        .withdraw-icon-large i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .withdraw-header h1 {
+            color: #f1f5f9;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .withdraw-header p {
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+
+        .withdraw-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+        }
+
+        .amount-display {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .amount-display h3 {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .amount-display .amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #f59e0b;
+            margin: 0;
+        }
+
+        .withdraw-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            color: #cbd5e1;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-label i {
+            color: #60a5fa;
+        }
+
+        .form-input {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid rgba(96, 165, 250, 0.3);
+            color: #f1f5f9;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: #64748b;
+        }
+
+        .form-input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .info-box {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .info-box i {
+            color: #60a5fa;
+            font-size: 1.25rem;
+            margin-top: 0.1rem;
+        }
+
+        .info-box-content {
+            flex: 1;
+        }
+
+        .info-box-content h4 {
+            color: #60a5fa;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-box-content p {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 1.25rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .cancel-btn {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .cancel-btn:hover {
+            background: rgba(96, 165, 250, 0.2);
+            border-color: rgba(96, 165, 250, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+            padding: 1.5rem;
+            border-radius: 12px;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        .success-message i {
+            font-size: 2rem;
+        }
+
+        .success-message-content h3 {
+            color: #10b981;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-message-content p {
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .withdraw-page {
+                padding: 100px 1rem 2rem;
+            }
+
+            .withdraw-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .amount-display .amount {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="index.html">
+                        <img src="image/header logo.png" alt="Western Payer" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="login.html" class="btn-login" id="loginBtn">Login</a>
+                    <div class="wallet-section" id="walletSection" style="display: none;">
+                        <div class="wallet-container">
+                            <i class="fas fa-wallet"></i>
+                            <div class="wallet-info">
+                                <span class="wallet-label"></span>
+                                <span class="wallet-balance" id="walletBalance">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-section" id="profileSection" style="display: none;">
+                        <div class="profile-dropdown">
+                            <button class="profile-btn" id="profileBtn">
+                                <i class="fas fa-user-circle"></i>
+                            </button>
+                            <div class="profile-menu" id="profileMenu">
+                                <div class="profile-header">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span id="userName">User</span>
+                                </div>
+                                <div class="profile-divider"></div>
+                                <a href="my-profile.html" class="profile-link">
+                                    <i class="fas fa-user"></i>
+                                    My Profile
+                                </a>
+                                <a href="settings.html" class="profile-link">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <a href="orders.html" class="profile-link">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Orders
+                                </a>
+                                <a href="messages.html" class="profile-link">
+                                    <i class="fas fa-envelope"></i>
+                                    Messages
+                                </a>
+                                <a href="#" class="profile-link" id="openSupportModal">
+                                    <i class="fas fa-headset"></i>
+                                    Support
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="#" class="profile-link logout" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Withdraw Page Content -->
+    <section class="withdraw-page">
+        <div class="withdraw-container">
+            <!-- Withdraw Header -->
+            <div class="withdraw-header">
+                <div class="withdraw-icon-large">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <h1>Withdraw Money</h1>
+                <p>Enter your bank details to withdraw funds from your wallet</p>
+            </div>
+
+            <!-- Withdraw Form -->
+            <div class="withdraw-card" id="withdrawFormCard">
+                <div class="amount-display">
+                    <h3>Withdrawal Amount</h3>
+                    <div class="amount" id="withdrawAmount">₹0.00</div>
+                </div>
+
+                <div class="info-box" style="margin-bottom: 2rem;">
+                    <i class="fas fa-info-circle"></i>
+                    <div class="info-box-content">
+                        <h4>Processing Time</h4>
+                        <p>Withdrawal requests are typically processed within 1-3 business days. The amount will be credited to your bank account.</p>
+                    </div>
+                </div>
+
+                <form class="withdraw-form" id="withdrawForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-user"></i>
+                                Full Name
+                            </label>
+                            <input type="text" class="form-input" id="fullName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-envelope"></i>
+                                Email Address
+                            </label>
+                            <input type="email" class="form-input" id="email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-phone"></i>
+                                Mobile Number
+                            </label>
+                            <input type="tel" class="form-input" id="mobile" placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}" maxlength="10" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-code"></i>
+                                IFSC Code
+                            </label>
+                            <input type="text" class="form-input" id="ifscCode" placeholder="Enter IFSC code" style="text-transform: uppercase;" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-credit-card"></i>
+                                Account Number
+                            </label>
+                            <input type="text" class="form-input" id="accountNumber" placeholder="Enter account number" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-credit-card"></i>
+                                Confirm Account Number
+                            </label>
+                            <input type="text" class="form-input" id="confirmAccountNumber" placeholder="Re-enter account number" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            <i class="fas fa-id-card"></i>
+                            Account Holder Name
+                        </label>
+                        <input type="text" class="form-input" id="accountHolderName" placeholder="Name as per bank account" required>
+                    </div>
+
+                    <div class="info-box">
+                        <i class="fas fa-shield-alt"></i>
+                        <div class="info-box-content">
+                            <h4>Security & Privacy</h4>
+                            <p>Your banking information is encrypted and securely stored. We never share your details with third parties.</p>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <a href="wallet.html" class="cancel-btn">
+                            <i class="fas fa-times"></i>
+                            Cancel
+                        </a>
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <i class="fas fa-check-circle"></i>
+                            Submit Withdrawal Request
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Success Message -->
+            <div class="withdraw-card" id="successCard" style="display: none;">
+                <div class="success-message" style="display: flex;">
+                    <i class="fas fa-check-circle"></i>
+                    <div class="success-message-content">
+                        <h3>Withdrawal Request Submitted!</h3>
+                        <p>Your withdrawal request has been successfully submitted. The amount will be credited to your bank account within 1-3 business days.</p>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="wallet.html" class="submit-btn" style="display: inline-flex; max-width: 300px;">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Wallet
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="global-support.js"></script>
+    
+    <script src="charges-calculator.js"></script>
+    
+    <!-- Optimized Wallet Balance Loader -->
+    <script src="wallet-balance-loader.js"></script>
+    
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const loginBtn = document.getElementById('loginBtn');
+            const profileSection = document.getElementById('profileSection');
+            const walletSection = document.getElementById('walletSection');
+            const walletBalance = document.getElementById('walletBalance');
+            const userName = document.getElementById('userName');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            // Check if user is logged in
+            if (!userData.isLoggedIn || !userData.uid) {
+                alert('Please login first to withdraw money');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Show logged-in UI immediately (don't wait for block check)
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (profileSection) profileSection.style.display = 'block';
+            if (walletSection) walletSection.style.display = 'block';
+            if (userName) userName.textContent = userData.name || 'User';
+            
+            // Check if user is blocked (non-blocking, async check)
+            // Only check if dbHelper is available to prevent errors
+            if (typeof window.dbHelper !== 'undefined' && typeof window.dbHelper.getUserProfile === 'function') {
+                setTimeout(async function() {
+                    try {
+                        const isBlocked = await window.checkUserBlockedStatus();
+                        // If blocked, the function will handle redirect
+                    } catch (error) {
+                        console.error('Error checking block status:', error);
+                        // Don't log out user on error - just continue
+                    }
+                }, 500); // Delay to ensure page is fully loaded
+            }
+
+            // Get withdrawal amount from URL or localStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const amount = urlParams.get('amount') || localStorage.getItem('withdrawalAmount') || '0';
+            document.getElementById('withdrawAmount').textContent = '₹' + parseFloat(amount).toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            // Pre-fill user data if available
+            if (userData.name) document.getElementById('fullName').value = userData.name;
+            if (userData.email) document.getElementById('email').value = userData.email;
+            if (userData.mobile) document.getElementById('mobile').value = userData.mobile;
+
+            // Display wallet balance in header from Firebase
+            const walletData = await dbHelper.getUserWallet(userData.uid);
+            const balance = walletData.balance || 0;
+            walletBalance.textContent = '₹' + parseFloat(balance).toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            // Wallet click functionality
+            const walletContainer = document.querySelector('.wallet-container');
+            if (walletContainer) {
+                walletContainer.addEventListener('click', function() {
+                    window.location.href = 'wallet.html';
+                });
+            }
+
+            // Profile dropdown functionality
+            if (profileBtn) {
+                profileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    profileBtn.parentElement.classList.toggle('active');
+                });
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (profileBtn && profileMenu && !profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                    profileBtn.parentElement.classList.remove('active');
+                }
+            });
+
+            // Logout functionality
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    if (confirm('Are you sure you want to logout?')) {
+                        try {
+                            await firebaseAuth.signOut();
+                            localStorage.removeItem('userData');
+                            window.location.href = 'login.html';
+                        } catch (error) {
+                            console.error('Error signing out:', error);
+                            alert('Error signing out. Please try again.');
+                        }
+                    }
+                });
+            }
+
+            // Form validation and submission
+            const withdrawForm = document.getElementById('withdrawForm');
+            const accountNumber = document.getElementById('accountNumber');
+            const confirmAccountNumber = document.getElementById('confirmAccountNumber');
+
+            withdrawForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                // Validate account numbers match
+                if (accountNumber.value !== confirmAccountNumber.value) {
+                    alert('Account numbers do not match. Please check and try again.');
+                    confirmAccountNumber.focus();
+                    return;
+                }
+
+                // Get IFSC code value
+                const ifscCode = document.getElementById('ifscCode').value;
+
+                // Show loading state
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+                // Collect form data
+                const withdrawalData = {
+                    amount: parseFloat(amount),
+                    fullName: document.getElementById('fullName').value,
+                    email: document.getElementById('email').value,
+                    mobile: document.getElementById('mobile').value,
+                    accountNumber: accountNumber.value,
+                    ifscCode: ifscCode,
+                    accountHolderName: document.getElementById('accountHolderName').value,
+                    status: 'pending'
+                };
+
+                // Process withdrawal with Firebase
+                setTimeout(async () => {
+                    try {
+                        // Get current balance from Firebase
+                        const walletData = await dbHelper.getUserWallet(userData.uid);
+                        const currentBalance = walletData.balance || 0;
+                        const newBalance = currentBalance - parseFloat(amount);
+
+                        // Update balance in Firebase
+                        await dbHelper.updateWalletBalance(userData.uid, newBalance);
+
+                        // Add withdrawal request to Firebase
+                        await dbHelper.addWithdrawalRequest(userData.uid, withdrawalData);
+
+                        // Add transaction to Firebase
+                        const walletTransaction = {
+                            type: 'withdraw',
+                            amount: parseFloat(amount),
+                            balance: newBalance,
+                            accountNumber: '****' + withdrawalData.accountNumber.slice(-4)
+                        };
+                        await dbHelper.addTransaction(userData.uid, walletTransaction);
+
+                        // Hide form card and show success card
+                        document.getElementById('withdrawFormCard').style.display = 'none';
+                        document.getElementById('successCard').style.display = 'block';
+
+                        // Scroll to top
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                        // Clean up
+                        localStorage.removeItem('withdrawalAmount');
+                    } catch (error) {
+                        console.error('Error processing withdrawal:', error);
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Withdrawal Request';
+                        alert('Error processing withdrawal. Please try again.');
+                    }
+                }, 1500);
+            });
+        });
+        
+        // Support Modal Handler
+        const openSupportModalBtn = document.getElementById('openSupportModal');
+        const supportModal = document.getElementById('supportModal');
+        const closeSupportModalBtn = document.getElementById('closeSupportModal');
+        const supportForm = document.getElementById('supportForm');
+        
+        if (openSupportModalBtn) {
+            openSupportModalBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (supportModal) {
+                    supportModal.classList.add('active');
+                    const profileDropdown = document.querySelector('.profile-dropdown');
+                    if (profileDropdown) {
+                        profileDropdown.classList.remove('active');
+                    }
+                }
+            });
+        }
+        
+        if (closeSupportModalBtn) {
+            closeSupportModalBtn.addEventListener('click', function() {
+                if (supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        if (supportModal) {
+            supportModal.addEventListener('click', function(e) {
+                if (e.target === supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        const cancelSupportBtn = document.getElementById('cancelSupportBtn');
+        if (cancelSupportBtn) {
+            cancelSupportBtn.addEventListener('click', function() {
+                if (supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        if (supportForm) {
+            supportForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const message = document.getElementById('supportMessage').value;
+                
+                if (!message.trim()) {
+                    alert('Please enter your message.');
+                    return;
+                }
+                
+                const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                const userEmail = userData.email || 'Unknown';
+                const userName = userData.name || 'User';
+                const userId = userData.uid || null;
+                const userPhone = userData.phone || userData.mobile || null;
+                
+                const contactMessage = {
+                    name: userName,
+                    email: userEmail,
+                    userId: userId,
+                    phone: userPhone,
+                    message: message,
+                    timestamp: new Date().toISOString(),
+                    source: 'support'
+                };
+                
+                const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                messages.push(contactMessage);
+                localStorage.setItem('contactMessages', JSON.stringify(messages));
+                
+                alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                
+                document.getElementById('supportMessage').value = '';
+                
+                if (supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+    </script>
+    
+    <!-- Support Modal -->
+    <div class="support-modal-overlay" id="supportModal">
+        <div class="support-modal">
+            <div class="support-modal-header">
+                <h3><i class="fas fa-headset"></i> Contact Support</h3>
+                <button class="support-modal-close" id="closeSupportModal">&times;</button>
+            </div>
+            <form id="supportForm">
+                <div class="support-form-group">
+                    <label for="supportMessage">Your Message</label>
+                    <textarea id="supportMessage" placeholder="Please describe your issue or question. We'll get back to you as soon as possible." rows="6" required></textarea>
+                </div>
+                <div class="support-modal-actions">
+                    <button type="button" class="btn-cancel-support" id="cancelSupportBtn">Cancel</button>
+                    <button type="submit" class="btn-send-support">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Western Payer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .profile-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 120px 2rem 4rem;
+        }
+
+        .profile-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .profile-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-header-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.4);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(96, 165, 250, 0.6);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .profile-avatar i {
+            font-size: 4rem;
+            color: white;
+        }
+
+        .profile-avatar-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 36px;
+            height: 36px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(15, 23, 42, 0.9);
+        }
+
+        .profile-avatar-upload:hover {
+            background: #059669;
+            transform: scale(1.1);
+        }
+
+        .profile-avatar-upload i {
+            font-size: 1rem;
+            color: white;
+        }
+
+        .profile-photo-input {
+            display: none;
+        }
+
+        .photo-upload-section {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .btn-upload-photo {
+            background: rgba(96, 165, 250, 0.2);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-upload-photo:hover {
+            background: rgba(96, 165, 250, 0.3);
+            border-color: rgba(96, 165, 250, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-remove-photo {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: 0.5rem;
+        }
+
+        .btn-remove-photo:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .photo-upload-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .profile-header-section h1 {
+            color: #f1f5f9;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            color: #10b981;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .profile-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: #60a5fa;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title i {
+            font-size: 1.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(96, 165, 250, 0.5);
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.2);
+        }
+
+        .info-label {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-label i {
+            color: #60a5fa;
+            font-size: 1rem;
+        }
+
+        .info-value {
+            color: #f1f5f9;
+            font-size: 1.1rem;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .password-value {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .password-hidden {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+        }
+
+        .toggle-password-btn {
+            background: rgba(96, 165, 250, 0.2);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toggle-password-btn:hover {
+            background: rgba(96, 165, 250, 0.3);
+            border-color: rgba(96, 165, 250, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .edit-icon-btn {
+            background: rgba(96, 165, 250, 0.2);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .edit-icon-btn:hover {
+            background: rgba(96, 165, 250, 0.3);
+            border-color: rgba(96, 165, 250, 0.5);
+            transform: scale(1.05);
+        }
+
+        .info-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .edit-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid rgba(96, 165, 250, 0.5);
+            color: #f1f5f9;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .edit-input:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+
+        .edit-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .btn-save {
+            flex: 1;
+            background: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-cancel {
+            flex: 1;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            flex: 1;
+            min-width: 200px;
+            background: #000000;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .btn-action:hover {
+            background: #1a1a1a;
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-action i {
+            font-size: 1.25rem;
+        }
+
+        .btn-secondary {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(96, 165, 250, 0.2);
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+
+        .account-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            color: #60a5fa;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .no-data-message {
+            text-align: center;
+            padding: 3rem;
+            color: #94a3b8;
+        }
+
+        .no-data-message i {
+            font-size: 4rem;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .no-data-message h2 {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .no-data-message p {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .orders-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .order-preview-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .order-preview-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(96, 165, 250, 0.5);
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.2);
+        }
+
+        .order-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+        }
+
+        .order-preview-id {
+            color: #60a5fa;
+            font-weight: 700;
+            font-size: 0.9rem;
+            font-family: monospace;
+        }
+
+        .order-preview-status {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .order-preview-status.pending {
+            background: rgba(251, 191, 36, 0.2);
+            border: 1px solid rgba(251, 191, 36, 0.4);
+            color: #fbbf24;
+        }
+
+        .order-preview-status.approved {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+        }
+
+        .order-preview-status.rejected {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+        }
+
+        .order-preview-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .order-preview-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .order-preview-label {
+            color: #94a3b8;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .order-preview-value {
+            color: #f1f5f9;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .order-preview-product {
+            color: #a78bfa;
+        }
+
+        .order-preview-amount {
+            color: #10b981;
+        }
+
+        @media (max-width: 768px) {
+            .profile-page {
+                padding: 100px 1rem 2rem;
+            }
+
+            .profile-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .profile-avatar i {
+                font-size: 3rem;
+            }
+
+            .profile-avatar-upload {
+                width: 30px;
+                height: 30px;
+            }
+
+            .profile-avatar-upload i {
+                font-size: 0.85rem;
+            }
+
+            .profile-header-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-action {
+                min-width: auto;
+                width: 100%;
+            }
+
+            .account-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .order-preview-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="index.html">
+                        <img src="image/header logo.png" alt="Western Payer" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="login.html" class="btn-login" id="loginBtn">Login</a>
+                    <div class="wallet-section" id="walletSection" style="display: none;">
+                        <div class="wallet-container">
+                            <i class="fas fa-wallet"></i>
+                            <div class="wallet-info">
+                                <span class="wallet-label"></span>
+                                <span class="wallet-balance" id="walletBalance">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-section" id="profileSection" style="display: none;">
+                        <div class="profile-dropdown">
+                            <button class="profile-btn" id="profileBtn">
+                                <i class="fas fa-user-circle"></i>
+                            </button>
+                            <div class="profile-menu" id="profileMenu">
+                                <div class="profile-header">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span id="userName">User</span>
+                                </div>
+                                <div class="profile-divider"></div>
+                                <a href="my-profile.html" class="profile-link">
+                                    <i class="fas fa-user"></i>
+                                    My Profile
+                                </a>
+                                <a href="settings.html" class="profile-link">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <a href="orders.html" class="profile-link">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Orders
+                                </a>
+                                <a href="messages.html" class="profile-link">
+                                    <i class="fas fa-envelope"></i>
+                                    Messages
+                                </a>
+                                <a href="#" class="profile-link" id="openSupportModal">
+                                    <i class="fas fa-headset"></i>
+                                    Support
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="#" class="profile-link logout" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Profile Page Content -->
+    <section class="profile-page">
+        <div class="profile-container">
+            <!-- No Data Message (shown if not logged in) -->
+            <div id="noDataMessage" class="no-data-message" style="display: none;">
+                <div class="profile-card">
+                    <i class="fas fa-user-slash"></i>
+                    <h2>Please Login First</h2>
+                    <p>You need to be logged in to view your profile details.</p>
+                    <a href="login.html" class="btn-action">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Go to Login
+                    </a>
+                </div>
+            </div>
+
+            <!-- Profile Content (shown if logged in) -->
+            <div id="profileContent" style="display: none;">
+                <div class="profile-card">
+                    <!-- Profile Header -->
+                    <div class="profile-header-section">
+                        <div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('photoInput').click()">
+                            <img id="profilePhoto" src="" alt="Profile Photo" style="display: none;">
+                            <i class="fas fa-user" id="avatarIcon"></i>
+                            <div class="profile-avatar-upload" onclick="event.stopPropagation(); document.getElementById('photoInput').click()">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                        </div>
+                        <input type="file" id="photoInput" class="profile-photo-input" accept="image/*" onchange="handlePhotoUpload(event)">
+                        <div class="photo-upload-section">
+                            <button type="button" class="btn-upload-photo" onclick="document.getElementById('photoInput').click()">
+                                <i class="fas fa-camera"></i>
+                                Upload Photo
+                            </button>
+                            <button type="button" class="btn-remove-photo" id="removePhotoBtn" onclick="removeProfilePhoto()" style="display: none;">
+                                <i class="fas fa-trash"></i>
+                                Remove Photo
+                            </button>
+                        </div>
+                        <h1 id="displayName">John Doe</h1>
+                        <div class="profile-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Account Active</span>
+                        </div>
+                    </div>
+
+                    <!-- Success Message -->
+                    <div id="successMessage" style="display: none;" class="success-message">
+                        <i class="fas fa-check-circle" style="font-size: 1.25rem;"></i>
+                        <span>Profile updated successfully!</span>
+                    </div>
+
+                    <!-- Personal Information -->
+                    <div class="profile-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-user-circle"></i>
+                            Personal Information
+                        </h2>
+                        <div class="info-grid">
+                            <!-- Name Field -->
+                            <div class="info-item" id="nameItem">
+                                <div class="info-item-header">
+                                    <div class="info-label">
+                                        <i class="fas fa-id-card"></i>
+                                        Full Name
+                                    </div>
+                                    <button class="edit-icon-btn" onclick="editField('name')">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </button>
+                                </div>
+                                <div class="info-value" id="infoName">John Doe</div>
+                                <div id="editName" style="display: none;">
+                                    <input type="text" class="edit-input" id="inputName" placeholder="Enter your full name">
+                                    <div class="edit-actions">
+                                        <button class="btn-save" onclick="saveField('name')">
+                                            <i class="fas fa-check"></i> Save
+                                        </button>
+                                        <button class="btn-cancel" onclick="cancelEdit('name')">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Email Field -->
+                            <div class="info-item" id="emailItem">
+                                <div class="info-item-header">
+                                    <div class="info-label">
+                                        <i class="fas fa-envelope"></i>
+                                        Email Address
+                                    </div>
+                                    <button class="edit-icon-btn" onclick="editField('email')">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </button>
+                                </div>
+                                <div class="info-value" id="infoEmail">john.doe@example.com</div>
+                                <div id="editEmail" style="display: none;">
+                                    <input type="email" class="edit-input" id="inputEmail" placeholder="Enter your email address">
+                                    <div class="edit-actions">
+                                        <button class="btn-save" onclick="saveField('email')">
+                                            <i class="fas fa-check"></i> Save
+                                        </button>
+                                        <button class="btn-cancel" onclick="cancelEdit('email')">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mobile Field -->
+                            <div class="info-item" id="mobileItem">
+                                <div class="info-item-header">
+                                    <div class="info-label">
+                                        <i class="fas fa-phone"></i>
+                                        Mobile Number
+                                    </div>
+                                    <button class="edit-icon-btn" onclick="editField('mobile')">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </button>
+                                </div>
+                                <div class="info-value" id="infoMobile">+91 98765 43210</div>
+                                <div id="editMobile" style="display: none;">
+                                    <input type="tel" class="edit-input" id="inputMobile" placeholder="Enter your mobile number" maxlength="10">
+                                    <div class="edit-actions">
+                                        <button class="btn-save" onclick="saveField('mobile')">
+                                            <i class="fas fa-check"></i> Save
+                                        </button>
+                                        <button class="btn-cancel" onclick="cancelEdit('mobile')">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Password Field -->
+                            <div class="info-item" id="passwordItem">
+                                <div class="info-item-header">
+                                    <div class="info-label">
+                                        <i class="fas fa-lock"></i>
+                                        Password
+                                    </div>
+                                    <button class="edit-icon-btn" onclick="editField('password')">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </button>
+                                </div>
+                                <div id="passwordView">
+                                    <div class="password-value">
+                                        <span class="password-hidden" id="passwordDisplay">••••••••</span>
+                                        <button class="toggle-password-btn" id="togglePasswordBtn">
+                                            <i class="fas fa-eye"></i>
+                                            <span id="toggleText">Show</span>
+                                        </button>
+                                    </div>
+                                    <div style="display: none; margin-top: 0.75rem;" id="actualPassword">
+                                        <div class="info-value" id="infoPassword">********</div>
+                                    </div>
+                                </div>
+                                <div id="editPassword" style="display: none;">
+                                    <input type="password" class="edit-input" id="inputPassword" placeholder="Enter new password" style="margin-bottom: 0.5rem;">
+                                    <input type="password" class="edit-input" id="inputPasswordConfirm" placeholder="Confirm new password">
+                                    <div class="edit-actions">
+                                        <button class="btn-save" onclick="saveField('password')">
+                                            <i class="fas fa-check"></i> Save
+                                        </button>
+                                        <button class="btn-cancel" onclick="cancelEdit('password')">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Statistics -->
+                    <div class="profile-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-chart-bar"></i>
+                            Account Overview
+                        </h2>
+                        <div class="account-stats">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="stat-value" id="memberSince">2024</div>
+                                <div class="stat-label">Member Since</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="stat-value" id="lastLogin">Today</div>
+                                <div class="stat-label">Last Login</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="stat-value">Active</div>
+                                <div class="stat-label">Account Status</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Orders Section -->
+                    <div class="profile-section" id="recentOrdersSection" style="display: none;">
+                        <h2 class="section-title">
+                            <i class="fas fa-shopping-bag"></i>
+                            Recent Orders
+                        </h2>
+                        <div class="orders-preview" id="ordersPreview">
+                            <!-- Orders will be loaded here -->
+                        </div>
+                        <div style="text-align: center; margin-top: 1.5rem;">
+                            <a href="orders.html" class="btn-action" style="display: inline-flex; max-width: 300px;">
+                                <i class="fas fa-shopping-bag"></i>
+                                View All Orders
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- No Orders Message -->
+                    <div class="profile-section" id="noOrdersSection" style="display: none;">
+                        <h2 class="section-title">
+                            <i class="fas fa-shopping-bag"></i>
+                            Recent Orders
+                        </h2>
+                        <div style="text-align: center; padding: 2rem; color: #94a3b8;">
+                            <i class="fas fa-shopping-bag" style="font-size: 3rem; color: #60a5fa; margin-bottom: 1rem; display: block;"></i>
+                            <p style="font-size: 1.1rem; margin-bottom: 1rem;">No orders yet</p>
+                            <a href="overview/products.html" class="btn-action" style="display: inline-flex; max-width: 250px;">
+                                <i class="fas fa-store"></i>
+                                Browse Products
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <a href="overview/products.html" class="btn-action">
+                            <i class="fas fa-wallet"></i>
+                            View Products
+                        </a>
+                        <a href="index.html" class="btn-action btn-secondary">
+                            <i class="fas fa-home"></i>
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="global-support.js"></script>
+    
+    <script src="charges-calculator.js"></script>
+    
+    <!-- Optimized Wallet Balance Loader -->
+    <script src="wallet-balance-loader.js"></script>
+    
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const loginBtn = document.getElementById('loginBtn');
+            const profileSection = document.getElementById('profileSection');
+            const walletSection = document.getElementById('walletSection');
+            const walletBalance = document.getElementById('walletBalance');
+            const userName = document.getElementById('userName');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const noDataMessage = document.getElementById('noDataMessage');
+            const profileContent = document.getElementById('profileContent');
+            
+            // Initialize wallet balance if not exists
+            if (!localStorage.getItem('walletBalance')) {
+                localStorage.setItem('walletBalance', '0.00');
+            }
+            
+            // Check if user is logged in
+            if (userData.isLoggedIn && userData.uid) {
+                // Show logged-in UI immediately (don't wait for block check)
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (profileSection) profileSection.style.display = 'block';
+                if (walletSection) walletSection.style.display = 'block';
+                if (userName) userName.textContent = userData.name || 'User';
+                
+                // Check if user is blocked (non-blocking, async check)
+                // Only check if dbHelper is available to prevent errors
+                if (typeof window.dbHelper !== 'undefined' && typeof window.dbHelper.getUserProfile === 'function') {
+                    setTimeout(async function() {
+                        try {
+                            const isBlocked = await window.checkUserBlockedStatus();
+                            // If blocked, the function will handle redirect
+                        } catch (error) {
+                            console.error('Error checking block status:', error);
+                            // Don't log out user on error - just continue
+                        }
+                    }, 500); // Delay to ensure page is fully loaded
+                }
+                
+                // Display wallet balance
+                const balance = localStorage.getItem('walletBalance') || '0.00';
+                walletBalance.textContent = '₹' + parseFloat(balance).toLocaleString('en-IN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                // Show profile content and hide no data message
+                profileContent.style.display = 'block';
+                noDataMessage.style.display = 'none';
+
+                // Populate profile information
+                document.getElementById('displayName').textContent = userData.name || 'User';
+                document.getElementById('infoName').textContent = userData.name || 'Not provided';
+                document.getElementById('infoEmail').textContent = userData.email || 'Not provided';
+                document.getElementById('infoMobile').textContent = userData.mobile || 'Not provided';
+                document.getElementById('infoPassword').textContent = userData.password || '********';
+
+                // Load profile photo
+                await loadProfilePhoto(userData.uid);
+
+                // Set member since (current year)
+                const currentYear = new Date().getFullYear();
+                document.getElementById('memberSince').textContent = currentYear;
+
+                // Set last login (current date)
+                const today = new Date().toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                });
+                document.getElementById('lastLogin').textContent = today;
+
+                // Load recent orders
+                await loadRecentOrders(userData.uid);
+            } else {
+                // Show no data message and hide profile content
+                noDataMessage.style.display = 'block';
+                profileContent.style.display = 'none';
+            }
+            
+            // Wallet click functionality - navigate to wallet page
+            const walletContainer = document.querySelector('.wallet-container');
+            if (walletContainer) {
+                walletContainer.addEventListener('click', function() {
+                    window.location.href = 'wallet.html';
+                });
+            }
+            
+            // Profile dropdown functionality
+            if (profileBtn) {
+                profileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    profileBtn.parentElement.classList.toggle('active');
+                });
+            }
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (profileBtn && profileMenu && !profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                    profileBtn.parentElement.classList.remove('active');
+                }
+            });
+            
+            // Logout functionality
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    if (confirm('Are you sure you want to logout?')) {
+                        try {
+                            await firebaseAuth.signOut();
+                    localStorage.removeItem('userData');
+                    window.location.href = 'login.html';
+                        } catch (error) {
+                            console.error('Error signing out:', error);
+                            alert('Error signing out. Please try again.');
+                        }
+                    }
+                });
+            }
+
+            // Password toggle functionality
+            const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+            const passwordDisplay = document.getElementById('passwordDisplay');
+            const actualPassword = document.getElementById('actualPassword');
+            const toggleText = document.getElementById('toggleText');
+            let passwordVisible = false;
+
+            if (togglePasswordBtn) {
+                togglePasswordBtn.addEventListener('click', function() {
+                    passwordVisible = !passwordVisible;
+                    
+                    if (passwordVisible) {
+                        passwordDisplay.style.display = 'none';
+                        actualPassword.style.display = 'block';
+                        togglePasswordBtn.innerHTML = '<i class="fas fa-eye-slash"></i><span id="toggleText">Hide</span>';
+                    } else {
+                        passwordDisplay.style.display = 'block';
+                        actualPassword.style.display = 'none';
+                        togglePasswordBtn.innerHTML = '<i class="fas fa-eye"></i><span id="toggleText">Show</span>';
+                    }
+                });
+            }
+        });
+
+        // Edit Field Function
+        function editField(field) {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            
+            // Hide all edit forms first
+            document.querySelectorAll('[id^="edit"]').forEach(el => {
+                if (el.id.startsWith('edit') && el.id !== 'editName' && el.id !== 'editEmail' && el.id !== 'editMobile' && el.id !== 'editPassword') return;
+                el.style.display = 'none';
+            });
+            
+            // Show corresponding edit buttons
+            document.querySelectorAll('.edit-icon-btn').forEach(btn => btn.style.display = 'inline-flex');
+            
+            // Show all info values
+            if (document.getElementById('infoName')) document.getElementById('infoName').style.display = 'block';
+            if (document.getElementById('infoEmail')) document.getElementById('infoEmail').style.display = 'block';
+            if (document.getElementById('infoMobile')) document.getElementById('infoMobile').style.display = 'block';
+            if (document.getElementById('passwordView')) document.getElementById('passwordView').style.display = 'block';
+            
+            // Hide edit button for current field
+            const editBtn = document.querySelector(`#${field}Item .edit-icon-btn`);
+            if (editBtn) editBtn.style.display = 'none';
+            
+            // Show edit form for selected field
+            const editForm = document.getElementById(`edit${field.charAt(0).toUpperCase() + field.slice(1)}`);
+            const infoValue = document.getElementById(`info${field.charAt(0).toUpperCase() + field.slice(1)}`);
+            const passwordView = document.getElementById('passwordView');
+            
+            if (field === 'name') {
+                infoValue.style.display = 'none';
+                editForm.style.display = 'block';
+                document.getElementById('inputName').value = userData.name || '';
+                document.getElementById('inputName').focus();
+            } else if (field === 'email') {
+                infoValue.style.display = 'none';
+                editForm.style.display = 'block';
+                document.getElementById('inputEmail').value = userData.email || '';
+                document.getElementById('inputEmail').focus();
+            } else if (field === 'mobile') {
+                infoValue.style.display = 'none';
+                editForm.style.display = 'block';
+                document.getElementById('inputMobile').value = userData.mobile || '';
+                document.getElementById('inputMobile').focus();
+            } else if (field === 'password') {
+                passwordView.style.display = 'none';
+                editForm.style.display = 'block';
+                document.getElementById('inputPassword').value = '';
+                document.getElementById('inputPasswordConfirm').value = '';
+                document.getElementById('inputPassword').focus();
+            }
+        }
+
+        // Save Field Function
+        function saveField(field) {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            let isValid = true;
+            let errorMessage = '';
+            
+            if (field === 'name') {
+                const newValue = document.getElementById('inputName').value.trim();
+                if (newValue === '') {
+                    errorMessage = 'Name cannot be empty';
+                    isValid = false;
+                } else {
+                    userData.name = newValue;
+                    document.getElementById('infoName').textContent = newValue;
+                    document.getElementById('displayName').textContent = newValue;
+                    document.getElementById('userName').textContent = newValue;
+                }
+            } else if (field === 'email') {
+                const newValue = document.getElementById('inputEmail').value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (newValue === '') {
+                    errorMessage = 'Email cannot be empty';
+                    isValid = false;
+                } else if (!emailRegex.test(newValue)) {
+                    errorMessage = 'Please enter a valid email address';
+                    isValid = false;
+                } else {
+                    userData.email = newValue;
+                    document.getElementById('infoEmail').textContent = newValue;
+                }
+            } else if (field === 'mobile') {
+                const newValue = document.getElementById('inputMobile').value.trim();
+                const mobileRegex = /^[0-9]{10}$/;
+                if (newValue === '') {
+                    errorMessage = 'Mobile number cannot be empty';
+                    isValid = false;
+                } else if (!mobileRegex.test(newValue)) {
+                    errorMessage = 'Please enter a valid 10-digit mobile number';
+                    isValid = false;
+                } else {
+                    userData.mobile = newValue;
+                    document.getElementById('infoMobile').textContent = newValue;
+                }
+            } else if (field === 'password') {
+                const newPassword = document.getElementById('inputPassword').value;
+                const confirmPassword = document.getElementById('inputPasswordConfirm').value;
+                if (newPassword === '') {
+                    errorMessage = 'Password cannot be empty';
+                    isValid = false;
+                } else if (newPassword.length < 6) {
+                    errorMessage = 'Password must be at least 6 characters';
+                    isValid = false;
+                } else if (newPassword !== confirmPassword) {
+                    errorMessage = 'Passwords do not match';
+                    isValid = false;
+                } else {
+                    userData.password = newPassword;
+                    document.getElementById('infoPassword').textContent = newPassword;
+                }
+            }
+            
+            if (!isValid) {
+                alert(errorMessage);
+                return;
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            // Show success message
+            const successMsg = document.getElementById('successMessage');
+            successMsg.style.display = 'flex';
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+            
+            // Hide edit form and show value
+            cancelEdit(field);
+        }
+
+        // Cancel Edit Function
+        function cancelEdit(field) {
+            const editForm = document.getElementById(`edit${field.charAt(0).toUpperCase() + field.slice(1)}`);
+            const infoValue = document.getElementById(`info${field.charAt(0).toUpperCase() + field.slice(1)}`);
+            const passwordView = document.getElementById('passwordView');
+            const editBtn = document.querySelector(`#${field}Item .edit-icon-btn`);
+            
+            if (field === 'password') {
+                editForm.style.display = 'none';
+                passwordView.style.display = 'block';
+            } else {
+                editForm.style.display = 'none';
+                infoValue.style.display = 'block';
+            }
+            
+            if (editBtn) editBtn.style.display = 'inline-flex';
+        }
+
+        // Load Recent Orders Function
+        async function loadRecentOrders(userId) {
+            const recentOrdersSection = document.getElementById('recentOrdersSection');
+            const noOrdersSection = document.getElementById('noOrdersSection');
+            const ordersPreview = document.getElementById('ordersPreview');
+
+            try {
+                // Check if dbHelper is available
+                if (typeof window.dbHelper === 'undefined' || typeof window.dbHelper.getUserOrders !== 'function') {
+                    console.warn('dbHelper not available yet, skipping orders load');
+                    noOrdersSection.style.display = 'block';
+                    return;
+                }
+
+                // Get orders from Firebase
+                const orders = await window.dbHelper.getUserOrders(userId);
+                
+                if (!orders || Object.keys(orders).length === 0) {
+                    noOrdersSection.style.display = 'block';
+                    return;
+                }
+
+                // Convert to array, filter out wallet top-ups, sort by date (newest first), limit to 3 recent orders
+                const ordersArray = Object.keys(orders).map(key => ({
+                    id: key,
+                    ...orders[key]
+                }))
+                .filter(order => {
+                    // Filter out wallet top-up orders
+                    const productName = (order.productName || '').toLowerCase();
+                    return !productName.includes('wallet top-up') && 
+                           !productName.includes('wallet topup') &&
+                           !productName.includes('wallet add');
+                })
+                .sort((a, b) => {
+                    const dateA = new Date(a.orderDate || a.timestamp || 0);
+                    const dateB = new Date(b.orderDate || b.timestamp || 0);
+                    return dateB - dateA;
+                })
+                .slice(0, 3); // Only show 3 most recent orders
+
+                // Display orders (check if any orders remain after filtering)
+                if (ordersArray.length === 0) {
+                    noOrdersSection.style.display = 'block';
+                    return;
+                }
+                
+                recentOrdersSection.style.display = 'block';
+                ordersPreview.innerHTML = ordersArray.map(order => createOrderPreviewCard(order)).join('');
+
+            } catch (error) {
+                console.error('Error loading recent orders:', error);
+                noOrdersSection.style.display = 'block';
+            }
+        }
+
+        // Handle Photo Upload
+        async function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Image size should be less than 5MB');
+                return;
+            }
+
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            if (!userData.uid) {
+                alert('Please login first');
+                return;
+            }
+
+            // Show loading state
+            const avatar = document.getElementById('profileAvatar');
+            const avatarIcon = document.getElementById('avatarIcon');
+            avatarIcon.style.opacity = '0.5';
+
+            try {
+                // Convert image to base64
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const base64Image = e.target.result;
+                    
+                    // Save to Firebase (this will replace the old photo)
+                    const profileData = {
+                        photoUrl: base64Image,
+                        photoUpdatedAt: new Date().toISOString()
+                    };
+                    
+                    const success = await dbHelper.updateUserProfile(userData.uid, profileData);
+                    
+                    if (success) {
+                        // Update localStorage (replace old photo)
+                        userData.photoUrl = base64Image;
+                        localStorage.setItem('userData', JSON.stringify(userData));
+                        
+                        // Update display (this will replace the old image)
+                        displayProfilePhoto(base64Image);
+                        
+                        // Update profile dropdown icon (this will replace the old image)
+                        updateProfileDropdownPhoto(base64Image);
+                        
+                        // Clear the file input so user can upload again if needed
+                        const photoInput = document.getElementById('photoInput');
+                        if (photoInput) {
+                            photoInput.value = '';
+                        }
+                        
+                        // Show success message
+                        const successMsg = document.getElementById('successMessage');
+                        successMsg.innerHTML = '<i class="fas fa-check-circle" style="font-size: 1.25rem;"></i><span>Profile photo updated successfully!</span>';
+                        successMsg.style.display = 'flex';
+                        setTimeout(() => {
+                            successMsg.style.display = 'none';
+                        }, 3000);
+                    } else {
+                        alert('Error uploading photo. Please try again.');
+                    }
+                    
+                    avatarIcon.style.opacity = '1';
+                };
+                
+                reader.onerror = function() {
+                    alert('Error reading image file');
+                    avatarIcon.style.opacity = '1';
+                };
+                
+                reader.readAsDataURL(file);
+            } catch (error) {
+                console.error('Error uploading photo:', error);
+                alert('Error uploading photo. Please try again.');
+                avatarIcon.style.opacity = '1';
+            }
+        }
+
+        // Load Profile Photo
+        async function loadProfilePhoto(userId) {
+            try {
+                // First check localStorage
+                const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                if (userData.photoUrl) {
+                    displayProfilePhoto(userData.photoUrl);
+                    updateProfileDropdownPhoto(userData.photoUrl);
+                    return;
+                }
+
+                // Load from Firebase
+                const profile = await dbHelper.getUserProfile(userId);
+                if (profile && profile.photoUrl) {
+                    displayProfilePhoto(profile.photoUrl);
+                    updateProfileDropdownPhoto(profile.photoUrl);
+                    
+                    // Update localStorage
+                    userData.photoUrl = profile.photoUrl;
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                }
+            } catch (error) {
+                console.error('Error loading profile photo:', error);
+            }
+        }
+
+        // Display Profile Photo
+        function displayProfilePhoto(photoUrl) {
+            const profilePhoto = document.getElementById('profilePhoto');
+            const avatarIcon = document.getElementById('avatarIcon');
+            const removePhotoBtn = document.getElementById('removePhotoBtn');
+            
+            if (photoUrl) {
+                profilePhoto.src = photoUrl;
+                profilePhoto.style.display = 'block';
+                avatarIcon.style.display = 'none';
+                // Show remove button when photo exists
+                if (removePhotoBtn) {
+                    removePhotoBtn.style.display = 'inline-flex';
+                }
+            } else {
+                profilePhoto.style.display = 'none';
+                avatarIcon.style.display = 'block';
+                // Hide remove button when no photo
+                if (removePhotoBtn) {
+                    removePhotoBtn.style.display = 'none';
+                }
+            }
+        }
+
+        // Remove Profile Photo (make it global for onclick handler)
+        window.removeProfilePhoto = async function removeProfilePhoto() {
+            if (!confirm('Are you sure you want to remove your profile photo?')) {
+                return;
+            }
+
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            if (!userData.uid) {
+                alert('Please login first');
+                return;
+            }
+
+            try {
+                // Remove from Firebase
+                const profileData = {
+                    photoUrl: null,
+                    photoUpdatedAt: new Date().toISOString()
+                };
+                
+                const success = await dbHelper.updateUserProfile(userData.uid, profileData);
+                
+                if (success) {
+                    // Remove from localStorage
+                    delete userData.photoUrl;
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                    
+                    // Update display
+                    displayProfilePhoto(null);
+                    
+                    // Update profile dropdown icon
+                    updateProfileDropdownPhoto(null);
+                    
+                    // Clear the file input
+                    const photoInput = document.getElementById('photoInput');
+                    if (photoInput) {
+                        photoInput.value = '';
+                    }
+                    
+                    // Show success message
+                    const successMsg = document.getElementById('successMessage');
+                    successMsg.innerHTML = '<i class="fas fa-check-circle" style="font-size: 1.25rem;"></i><span>Profile photo removed successfully!</span>';
+                    successMsg.style.display = 'flex';
+                    setTimeout(() => {
+                        successMsg.style.display = 'none';
+                    }, 3000);
+                } else {
+                    alert('Error removing photo. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error removing photo:', error);
+                alert('Error removing photo. Please try again.');
+            }
+        };
+
+        // Update Profile Dropdown Photo
+        function updateProfileDropdownPhoto(photoUrl) {
+            const profileBtn = document.getElementById('profileBtn');
+            if (profileBtn) {
+                const existingImg = profileBtn.querySelector('img');
+                const icon = profileBtn.querySelector('i');
+                
+                if (photoUrl) {
+                    // Create or update profile button with image
+                    if (existingImg) {
+                        existingImg.src = photoUrl;
+                        if (icon) icon.style.display = 'none';
+                    } else {
+                        if (icon) icon.style.display = 'none';
+                        const img = document.createElement('img');
+                        img.src = photoUrl;
+                        img.alt = 'Profile Photo';
+                        img.style.cssText = 'width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;';
+                        profileBtn.appendChild(img);
+                        // Remove background when image is present
+                        profileBtn.style.background = 'transparent';
+                        profileBtn.style.border = '2px solid rgba(96, 165, 250, 0.3)';
+                    }
+                } else {
+                    // Remove image and show icon
+                    if (existingImg) {
+                        existingImg.remove();
+                    }
+                    if (icon) {
+                        icon.style.display = 'block';
+                    }
+                    // Restore default background
+                    profileBtn.style.background = 'rgba(96, 165, 250, 0.2)';
+                    profileBtn.style.border = '2px solid rgba(96, 165, 250, 0.3)';
+                }
+            }
+            
+            // Update profile header in dropdown menu
+            updateProfileHeaderPhoto(photoUrl);
+        }
+        
+        // Function to update profile header photo in dropdown menu
+        function updateProfileHeaderPhoto(photoUrl) {
+            const profileHeader = document.querySelector('.profile-header');
+            if (!profileHeader) return;
+            
+            const icon = profileHeader.querySelector('i');
+            let photoImg = profileHeader.querySelector('img');
+            
+            if (photoUrl) {
+                // Create image if it doesn't exist
+                if (!photoImg) {
+                    photoImg = document.createElement('img');
+                    photoImg.alt = 'Profile Photo';
+                    photoImg.className = 'show';
+                    // Insert before the userName span
+                    const userName = profileHeader.querySelector('span');
+                    if (userName) {
+                        profileHeader.insertBefore(photoImg, userName);
+                    } else {
+                        profileHeader.appendChild(photoImg);
+                    }
+                }
+                photoImg.src = photoUrl;
+                photoImg.classList.add('show');
+                photoImg.style.display = 'block';
+                if (icon) icon.style.display = 'none';
+            } else {
+                // Hide photo and show icon
+                if (photoImg) {
+                    photoImg.classList.remove('show');
+                    photoImg.style.display = 'none';
+                }
+                if (icon) icon.style.display = 'block';
+            }
+        }
+
+        // Create Order Preview Card
+        function createOrderPreviewCard(order) {
+            const statusClass = order.status || 'pending';
+            const statusText = statusClass.charAt(0).toUpperCase() + statusClass.slice(1);
+            
+            const orderDate = new Date(order.orderDate || order.timestamp).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+
+            return `
+                <div class="order-preview-card">
+                    <div class="order-preview-header">
+                        <div class="order-preview-id">${order.orderId || order.id}</div>
+                        <div class="order-preview-status ${statusClass}">${statusText}</div>
+                    </div>
+                    <div class="order-preview-details">
+                        <div class="order-preview-detail">
+                            <div class="order-preview-label">Product</div>
+                            <div class="order-preview-value order-preview-product">${order.productName || 'Product'}</div>
+                        </div>
+                        <div class="order-preview-detail">
+                            <div class="order-preview-label">Amount Paid</div>
+                            <div class="order-preview-value order-preview-amount">₹${parseFloat(order.amount || 0).toLocaleString('en-IN', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            })}</div>
+                        </div>
+                        ${order.withdrawalAmount ? `
+                        <div class="order-preview-detail">
+                            <div class="order-preview-label">Withdrawal Amount</div>
+                            <div class="order-preview-value" style="color: #10b981; font-weight: 700;">₹${parseFloat(order.withdrawalAmount || 0).toLocaleString('en-IN', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            })}</div>
+                        </div>
+                        ` : ''}
+                        <div class="order-preview-detail">
+                            <div class="order-preview-label">Date</div>
+                            <div class="order-preview-value">${orderDate}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Support Modal Handler
+        const openSupportModalBtn = document.getElementById('openSupportModal');
+        const supportModal = document.getElementById('supportModal');
+        const closeSupportModalBtn = document.getElementById('closeSupportModal');
+        const supportForm = document.getElementById('supportForm');
+        
+        if (openSupportModalBtn) {
+            openSupportModalBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (supportModal) {
+                    supportModal.classList.add('active');
+                    const profileDropdown = document.querySelector('.profile-dropdown');
+                    if (profileDropdown) {
+                        profileDropdown.classList.remove('active');
+                    }
+                }
+            });
+        }
+        
+        if (closeSupportModalBtn) {
+            closeSupportModalBtn.addEventListener('click', function() {
+                if (supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        if (supportModal) {
+            supportModal.addEventListener('click', function(e) {
+                if (e.target === supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        const cancelSupportBtn = document.getElementById('cancelSupportBtn');
+        if (cancelSupportBtn) {
+            cancelSupportBtn.addEventListener('click', function() {
+                if (supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        if (supportForm) {
+            supportForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const message = document.getElementById('supportMessage').value;
+                
+                if (!message.trim()) {
+                    alert('Please enter your message.');
+                    return;
+                }
+                
+                const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                const userEmail = userData.email || 'Unknown';
+                const userName = userData.name || 'User';
+                const userId = userData.uid || null;
+                const userPhone = userData.phone || userData.mobile || null;
+                
+                const contactMessage = {
+                    name: userName,
+                    email: userEmail,
+                    userId: userId,
+                    phone: userPhone,
+                    message: message,
+                    source: 'support'
+                };
+                
+                // Save to Firebase if available
+                if (typeof window.firebaseDb !== 'undefined') {
+                    try {
+                        const database = window.firebaseDb;
+                        const messageRef = database.ref('contactMessages').push();
+                        
+                        await messageRef.set({
+                            id: messageRef.key,
+                            name: contactMessage.name,
+                            email: contactMessage.email,
+                            userId: contactMessage.userId,
+                            phone: contactMessage.phone,
+                            message: contactMessage.message,
+                            source: contactMessage.source,
+                            timestamp: firebase.database.ServerValue.TIMESTAMP,
+                            read: false
+                        });
+                        
+                        console.log('✅ Support message saved to Firebase');
+                        alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                        document.getElementById('supportMessage').value = '';
+                        if (supportModal) {
+                            supportModal.classList.remove('active');
+                        }
+                    } catch (error) {
+                        console.error('Error saving message to Firebase:', error);
+                        // Fallback to localStorage
+                        contactMessage.timestamp = new Date().toISOString();
+                        const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                        messages.push(contactMessage);
+                        localStorage.setItem('contactMessages', JSON.stringify(messages));
+                        alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                        document.getElementById('supportMessage').value = '';
+                        if (supportModal) {
+                            supportModal.classList.remove('active');
+                        }
+                    }
+                } else {
+                    // Fallback: Save to localStorage
+                    contactMessage.timestamp = new Date().toISOString();
+                    const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                    messages.push(contactMessage);
+                    localStorage.setItem('contactMessages', JSON.stringify(messages));
+                    alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                    document.getElementById('supportMessage').value = '';
+                    if (supportModal) {
+                        supportModal.classList.remove('active');
+                    }
+                }
+            });
+        }
+    </script>
+    
+    <!-- Support Modal -->
+    <div class="support-modal-overlay" id="supportModal">
+        <div class="support-modal">
+            <div class="support-modal-header">
+                <h3><i class="fas fa-headset"></i> Contact Support</h3>
+                <button class="support-modal-close" id="closeSupportModal">&times;</button>
+            </div>
+            <form id="supportForm">
+                <div class="support-form-group">
+                    <label for="supportMessage">Your Message</label>
+                    <textarea id="supportMessage" placeholder="Please describe your issue or question. We'll get back to you as soon as possible." rows="6" required></textarea>
+                </div>
+                <div class="support-modal-actions">
+                    <button type="button" class="btn-cancel-support" id="cancelSupportBtn">Cancel</button>
+                    <button type="submit" class="btn-send-support">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Payment - Western Payer</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .payment-section {
+            margin-top: 80px;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: calc(100vh - 80px);
+        }
+
+        .payment-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .payment-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .payment-header p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+        }
+
+        .amount-display {
+            background: rgba(30, 41, 59, 0.8);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .amount-display h3 {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+        }
+
+        .amount-display .amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #10b981;
+            margin: 0.5rem 0;
+        }
+
+        .payment-methods {
+            background: rgba(30, 41, 59, 0.8);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+        }
+
+        .payment-methods h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .payment-info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .payment-info p {
+            color: #60a5fa;
+            font-size: 0.9rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .payment-info i {
+            color: #fbbf24;
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .secure-badge i {
+            color: #10b981;
+            font-size: 1.2rem;
+        }
+
+        .upi-app-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        .upi-app-button:active {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .payment-header h1 {
+                font-size: 2rem;
+            }
+            
+            .amount-display {
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .amount-display h3 {
+                font-size: 0.85rem;
+            }
+            
+            .amount-display .amount {
+                font-size: 1.5rem;
+            }
+            
+            .amount-display p {
+                font-size: 0.8rem;
+            }
+            
+            .upi-app-button {
+                padding: 1.25rem !important;
+            }
+            
+            .upi-app-button h3 {
+                font-size: 1.1rem !important;
+            }
+            
+            .upi-app-button img {
+                height: 35px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="../../index.html">
+                        <img src="../../image/header logo.png" alt="Western Payer" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="../../login.html" class="btn-login" id="loginBtn">Login</a>
+                    <div class="wallet-section" id="walletSection" style="display: none;">
+                        <div class="wallet-container">
+                            <i class="fas fa-wallet"></i>
+                            <div class="wallet-info">
+                                <span class="wallet-label"></span>
+                                <span class="wallet-balance" id="walletBalance">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-section" id="profileSection" style="display: none;">
+                        <div class="profile-dropdown">
+                            <button class="profile-btn" id="profileBtn">
+                                <i class="fas fa-user-circle"></i>
+                            </button>
+                            <div class="profile-menu" id="profileMenu">
+                                <div class="profile-header">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span id="userName">User</span>
+                                </div>
+                                <div class="profile-divider"></div>
+                                <a href="../../my-profile.html" class="profile-link">
+                                    <i class="fas fa-user"></i>
+                                    My Profile
+                                </a>
+                                <a href="../../settings.html" class="profile-link">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <a href="../../orders.html" class="profile-link">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Orders
+                                </a>
+                                <a href="../../messages.html" class="profile-link">
+                                    <i class="fas fa-envelope"></i>
+                                    Messages
+                                </a>
+                                <a href="#" class="profile-link" id="openSupportModal">
+                                    <i class="fas fa-headset"></i>
+                                    Support
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="#" class="profile-link logout" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Payment Section -->
+    <section class="payment-section">
+        <div class="payment-container">
+            <div class="payment-header">
+                <h1>Pay Withdrawal Charge</h1>
+                <p>Complete your credit card withdrawal charge payment via UPI</p>
+            </div>
+
+            <!-- Amount Display -->
+            <div class="amount-display">
+                <h3>Total Amount to Pay</h3>
+                <div class="amount" id="paymentAmount">₹0</div>
+                <p style="color: #94a3b8; font-size: 0.9rem;">Withdrawal Processing Charge</p>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+                <h2>Choose Your UPI App</h2>
+                <p style="text-align: center; color: #cbd5e1; font-size: 1rem; margin-bottom: 2rem;">
+                    Click on your preferred UPI app to pay instantly
+                </p>
+                
+                <!-- UPI Apps Section -->
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                    <!-- Google Pay -->
+                    <a href="#" id="gpayLink" class="upi-app-button" style="background: linear-gradient(135deg, #4285F4 0%, #34A853 100%); display: flex; align-items: center; justify-content: space-between; padding: 1.5rem; border-radius: 15px; text-decoration: none; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3); transition: all 0.3s ease; border: 2px solid rgba(255, 255, 255, 0.1);">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="background: white; padding: 0.75rem; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" alt="Google Pay" style="height: 40px; width: auto;">
+                            </div>
+                            <div>
+                                <h3 style="color: white; font-size: 1.3rem; font-weight: 700; margin: 0; margin-bottom: 0.25rem;">Google Pay</h3>
+                                <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; margin: 0;">Pay with Google Pay</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-arrow-right" style="color: white; font-size: 1.5rem;"></i>
+                    </a>
+
+                    <!-- PhonePe -->
+                    <a href="#" id="phonepeLink" class="upi-app-button" style="background: linear-gradient(135deg, #5F259F 0%, #8B3DFF 100%); display: flex; align-items: center; justify-content: space-between; padding: 1.5rem; border-radius: 15px; text-decoration: none; box-shadow: 0 4px 15px rgba(95, 37, 159, 0.3); transition: all 0.3s ease; border: 2px solid rgba(255, 255, 255, 0.1);">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="background: white; padding: 0.75rem; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://cdn.brandfetch.io/idcE0OdG8i/theme/dark/symbol.svg?c=1dxbfHSJFAPEGdCLU4o5B" alt="PhonePe" style="height: 40px; width: auto;">
+                            </div>
+                            <div>
+                                <h3 style="color: white; font-size: 1.3rem; font-weight: 700; margin: 0; margin-bottom: 0.25rem;">PhonePe</h3>
+                                <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; margin: 0;">Pay with PhonePe</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-arrow-right" style="color: white; font-size: 1.5rem;"></i>
+                    </a>
+
+                    <!-- PayTM -->
+                    <a href="#" id="paytmLink" class="upi-app-button" style="background: linear-gradient(135deg, #00BAF2 0%, #002970 100%); display: flex; align-items: center; justify-content: space-between; padding: 1.5rem; border-radius: 15px; text-decoration: none; box-shadow: 0 4px 15px rgba(0, 186, 242, 0.3); transition: all 0.3s ease; border: 2px solid rgba(255, 255, 255, 0.1);">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="background: white; padding: 0.75rem; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg" alt="Paytm" style="height: 40px; width: auto;">
+                            </div>
+                            <div>
+                                <h3 style="color: white; font-size: 1.3rem; font-weight: 700; margin: 0; margin-bottom: 0.25rem;">PayTM</h3>
+                                <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; margin: 0;">Pay with PayTM</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-arrow-right" style="color: white; font-size: 1.5rem;"></i>
+                    </a>
+                </div>
+
+                <!-- Payment Info -->
+                <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 1rem; margin-top: 1rem;">
+                    <p style="color: #60a5fa; font-size: 0.9rem; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-info-circle" style="color: #fbbf24;"></i>
+                        <span>Click on any UPI app above to open the payment screen directly in that app.</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="secure-badge">
+                <i class="fas fa-shield-alt"></i>
+                <span>100% Secure Payment</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="../../firebase-config.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="../../global-support.js"></script>
+    
+    <!-- Optimized Wallet Balance Loader -->
+    <script src="../../wallet-balance-loader.js"></script>
+    <script src="../../charges-calculator.js"></script>
+    <script src="../../script.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Get amount from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const amount = urlParams.get('amount') || '0';
+            const cleanAmount = amount.toString().replace(/,/g, '');
+            
+            // UPI Payment Details
+            const upiId = 'Q459630347@ybl';
+            const merchantName = 'Suraj Kumar';
+            
+            // Update amount display
+            const formattedAmount = parseFloat(cleanAmount).toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            document.getElementById('paymentAmount').textContent = '₹' + formattedAmount;
+            
+            // Generate UPI payment links
+            function generateUPILink(app, amount) {
+                const encodedMerchantName = encodeURIComponent(merchantName);
+                const encodedUPIId = encodeURIComponent(upiId);
+                
+                switch(app) {
+                    case 'gpay':
+                        // Google Pay UPI link
+                        return `tez://transactions/upi/pay?pa=${encodedUPIId}&pn=${encodedMerchantName}&am=${amount}&cu=INR&tn=Credit Card Withdrawal Charge`;
+                    
+                    case 'phonepe':
+                        // PhonePe UPI link
+                        return `phonepe://pay?pa=${encodedUPIId}&pn=${encodedMerchantName}&am=${amount}&cu=INR&tn=Credit Card Withdrawal Charge`;
+                    
+                    case 'paytm':
+                        // PayTM UPI link
+                        return `paytmmp://pay?pa=${encodedUPIId}&pn=${encodedMerchantName}&am=${amount}&cu=INR&tn=Credit Card Withdrawal Charge`;
+                    
+                    default:
+                        return '#';
+                }
+            }
+            
+            // Set up UPI app links
+            const gpayLink = document.getElementById('gpayLink');
+            const phonepeLink = document.getElementById('phonepeLink');
+            const paytmLink = document.getElementById('paytmLink');
+            
+            if (gpayLink) {
+                gpayLink.href = generateUPILink('gpay', cleanAmount);
+                gpayLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Try to open Google Pay app
+                    window.location.href = generateUPILink('gpay', cleanAmount);
+                    // Fallback: Try universal UPI link
+                    setTimeout(() => {
+                        window.location.href = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(merchantName)}&am=${cleanAmount}&cu=INR`;
+                    }, 500);
+                });
+            }
+            
+            if (phonepeLink) {
+                phonepeLink.href = generateUPILink('phonepe', cleanAmount);
+                phonepeLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = generateUPILink('phonepe', cleanAmount);
+                });
+            }
+            
+            if (paytmLink) {
+                paytmLink.href = generateUPILink('paytm', cleanAmount);
+                paytmLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = generateUPILink('paytm', cleanAmount);
+                });
+            }
+
+            // Login/Profile/Wallet functionality
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const loginBtn = document.getElementById('loginBtn');
+            const profileSection = document.getElementById('profileSection');
+            const walletSection = document.getElementById('walletSection');
+            const walletBalance = document.getElementById('walletBalance');
+            const userName = document.getElementById('userName');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            if (userData.isLoggedIn && userData.uid) {
+                // Show logged-in UI immediately
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (profileSection) profileSection.style.display = 'block';
+                if (walletSection) walletSection.style.display = 'block';
+                if (userName) userName.textContent = userData.name || 'User';
+                
+                // Check if user is blocked (non-blocking, async check)
+                if (typeof window.dbHelper !== 'undefined' && typeof window.dbHelper.getUserProfile === 'function') {
+                    setTimeout(async function() {
+                        try {
+                            const isBlocked = await window.checkUserBlockedStatus();
+                        } catch (error) {
+                            console.error('Error checking block status:', error);
+                        }
+                    }, 500);
+                }
+                
+                // Load profile photo
+                if (typeof window.loadAndDisplayProfilePhoto === 'function') {
+                    setTimeout(function() {
+                        window.loadAndDisplayProfilePhoto();
+                    }, 100);
+                }
+                
+                // Display wallet balance
+                try {
+                    if (typeof dbHelper !== 'undefined' && dbHelper.getUserWallet) {
+                        const walletData = await dbHelper.getUserWallet(userData.uid);
+                        const balance = walletData.balance || 0;
+                        if (walletBalance) {
+                            walletBalance.textContent = '₹' + parseFloat(balance).toLocaleString('en-IN', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading wallet balance:', error);
+                }
+            }
+            
+            // Wallet click functionality
+            const walletContainer = document.querySelector('.wallet-container');
+            if (walletContainer) {
+                walletContainer.addEventListener('click', function() {
+                    window.location.href = '../../wallet.html';
+                });
+            }
+            
+            if (profileBtn) {
+                profileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    profileBtn.parentElement.classList.toggle('active');
+                });
+            }
+            
+            document.addEventListener('click', function(e) {
+                if (profileBtn && profileMenu) {
+                    if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                        profileBtn.parentElement.classList.remove('active');
+                    }
+                }
+            });
+            
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    try {
+                        await firebaseAuth.signOut();
+                        localStorage.removeItem('userData');
+                        if (profileSection) profileSection.style.display = 'none';
+                        if (walletSection) walletSection.style.display = 'none';
+                        if (loginBtn) loginBtn.style.display = 'inline-block';
+                        if (profileBtn) profileBtn.parentElement.classList.remove('active');
+                    } catch (error) {
+                        console.error('Error signing out:', error);
+                        alert('Error signing out. Please try again.');
+                    }
+                });
+            }
+
+        });
+    </script>
+    
+    <!-- Support Modal Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const openSupportModalBtn = document.getElementById('openSupportModal');
+            const supportModal = document.getElementById('supportModal');
+            const closeSupportModalBtn = document.getElementById('closeSupportModal');
+            const cancelSupportBtn = document.getElementById('cancelSupportBtn');
+            const supportForm = document.getElementById('supportForm');
+            
+            if (openSupportModalBtn) {
+                openSupportModalBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (supportModal) {
+                        supportModal.classList.add('active');
+                        const profileDropdown = document.querySelector('.profile-dropdown');
+                        if (profileDropdown) profileDropdown.classList.remove('active');
+                    }
+                });
+            }
+            
+            if (closeSupportModalBtn) {
+                closeSupportModalBtn.addEventListener('click', function() {
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (supportModal) {
+                supportModal.addEventListener('click', function(e) {
+                    if (e.target === supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (cancelSupportBtn) {
+                cancelSupportBtn.addEventListener('click', function() {
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (supportForm) {
+                supportForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const message = document.getElementById('supportMessage').value;
+                    if (!message.trim()) {
+                        alert('Please enter your message.');
+                        return;
+                    }
+                    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                    const contactMessage = {
+                        name: userData.name || 'User',
+                        email: userData.email || 'Unknown',
+                        userId: userData.uid || null,
+                        phone: userData.phone || userData.mobile || null,
+                        message: message,
+                        timestamp: new Date().toISOString(),
+                        source: 'support'
+                    };
+                    const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                    messages.push(contactMessage);
+                    localStorage.setItem('contactMessages', JSON.stringify(messages));
+                    alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                    document.getElementById('supportMessage').value = '';
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+        });
+    </script>
+    
+    <!-- Support Modal -->
+    <div class="support-modal-overlay" id="supportModal">
+        <div class="support-modal">
+            <div class="support-modal-header">
+                <h3><i class="fas fa-headset"></i> Contact Support</h3>
+                <button class="support-modal-close" id="closeSupportModal">&times;</button>
+            </div>
+            <form id="supportForm">
+                <div class="support-form-group">
+                    <label for="supportMessage">Your Message</label>
+                    <textarea id="supportMessage" placeholder="Please describe your issue or question. We'll get back to you as soon as possible." rows="6" required></textarea>
+                </div>
+                <div class="support-modal-actions">
+                    <button type="button" class="btn-cancel-support" id="cancelSupportBtn">Cancel</button>
+                    <button type="submit" class="btn-send-support">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

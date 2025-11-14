@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Western Payer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="login-page">
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="index.html">
+                        <img src="image/header logo.png" alt="Western Payer" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="index.html" class="btn-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Login Section -->
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <h2>Welcome Back</h2>
+                        <p>Sign in to your Western Payer account</p>
+                    </div>
+                    
+                    <form class="auth-form" id="loginForm">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <div class="input-group">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                                <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="remember">
+                                <span class="checkmark"></span>
+                                Remember me
+                            </label>
+                            <a href="#" class="forgot-password">Forgot Password?</a>
+                        </div>
+                        
+                        <button type="submit" class="btn-auth">Sign In</button>
+                        
+                        <div class="auth-footer">
+                            <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="global-support.js"></script>
+    <script src="charges-calculator.js"></script>
+    
+    <script src="script.js"></script>
+    <script>
+        // Login form handling with Firebase
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation
+            if (email && password) {
+                const submitBtn = document.querySelector('.btn-auth');
+                submitBtn.textContent = 'Signing In...';
+                submitBtn.disabled = true;
+                
+                try {
+                    // Sign in with Firebase Authentication
+                    const userCredential = await firebaseAuth.signInWithEmailAndPassword(email, password);
+                    const user = userCredential.user;
+                    
+                    // Get user profile from Firebase Database
+                    const profile = await dbHelper.getUserProfile(user.uid);
+                    
+                    // Check if user is blocked
+                    if (profile && profile.isBlocked === true) {
+                        // Sign out the user immediately
+                        await firebaseAuth.signOut();
+                        localStorage.removeItem('userData');
+                        
+                        alert('⛔ Your account has been blocked!\n\n' +
+                              'Your account access has been restricted by the administrator.\n\n' +
+                              'If you believe this is a mistake, please contact support for assistance.');
+                        
+                        submitBtn.textContent = 'Sign In';
+                        submitBtn.disabled = false;
+                        return;
+                    }
+                    
+                    // Store user data in localStorage for quick access
+                    const userData = {
+                        uid: user.uid,
+                        email: user.email,
+                        name: profile?.name || email.split('@')[0],
+                        firstName: profile?.firstName || '',
+                        lastName: profile?.lastName || '',
+                        phone: profile?.phone || '',
+                        mobile: profile?.phone || '',
+                        accountType: profile?.accountType || 'individual',
+                        loginTime: new Date().toISOString(),
+                        isLoggedIn: true
+                    };
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                    
+                    // Check if there's a pending review to submit
+                    let redirectUrl = 'index.html';
+                    const pendingReviewStr = sessionStorage.getItem('pendingReview');
+                    const returnUrl = sessionStorage.getItem('returnUrl');
+                    
+                    if (pendingReviewStr && typeof window.productReviewsHelper !== 'undefined' && 
+                        typeof window.productReviewsHelper.checkAndSubmitPendingReview === 'function') {
+                        try {
+                            await window.productReviewsHelper.checkAndSubmitPendingReview();
+                            // If there was a pending review, redirect back to the product page
+                            if (returnUrl) {
+                                redirectUrl = returnUrl;
+                                sessionStorage.removeItem('returnUrl');
+                            }
+                        } catch (error) {
+                            console.error('Error submitting pending review:', error);
+                        }
+                    } else if (returnUrl) {
+                        // No pending review but there's a return URL
+                        redirectUrl = returnUrl;
+                        sessionStorage.removeItem('returnUrl');
+                    }
+                    
+                    alert('Login successful! Redirecting...');
+                    window.location.href = redirectUrl;
+                    
+                } catch (error) {
+                    console.error('Error logging in:', error);
+                    submitBtn.textContent = 'Sign In';
+                    submitBtn.disabled = false;
+                    
+                    // Handle specific Firebase errors
+                    if (error.code === 'auth/user-not-found') {
+                        alert('No account found with this email. Please sign up first.');
+                    } else if (error.code === 'auth/wrong-password') {
+                        alert('Incorrect password. Please try again.');
+                    } else if (error.code === 'auth/invalid-email') {
+                        alert('Invalid email address.');
+                    } else if (error.code === 'auth/user-disabled') {
+                        alert('This account has been disabled.');
+                    } else {
+                        alert('Error logging in: ' + error.message);
+                    }
+                }
+            } else {
+                alert('Please fill in all fields');
+            }
+        });
+        
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = document.querySelector(`#${inputId} + .toggle-password i`);
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>

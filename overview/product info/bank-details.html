@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Details - Western Payer</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .bank-details-section {
+            margin-top: 80px;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: calc(100vh - 80px);
+        }
+
+        .bank-details-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .bank-details-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .bank-details-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bank-details-header p {
+            font-size: 1.2rem;
+            color: #475569;
+            margin-bottom: 2rem;
+        }
+
+        .amount-calculation-section {
+            background: #ffffff;
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .amount-calculation-section h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .calculation-details {
+            background: rgba(0, 0, 0, 0.02);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .calculation-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+        }
+
+        .calculation-row:last-child {
+            border-bottom: none;
+        }
+
+        .calculation-row span:first-child {
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .calculation-row span:last-child {
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .total-row {
+            border-top: 2px solid rgba(96, 165, 250, 0.3);
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .total-row span:last-child {
+            color: #10b981;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .bank-details-form {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .bank-details-form h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #1e293b;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            background: #ffffff;
+            color: #1e293b;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #64748b;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-submit {
+            background: #000000;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            background: #1a1a1a;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .info-paragraph {
+            background: rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .info-paragraph p {
+            color: #475569;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .email-confirmation-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0;
+        }
+
+        .email-confirmation-box p {
+            color: #60a5fa;
+            font-size: 0.85rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .email-confirmation-box i {
+            color: #fbbf24;
+            font-size: 0.9rem;
+        }
+
+        .tips-section {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .tips-section h3 {
+            color: #60a5fa;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tips-section h3 i {
+            color: #fbbf24;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tips-list li {
+            color: #475569;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .tips-list li i {
+            color: #10b981;
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        .success-section {
+            background: #ffffff;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            text-align: center;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease 0.2s backwards;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .success-icon i {
+            font-size: 3.5rem;
+            color: white;
+        }
+
+        .success-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-message {
+            color: #475569;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .transaction-info {
+            background: rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .transaction-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+        }
+
+        .transaction-row:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-row span {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .transaction-row strong {
+            color: #1e293b;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .transaction-row strong#transactionId {
+            color: #60a5fa;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .status-pending {
+            color: #fbbf24 !important;
+        }
+
+        .payment-timeline {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .payment-timeline i {
+            font-size: 2rem;
+            color: #60a5fa;
+        }
+
+        .payment-timeline p {
+            color: #475569;
+            font-size: 1rem;
+            margin: 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .payment-timeline strong {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        .button-group-success {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-wallet,
+        .btn-home {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-wallet {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-wallet:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-home {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+        }
+
+        .btn-home:hover {
+            background: rgba(96, 165, 250, 0.2);
+            border-color: rgba(96, 165, 250, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .otp-section {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .otp-section h3 {
+            color: #10b981;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .otp-section h3 i {
+            font-size: 1.5rem;
+        }
+
+        .otp-section p {
+            color: #475569;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .otp-input-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 600;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            background: #ffffff;
+            color: #1e293b;
+            transition: all 0.3s ease;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+            background: #ffffff;
+        }
+
+        .otp-input.filled {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .otp-input.error {
+            border-color: #ef4444;
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .otp-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-verify-otp {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-verify-otp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-verify-otp:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .otp-resend {
+            color: #60a5fa;
+            background: none;
+            border: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .otp-resend:hover {
+            color: #93c5fd;
+        }
+
+        .otp-resend:disabled {
+            color: #64748b;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+
+        .otp-timer {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .otp-success-message {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .otp-success-message p {
+            color: #10b981;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .bank-details-header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group-success {
+                grid-template-columns: 1fr;
+            }
+
+            .success-section h2 {
+                font-size: 2rem;
+            }
+
+            .otp-section {
+                padding: 1.5rem;
+            }
+
+            .otp-section h3 {
+                font-size: 1.1rem;
+            }
+
+            .otp-input {
+                width: 45px;
+                height: 55px;
+                font-size: 1.5rem;
+            }
+
+            .otp-input-container {
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="../../index.html">
+                        <img src="../../image/header logo.png" alt="Western Payer" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="../../login.html" class="btn-login" id="loginBtn">Login</a>
+                    <div class="wallet-section" id="walletSection" style="display: none;">
+                        <div class="wallet-container">
+                            <i class="fas fa-wallet"></i>
+                            <div class="wallet-info">
+                                <span class="wallet-label"></span>
+                                <span class="wallet-balance" id="walletBalance">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-section" id="profileSection" style="display: none;">
+                        <div class="profile-dropdown">
+                            <button class="profile-btn" id="profileBtn">
+                                <i class="fas fa-user-circle"></i>
+                            </button>
+                            <div class="profile-menu" id="profileMenu">
+                                <div class="profile-header">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span id="userName">User</span>
+                                </div>
+                                <div class="profile-divider"></div>
+                                <a href="../../my-profile.html" class="profile-link">
+                                    <i class="fas fa-user"></i>
+                                    My Profile
+                                </a>
+                                <a href="../../settings.html" class="profile-link">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <a href="../../orders.html" class="profile-link">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Orders
+                                </a>
+                                <a href="../../messages.html" class="profile-link">
+                                    <i class="fas fa-envelope"></i>
+                                    Messages
+                                </a>
+                                <a href="#" class="profile-link" id="openSupportModal">
+                                    <i class="fas fa-headset"></i>
+                                    Support
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="#" class="profile-link logout" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Bank Details Section -->
+    <section class="bank-details-section">
+        <div class="bank-details-container">
+            <div class="bank-details-header">
+                <h1>Bank Details</h1>
+                <p>Enter your bank account details for withdrawal</p>
+            </div>
+
+            <div class="amount-calculation-section">
+                <h2>Withdrawal Charges</h2>
+                <div class="calculation-details">
+                    <div class="calculation-row">
+                        <span>Withdrawal Amount:</span>
+                        <span id="withdrawalAmount">₹0</span>
+                    </div>
+                    <div class="calculation-row">
+                        <span>Processing Fee (7.25%):</span>
+                        <span id="processingFee">₹0</span>
+                    </div>
+                    <div class="calculation-row">
+                        <span>GST (18%):</span>
+                        <span id="gstAmount">₹0</span>
+                    </div>
+                    <div class="calculation-row total-row">
+                        <span>Total Amount to Pay:</span>
+                        <span id="totalAmount">₹0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bank-details-form">
+                <h2>Account Information</h2>
+                
+                <form id="bankDetailsForm">
+                    <div class="form-group">
+                        <label for="accountHolderName">Account Holder Name</label>
+                        <input type="text" id="accountHolderName" name="accountHolderName" placeholder="Enter account holder name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="accountNumber">Account Number</label>
+                        <input type="text" id="accountNumber" name="accountNumber" placeholder="Enter bank account number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmAccountNumber">Confirm Account Number</label>
+                        <input type="text" id="confirmAccountNumber" name="confirmAccountNumber" placeholder="Re-enter bank account number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ifscCode">IFSC Code</label>
+                        <input type="text" id="ifscCode" name="ifscCode" placeholder="Enter IFSC code" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                        <div class="email-confirmation-box">
+                            <p><i class="fas fa-envelope"></i> We will inform you about confirmation messages through email</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        Pay Now & E-Mandate
+                    </button>
+                </form>
+
+                <div class="info-paragraph">
+                    <p>First you will have to pay the processing fee and then you will receive the Emi Card & BNPL OTP.</p>
+                </div>
+            </div>
+
+            <!-- Success Section (Hidden by default) -->
+            <div class="success-section" id="successSection" style="display: none;">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Payment Successful!</h2>
+                <p class="success-message">Your processing fee has been deducted successfully</p>
+                
+                <div class="transaction-info">
+                    <div class="transaction-row">
+                        <span>Order ID:</span>
+                        <strong id="transactionId">TXN123456789</strong>
+                    </div>
+                    <div class="transaction-row">
+                        <span>Product:</span>
+                        <strong id="productNameDisplay" style="color: #a78bfa;">Withdrawal Request</strong>
+                    </div>
+                    <div class="transaction-row">
+                        <span>Amount Paid:</span>
+                        <strong id="paidAmount">₹0.00</strong>
+                    </div>
+                    <div class="transaction-row">
+                        <span>Withdrawal Amount:</span>
+                        <strong id="withdrawalAmountDisplay">₹0.00</strong>
+                    </div>
+                    <div class="transaction-row">
+                        <span>Status:</span>
+                        <strong class="status-pending">Processing</strong>
+                    </div>
+                </div>
+
+                <div class="payment-timeline">
+                    <i class="fas fa-clock"></i>
+                    <p>Payment will be received in your bank account within <strong>2-3 working days</strong></p>
+                </div>
+
+                <!-- OTP Section -->
+                <div class="otp-section">
+                    <h3>
+                        <i class="fas fa-shield-alt"></i>
+                        Verify OTP
+                    </h3>
+                    <p>Please enter the 6-digit OTP sent to your registered mobile number or email</p>
+                    
+                    <div class="otp-input-container">
+                        <input type="text" class="otp-input" id="otp1" maxlength="1" autocomplete="off" inputmode="numeric">
+                        <input type="text" class="otp-input" id="otp2" maxlength="1" autocomplete="off" inputmode="numeric">
+                        <input type="text" class="otp-input" id="otp3" maxlength="1" autocomplete="off" inputmode="numeric">
+                        <input type="text" class="otp-input" id="otp4" maxlength="1" autocomplete="off" inputmode="numeric">
+                        <input type="text" class="otp-input" id="otp5" maxlength="1" autocomplete="off" inputmode="numeric">
+                        <input type="text" class="otp-input" id="otp6" maxlength="1" autocomplete="off" inputmode="numeric">
+                    </div>
+
+                    <div class="otp-actions">
+                        <button type="button" class="btn-verify-otp" id="verifyOtpBtn">
+                            <i class="fas fa-check"></i> Verify OTP
+                        </button>
+                        <div>
+                            <button type="button" class="otp-resend" id="resendOtpBtn">Resend OTP</button>
+                            <div class="otp-timer" id="otpTimer" style="display: none;">
+                                <span>Resend OTP in <span id="timerCount">60</span>s</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="otp-success-message" id="otpSuccessMessage">
+                        <p>
+                            <i class="fas fa-check-circle"></i>
+                            <strong>OTP verified successfully!</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="button-group-success">
+                    <a href="../../orders.html" class="btn-wallet" style="background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);">
+                        <i class="fas fa-shopping-bag"></i>
+                        View My Orders
+                    </a>
+                    <a href="../../wallet.html" class="btn-home">
+                        <i class="fas fa-wallet"></i>
+                        Go to Wallet
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="../../firebase-config.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="../../global-support.js"></script>
+    
+    <!-- Optimized Wallet Balance Loader -->
+    <script src="../../wallet-balance-loader.js"></script>
+    <script src="../../charges-calculator.js"></script>
+    <script src="../../script.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const productName = urlParams.get('product') || 'Withdrawal Request';
+            
+            // Store product name for later use
+            let currentProductName = productName;
+            
+            // Calculate and display amount with fees and GST
+            function calculateAmount() {
+                // Get withdrawal amount from URL parameters or localStorage
+                const withdrawalAmount = parseFloat(urlParams.get('amount')) || 0;
+                
+                if (withdrawalAmount > 0) {
+                    // Calculate fees and GST
+                    const processingFee = withdrawalAmount * 0.0725; // 7.25% processing fee
+                    const gstAmount = processingFee * 0.18; // 18% GST on processing fee
+                    const totalAmount = processingFee + gstAmount; // Only processing fee + GST
+                    
+                    // Update the display
+                    document.getElementById('withdrawalAmount').textContent = `₹${withdrawalAmount.toLocaleString()}`;
+                    document.getElementById('processingFee').textContent = `₹${processingFee.toLocaleString()}`;
+                    document.getElementById('gstAmount').textContent = `₹${gstAmount.toLocaleString()}`;
+                    document.getElementById('totalAmount').textContent = `₹${totalAmount.toLocaleString()}`;
+                }
+            }
+            
+            // Call the calculation function
+            calculateAmount();
+            
+            // Check login status and update UI
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const loginBtn = document.getElementById('loginBtn');
+            const profileSection = document.getElementById('profileSection');
+            const walletSection = document.getElementById('walletSection');
+            const walletBalance = document.getElementById('walletBalance');
+            const userName = document.getElementById('userName');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            // Check if user is logged in
+            if (userData.isLoggedIn && userData.uid) {
+                // Show logged-in UI immediately (don't wait for block check)
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (profileSection) profileSection.style.display = 'block';
+                if (walletSection) walletSection.style.display = 'block';
+                if (userName) userName.textContent = userData.name || 'User';
+                
+                // Check if user is blocked (non-blocking, async check)
+                // Only check if dbHelper is available to prevent errors
+                if (typeof window.dbHelper !== 'undefined' && typeof window.dbHelper.getUserProfile === 'function') {
+                    setTimeout(async function() {
+                        try {
+                            const isBlocked = await window.checkUserBlockedStatus();
+                            // If blocked, the function will handle redirect
+                        } catch (error) {
+                            console.error('Error checking block status:', error);
+                            // Don't log out user on error - just continue
+                        }
+                    }, 500); // Delay to ensure page is fully loaded
+                }
+                
+                // Load profile photo after profile section is displayed
+                if (typeof window.loadAndDisplayProfilePhoto === 'function') {
+                    setTimeout(function() {
+                        window.loadAndDisplayProfilePhoto();
+                    }, 100);
+                }
+                
+                // Wallet balance is automatically loaded by wallet-balance-loader.js
+                // (Already preloaded and cached for instant display!)
+            }
+            
+            // Wallet click functionality - navigate to wallet page
+            const walletContainer = document.querySelector('.wallet-container');
+            if (walletContainer) {
+                walletContainer.addEventListener('click', function() {
+                    window.location.href = '../../wallet.html';
+                });
+            }
+            
+            // Profile dropdown functionality
+            profileBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                profileBtn.parentElement.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                    profileBtn.parentElement.classList.remove('active');
+                }
+            });
+            
+            // Logout functionality
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Clear user data
+                localStorage.removeItem('userData');
+                
+                // Show confirmation
+                if (confirm('Are you sure you want to logout?')) {
+                // Hide profile and wallet sections, show login button
+                profileSection.style.display = 'none';
+                walletSection.style.display = 'none';
+                loginBtn.style.display = 'inline-block';
+                    
+                    // Close dropdown
+                    profileBtn.parentElement.classList.remove('active');
+                    
+                    // Show success message
+                    alert('You have been logged out successfully!');
+                }
+            });
+
+            // Bank details form functionality
+            const bankDetailsForm = document.getElementById('bankDetailsForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const accountNumberInput = document.getElementById('accountNumber');
+            const confirmAccountNumberInput = document.getElementById('confirmAccountNumber');
+
+            // Real-time validation for account number matching
+            confirmAccountNumberInput.addEventListener('input', function() {
+                const accountNumber = accountNumberInput.value;
+                const confirmAccountNumber = this.value;
+                
+                if (confirmAccountNumber && accountNumber !== confirmAccountNumber) {
+                    this.style.borderColor = '#ef4444';
+                } else if (confirmAccountNumber && accountNumber === confirmAccountNumber) {
+                    this.style.borderColor = '#10b981';
+                } else {
+                    this.style.borderColor = 'rgba(96, 165, 250, 0.3)';
+                }
+            });
+
+            // Form submission
+            bankDetailsForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Check if user is logged in
+                if (!userData.isLoggedIn || !userData.uid) {
+                    alert('Please login first to continue.');
+                    window.location.href = '../../login.html';
+                    return;
+                }
+                
+                // Validate account numbers match
+                const accountNumber = accountNumberInput.value;
+                const confirmAccountNumber = confirmAccountNumberInput.value;
+                
+                if (accountNumber !== confirmAccountNumber) {
+                    alert('Account numbers do not match. Please check and try again.');
+                    confirmAccountNumberInput.focus();
+                    return;
+                }
+                
+                // Get the amounts
+                const totalAmountStr = document.getElementById('totalAmount').textContent
+                    .replace('₹', '')
+                    .replace(/,/g, '')
+                    .trim();
+                const totalAmount = parseFloat(totalAmountStr);
+                
+                // Show confirmation popup
+                const confirmMessage = `Confirm Payment\n\n` +
+                    `Total Amount: ₹${totalAmount.toFixed(2)}\n\n` +
+                    `⚠️ Charges will be deducted from your wallet.\n\n` +
+                    `Do you want to proceed?`;
+                
+                if (!confirm(confirmMessage)) {
+                    return; // User cancelled
+                }
+                
+                // Disable submit button and show loading
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                const withdrawalAmountStr = document.getElementById('withdrawalAmount').textContent
+                    .replace('₹', '')
+                    .replace(/,/g, '')
+                    .trim();
+                const withdrawalAmount = parseFloat(withdrawalAmountStr);
+                
+                try {
+                    // Get current wallet balance from Firebase
+                    const walletData = await dbHelper.getUserWallet(userData.uid);
+                    const currentBalance = walletData.balance || 0;
+                    
+                    // Check if user has sufficient balance
+                    if (currentBalance < totalAmount) {
+                        alert(`Insufficient balance. You need ₹${totalAmount.toFixed(2)} but only have ₹${currentBalance.toFixed(2)}`);
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Pay Now';
+                        return;
+                    }
+                    
+                    // Deduct total amount from wallet
+                    const newBalance = currentBalance - totalAmount;
+                    await dbHelper.updateWalletBalance(userData.uid, newBalance);
+                    
+                    // Generate transaction ID
+                    const transactionId = 'WTN' + Date.now() + Math.random().toString(36).substr(2, 5).toUpperCase();
+                    
+                    // Add transaction for processing fee payment
+                    const feeTransaction = {
+                        type: 'fee',
+                        amount: -totalAmount,
+                        balance: newBalance,
+                        description: 'Withdrawal Processing Fee',
+                        transactionId: transactionId
+                    };
+                    await dbHelper.addTransaction(userData.uid, feeTransaction);
+                    
+                    // Store bank details and withdrawal request
+                    const bankDetailsData = {
+                        accountHolderName: document.getElementById('accountHolderName').value,
+                        accountNumber: accountNumber,
+                        ifscCode: document.getElementById('ifscCode').value,
+                        email: document.getElementById('email').value,
+                        withdrawalAmount: withdrawalAmount,
+                        processingFee: totalAmount,
+                        transactionId: transactionId,
+                        status: 'pending',
+                        requestDate: new Date().toISOString()
+                    };
+                    
+                    await dbHelper.addWithdrawalRequest(userData.uid, bankDetailsData);
+                    console.log('Withdrawal request added successfully');
+                    
+                    // Create order for tracking
+                    const orderData = {
+                        productName: currentProductName + ' - Processing Fee',
+                        amount: totalAmount,
+                        customerName: userData.name || document.getElementById('accountHolderName').value,
+                        customerEmail: document.getElementById('email').value,
+                        paymentMethod: 'Wallet',
+                        withdrawalAmount: withdrawalAmount,
+                        transactionId: transactionId
+                    };
+                    
+                    console.log('Creating order with data:', orderData);
+                    console.log('User ID:', userData.uid);
+                    
+                    // Check if dbHelper.addOrder exists
+                    if (typeof dbHelper.addOrder !== 'function') {
+                        console.error('❌ dbHelper.addOrder is not a function!');
+                        console.error('Available dbHelper methods:', Object.keys(dbHelper || {}));
+                        alert('Order creation function not available. Please refresh the page and try again.\n\nYour payment was processed successfully.');
+                        throw new Error('dbHelper.addOrder not available');
+                    }
+                    
+                    console.log('Calling dbHelper.addOrder...');
+                    const orderResult = await dbHelper.addOrder(userData.uid, orderData);
+                    console.log('Order result received:', orderResult);
+                    
+                    if (!orderResult || !orderResult.success) {
+                        console.error('❌ Order creation failed!');
+                        console.error('Error details:', orderResult);
+                        
+                        // Show detailed error message
+                        const errorMsg = orderResult?.error || 'Unknown error';
+                        alert(`⚠️ Warning: Order creation failed\n\nError: ${errorMsg}\n\nYour payment was processed successfully, but order tracking may not work properly.\n\nPlease contact support if you need assistance.\n\nYou can still check your orders page manually.`);
+                        
+                        // Log to help with debugging
+                        console.error('Full error context:', {
+                            userId: userData.uid,
+                            orderData: orderData,
+                            result: orderResult,
+                            timestamp: new Date().toISOString()
+                        });
+                    } else {
+                        console.log('✅ Order created successfully!', orderResult);
+                    }
+                    
+                    // Update cached balance
+                    localStorage.setItem('cachedWalletBalance_' + userData.uid, newBalance.toString());
+                    localStorage.setItem('cachedWalletBalance_time_' + userData.uid, Date.now().toString());
+                    
+                    // Hide form section and show success section
+                    document.querySelector('.bank-details-form').style.display = 'none';
+                    document.querySelector('.amount-calculation-section').style.display = 'none';
+                    const successSection = document.getElementById('successSection');
+                    successSection.style.display = 'block';
+                    
+                    // Update success section with order details
+                    document.getElementById('transactionId').textContent = orderResult.orderId || transactionId;
+                    document.getElementById('productNameDisplay').textContent = currentProductName;
+                    document.getElementById('paidAmount').textContent = '₹' + totalAmount.toLocaleString('en-IN', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                    document.getElementById('withdrawalAmountDisplay').textContent = '₹' + withdrawalAmount.toLocaleString('en-IN', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                    
+                    // Scroll to top to show success message
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                    // Refresh wallet balance in header
+                    if (typeof WalletBalanceLoader !== 'undefined' && WalletBalanceLoader.refreshBalance) {
+                        WalletBalanceLoader.refreshBalance();
+                    }
+                    
+                } catch (error) {
+                    console.error('Error processing payment:', error);
+                    alert('Error processing payment. Please try again.');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Pay Now';
+                }
+            });
+
+            // OTP Functionality
+            const otpInputs = document.querySelectorAll('.otp-input');
+            const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+            const resendOtpBtn = document.getElementById('resendOtpBtn');
+            const otpTimer = document.getElementById('otpTimer');
+            const timerCount = document.getElementById('timerCount');
+            const otpSuccessMessage = document.getElementById('otpSuccessMessage');
+            
+            let timerInterval = null;
+            let countdown = 60;
+
+            // Generate and store OTP (for demo purposes)
+            let generatedOTP = '';
+            function generateOTP() {
+                generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+                console.log('Generated OTP:', generatedOTP); // For testing only
+                return generatedOTP;
+            }
+
+            // Initialize OTP when success section is shown
+            const originalDisplaySuccess = () => {
+                const successSection = document.getElementById('successSection');
+                if (successSection && successSection.style.display === 'block') {
+                    generateOTP();
+                    startTimer();
+                }
+            };
+
+            // Auto-focus next input on input
+            otpInputs.forEach((input, index) => {
+                input.addEventListener('input', function(e) {
+                    const value = e.target.value;
+                    
+                    // Only allow numbers
+                    if (!/^\d*$/.test(value)) {
+                        e.target.value = '';
+                        return;
+                    }
+                    
+                    // Auto-focus next input
+                    if (value && index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                    
+                    // Add filled class when value is entered
+                    if (value) {
+                        e.target.classList.add('filled');
+                        e.target.classList.remove('error');
+                    } else {
+                        e.target.classList.remove('filled');
+                    }
+                });
+
+                // Handle backspace
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        otpInputs[index - 1].focus();
+                    }
+                });
+
+                // Handle paste
+                input.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    const pastedData = e.clipboardData.getData('text').trim();
+                    
+                    if (/^\d{6}$/.test(pastedData)) {
+                        pastedData.split('').forEach((digit, idx) => {
+                            if (otpInputs[idx]) {
+                                otpInputs[idx].value = digit;
+                                otpInputs[idx].classList.add('filled');
+                                otpInputs[idx].classList.remove('error');
+                            }
+                        });
+                        
+                        // Focus last input
+                        if (otpInputs[5]) {
+                            otpInputs[5].focus();
+                        }
+                    }
+                });
+            });
+
+            // Verify OTP
+            verifyOtpBtn.addEventListener('click', function() {
+                const enteredOTP = Array.from(otpInputs).map(input => input.value).join('');
+                
+                if (enteredOTP.length !== 6) {
+                    alert('Please enter the complete 6-digit OTP');
+                    otpInputs[0].focus();
+                    return;
+                }
+
+                // Disable button and show loading
+                verifyOtpBtn.disabled = true;
+                verifyOtpBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+
+                // Simulate verification (replace with actual API call)
+                setTimeout(() => {
+                    // For demo: check against generated OTP or accept any 6-digit OTP
+                    const isValid = enteredOTP === generatedOTP || enteredOTP.length === 6;
+                    
+                    if (isValid) {
+                        // Success
+                        otpInputs.forEach(inp => {
+                            inp.classList.add('filled');
+                            inp.classList.remove('error');
+                            inp.disabled = true;
+                        });
+                        
+                        verifyOtpBtn.disabled = true;
+                        verifyOtpBtn.innerHTML = '<i class="fas fa-check"></i> Verified';
+                        resendOtpBtn.disabled = true;
+                        
+                        otpSuccessMessage.style.display = 'block';
+                        
+                        // Clear timer
+                        if (timerInterval) {
+                            clearInterval(timerInterval);
+                            timerInterval = null;
+                        }
+                        
+                        // Scroll to success message
+                        otpSuccessMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        // Error
+                        otpInputs.forEach(inp => {
+                            inp.classList.add('error');
+                            inp.classList.remove('filled');
+                            inp.value = '';
+                        });
+                        
+                        verifyOtpBtn.disabled = false;
+                        verifyOtpBtn.innerHTML = '<i class="fas fa-check"></i> Verify OTP';
+                        
+                        alert('Invalid OTP. Please try again.');
+                        otpInputs[0].focus();
+                    }
+                }, 1000);
+            });
+
+            // Start timer
+            function startTimer() {
+                countdown = 60;
+                resendOtpBtn.disabled = true;
+                resendOtpBtn.style.display = 'none';
+                otpTimer.style.display = 'block';
+                timerCount.textContent = countdown;
+
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                }
+
+                timerInterval = setInterval(() => {
+                    countdown--;
+                    timerCount.textContent = countdown;
+
+                    if (countdown <= 0) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        resendOtpBtn.disabled = false;
+                        resendOtpBtn.style.display = 'inline-block';
+                        otpTimer.style.display = 'none';
+                    }
+                }, 1000);
+            }
+
+            // Resend OTP
+            resendOtpBtn.addEventListener('click', function() {
+                // Generate new OTP
+                generateOTP();
+                
+                // Clear inputs
+                otpInputs.forEach(inp => {
+                    inp.value = '';
+                    inp.classList.remove('filled', 'error');
+                    inp.disabled = false;
+                });
+                
+                // Reset verify button
+                verifyOtpBtn.disabled = false;
+                verifyOtpBtn.innerHTML = '<i class="fas fa-check"></i> Verify OTP';
+                
+                // Hide success message if shown
+                otpSuccessMessage.style.display = 'none';
+                
+                // Focus first input
+                otpInputs[0].focus();
+                
+                // Start timer again
+                startTimer();
+                
+                // Show message (you can replace this with actual SMS/Email sending)
+                console.log('OTP resent:', generatedOTP);
+            });
+
+            // Allow Enter key to verify
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && verifyOtpBtn && !verifyOtpBtn.disabled) {
+                    const otpSection = document.querySelector('.otp-section');
+                    if (otpSection && otpSection.style.display !== 'none') {
+                        verifyOtpBtn.click();
+                    }
+                }
+            });
+
+            // Monitor for success section display to initialize OTP
+            const successSectionObserver = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                        const successSection = document.getElementById('successSection');
+                        if (successSection && successSection.style.display === 'block') {
+                            // Small delay to ensure DOM is ready
+                            setTimeout(() => {
+                                generateOTP();
+                                startTimer();
+                            }, 500);
+                        }
+                    }
+                });
+            });
+
+            const successSection = document.getElementById('successSection');
+            if (successSection) {
+                successSectionObserver.observe(successSection, {
+                    attributes: true,
+                    attributeFilter: ['style']
+                });
+            }
+        });
+    </script>
+    
+    <!-- Support Modal Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const openSupportModalBtn = document.getElementById('openSupportModal');
+            const supportModal = document.getElementById('supportModal');
+            const closeSupportModalBtn = document.getElementById('closeSupportModal');
+            const cancelSupportBtn = document.getElementById('cancelSupportBtn');
+            const supportForm = document.getElementById('supportForm');
+            
+            if (openSupportModalBtn) {
+                openSupportModalBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (supportModal) {
+                        supportModal.classList.add('active');
+                        const profileDropdown = document.querySelector('.profile-dropdown');
+                        if (profileDropdown) profileDropdown.classList.remove('active');
+                    }
+                });
+            }
+            
+            if (closeSupportModalBtn) {
+                closeSupportModalBtn.addEventListener('click', function() {
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (supportModal) {
+                supportModal.addEventListener('click', function(e) {
+                    if (e.target === supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (cancelSupportBtn) {
+                cancelSupportBtn.addEventListener('click', function() {
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (supportForm) {
+                supportForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const message = document.getElementById('supportMessage').value;
+                    if (!message.trim()) {
+                        alert('Please enter your message.');
+                        return;
+                    }
+                    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                    const contactMessage = {
+                        name: userData.name || 'User',
+                        email: userData.email || 'Unknown',
+                        userId: userData.uid || null,
+                        phone: userData.phone || userData.mobile || null,
+                        message: message,
+                        timestamp: new Date().toISOString(),
+                        source: 'support'
+                    };
+                    const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                    messages.push(contactMessage);
+                    localStorage.setItem('contactMessages', JSON.stringify(messages));
+                    alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                    document.getElementById('supportMessage').value = '';
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+        });
+    </script>
+    
+    <!-- Support Modal -->
+    <div class="support-modal-overlay" id="supportModal">
+        <div class="support-modal">
+            <div class="support-modal-header">
+                <h3><i class="fas fa-headset"></i> Contact Support</h3>
+                <button class="support-modal-close" id="closeSupportModal">&times;</button>
+            </div>
+            <form id="supportForm">
+                <div class="support-form-group">
+                    <label for="supportMessage">Your Message</label>
+                    <textarea id="supportMessage" placeholder="Please describe your issue or question. We'll get back to you as soon as possible." rows="6" required></textarea>
+                </div>
+                <div class="support-modal-actions">
+                    <button type="button" class="btn-cancel-support" id="cancelSupportBtn">Cancel</button>
+                    <button type="submit" class="btn-send-support">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

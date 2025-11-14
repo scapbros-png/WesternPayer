@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Western Payer - Digital Banking Services</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="index.html">
+                        <img src="image/header logo.png" alt="Western Payer" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="./login.html" class="btn-login" id="loginBtn">Login</a>
+                    <div class="wallet-section" id="walletSection" style="display: none;">
+                        <div class="wallet-container">
+                            <i class="fas fa-wallet"></i>
+                            <div class="wallet-info">
+                                <span class="wallet-label"></span>
+                                <span class="wallet-balance" id="walletBalance">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-section" id="profileSection" style="display: none;">
+                        <div class="profile-dropdown">
+                            <button class="profile-btn" id="profileBtn">
+                                <i class="fas fa-user-circle"></i>
+                            </button>
+                            <div class="profile-menu" id="profileMenu">
+                                <div class="profile-header">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span id="userName">User</span>
+                                </div>
+                                <div class="profile-divider"></div>
+                                <a href="my-profile.html" class="profile-link">
+                                    <i class="fas fa-user"></i>
+                                    My Profile
+                                </a>
+                                <a href="settings.html" class="profile-link">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <a href="orders.html" class="profile-link">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Orders
+                                </a>
+                                <a href="messages.html" class="profile-link">
+                                    <i class="fas fa-envelope"></i>
+                                    Messages
+                                </a>
+                                <a href="#" class="profile-link" id="openSupportModal">
+                                    <i class="fas fa-headset"></i>
+                                    Support
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="#" class="profile-link" id="openChargesCalc">
+                                    <i class="fas fa-calculator"></i>
+                                    Calculate Charges
+                                </a>
+                                <a href="#" class="profile-link logout" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Withdrawal money from your EMI Cards
+                    </h1>
+                    <p>Our trusted financial services bring essential withdrawal money from your EMI Cards.</p>
+                    <button class="btn-primary" onclick="window.location.href='overview/products.html'">Withdrawal now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Overview -->
+    <section class="services-overview">
+        <div class="container">
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3>Withdrawal money from your EMI Cards</h3>
+                    <p>Facilitate fast and secure fund transfers across India.</p>
+                    <a href="overview\products.html" class="service-link">View More</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                    <h3>Aadhaar Enabled Payment System (AePS)</h3>
+                    <p>Let customers withdraw cash or check balance using their Aadhaar.</p>
+                    <a href="https://www.npci.org.in/product/aeps" target="_blank" class="service-link">Learn More</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <h3>Bill Payments & Recharges</h3>
+                    <p>BBPS is a unified platform for secure, easy bill payments.</p>
+                    <a href="https://paytm.com/recharge-bill-payment" target="_blank" class="service-link">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EMI Cards Section -->
+    <section class="emi-cards-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>EMI Payment Solutions</h2>
+                <p>Seamless EMI collection and management for your business</p>
+            </div>
+            <div class="emi-cards-grid">
+                <div class="emi-card" onclick="window.open('https://www.axisbank.com/retail/cards/credit-card', '_blank')" style="cursor: pointer; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #97144D; filter: blur(8px); z-index: 0;"></div>
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(151, 20, 77, 0.85); backdrop-filter: blur(6px); border-radius: 20px; z-index: 1;"></div>
+                    <div class="card-header" style="position: relative; z-index: 2;">
+                        <div class="card-icon" style="background: white; border-radius: 15px; display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; padding: 15px;">
+                            <img src="image/credit-card-logo.png" alt="Credit Card" style="width: 70px; height: 70px; object-fit: contain;">
+                        </div>
+                        <div class="card-title">
+                            <h3>Credit Card Apply</h3>
+                            <span class="card-subtitle">Instant Approval & Rewards</span>
+                        </div>
+                    </div>
+                    <div class="card-content" style="position: relative; z-index: 2;">
+                        <div class="emi-details">
+                            <div class="emi-amount">₹50K - ₹5 Lakh</div>
+                            <div class="emi-rate">Rewards & Cashback</div>
+                        </div>
+                        <div class="card-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Instant Approval</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Lifetime Free Options</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Reward Points</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer" style="position: relative; z-index: 2;">
+                        <a href="https://www.axisbank.com/retail/cards/credit-card" target="_blank" class="btn-emi" style="text-decoration: none; display: inline-block; text-align: center;">Apply Now</a>
+                    </div>
+                </div>
+
+                <div class="emi-card" onclick="window.open('https://www.bajajfinserv.in/insta-emi-card', '_blank')" style="cursor: pointer; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #002953; filter: blur(8px); z-index: 0;"></div>
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 41, 83, 0.85); backdrop-filter: blur(6px); border-radius: 20px; z-index: 1;"></div>
+                    <div class="card-header" style="position: relative; z-index: 2;">
+                        <div class="card-icon" style="background: white; border-radius: 15px; display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; padding: 15px;">
+                            <img src="image/bajaj-finance.png" alt="Bajaj Finance" style="width: 70px; height: 70px; object-fit: contain;">
+                        </div>
+                        <div class="card-title">
+                            <h3>Bajaj Insta EMI Card</h3>
+                            <span class="card-subtitle">Shop Now, Pay Later</span>
+                        </div>
+                    </div>
+                    <div class="card-content" style="position: relative; z-index: 2;">
+                        <div class="emi-details">
+                            <div class="emi-amount">Up to ₹80,000</div>
+                            <div class="emi-rate">Zero Down Payment</div>
+                        </div>
+                        <div class="card-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>1.5 Lakh+ Partner Stores</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Flexible Tenure (1-60 Months)</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>No Foreclosure Charges</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer" style="position: relative; z-index: 2;">
+                        <a href="https://www.bajajfinserv.in/insta-emi-card" target="_blank" class="btn-emi" style="text-decoration: none; display: inline-block; text-align: center;">Apply Now</a>
+                    </div>
+                </div>
+
+                <div class="emi-card" onclick="window.open('https://v.hdfcbank.com/cardless-easyemi/index.html')" style="cursor: pointer; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #004A8F; filter: blur(8px); z-index: 0;"></div>
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 74, 143, 0.85); backdrop-filter: blur(6px); border-radius: 20px; z-index: 1;"></div>
+                    <div class="card-header" style="position: relative; z-index: 2;">
+                        <div class="card-icon" style="background: white; border-radius: 15px; display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; padding: 15px;">
+                            <img src="image/cardless_easyemi.png" alt="HDFC EasyEMI" style="width: 70px; height: 70px; object-fit: contain;">
+                        </div>
+                        <div class="card-title">
+                            <h3>HDFC EasyEMI Card</h3>
+                            <span class="card-subtitle">Convert Purchases to EMI</span>
+                        </div>
+                    </div>
+                    <div class="card-content" style="position: relative; z-index: 2;">
+                        <div class="emi-details">
+                            <div class="emi-amount">₹10K to ₹5 Lakh</div>
+                            <div class="emi-rate">Attractive Interest Rates</div>
+                        </div>
+                        <div class="card-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Easy EMI Conversion</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Flexible Repayment Tenure</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Quick Approval Process</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer" style="position: relative; z-index: 2;">
+                        <a href="https://v.hdfcbank.com/cardless-easyemi/index.html" target="_blank" class="btn-emi" style="text-decoration: none; display: inline-block; text-align: center;">Apply Now</a>
+                    </div>
+                </div>
+
+                <div class="emi-card" onclick="window.open('https://www.homecredit.co.in/en/ujjwal-emi-card', '_blank')" style="cursor: pointer; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #E11A31; filter: blur(8px); z-index: 0;"></div>
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(225, 26, 49, 0.85); backdrop-filter: blur(6px); border-radius: 20px; z-index: 1;"></div>
+                    <div class="card-header" style="position: relative; z-index: 2;">
+                        <div class="card-icon" style="background: white; border-radius: 15px; display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; padding: 15px;">
+                            <img src="image/Home_Credit.png" alt="Home Credit" style="width: 70px; height: 70px; object-fit: contain;">
+                        </div>
+                        <div class="card-title">
+                            <h3>Home Credit Ujjwal Card</h3>
+                            <span class="card-subtitle">Easy Credit for Everyone</span>
+                        </div>
+                    </div>
+                    <div class="card-content" style="position: relative; z-index: 2;">
+                        <div class="emi-details">
+                            <div class="emi-amount">Up to ₹75,000</div>
+                            <div class="emi-rate">Easy Repayments</div>
+                        </div>
+                        <div class="card-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>53,000+ Partner Stores</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>One-Time Documentation</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Online & Offline Shopping</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer" style="position: relative; z-index: 2;">
+                        <a href="https://www.homecredit.co.in/en/ujjwal-emi-card" target="_blank" class="btn-emi" style="text-decoration: none; display: inline-block; text-align: center;">Apply Now</a>
+                    </div>
+                </div>
+
+                <div class="emi-card" onclick="window.open('https://discover.zestmoney.in/', '_blank')" style="cursor: pointer; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #1EBA68; filter: blur(8px); z-index: 0;"></div>
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(30, 186, 104, 0.85); backdrop-filter: blur(6px); border-radius: 20px; z-index: 1;"></div>
+                    <div class="card-header" style="position: relative; z-index: 2;">
+                        <div class="card-icon" style="background: white; border-radius: 15px; display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; padding: 15px;">
+                            <img src="image/zestmoney logo.png" alt="ZestMoney" style="width: 70px; height: 70px; object-fit: contain;">
+                        </div>
+                        <div class="card-title">
+                            <h3>ZestMoney</h3>
+                            <span class="card-subtitle">Adjust Nahi, Zest Karo.</span>
+                        </div>
+                    </div>
+                    <div class="card-content" style="position: relative; z-index: 2;">
+                        <div class="emi-details">
+                            <div class="emi-amount">Up to ₹45,000</div>
+                            <div class="emi-rate">No Cost EMI Available</div>
+                        </div>
+                        <div class="card-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>No Credit Card Required</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Quick Approval Process</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Shop Across Multiple Categories</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer" style="position: relative; z-index: 2;">
+                        <a href="https://discover.zestmoney.in/" target="_blank" class="btn-emi" style="text-decoration: none; display: inline-block; text-align: center;">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Services</h2>
+                <div class="service-tabs">
+                    <button class="tab-btn active" data-tab="individuals">For Individuals</button>
+                    <button class="tab-btn" data-tab="businesses">For Businesses</button>
+                </div>
+            </div>
+
+            <!-- Individuals Services -->
+            <div class="tab-content active" id="individuals">
+                <div class="services-grid-finkeda">
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <h4>Utility Bill Payments</h4>
+                        <p>Pay utility bills, mobile recharges, & credit card dues anytime, safely via your local FinTech merchant.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <h4>Travel Services</h4>
+                        <p>Book your next bus, hotel or flight ticket online right by visiting your nearby merchant.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Insurance Services</h4>
+                        <p>Get covered instantly with life, health, general, travel & motor insurance without moving out of your locality.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4>Investment Services</h4>
+                        <p>Start investing in Mutual Funds or NCDs easily from your nearest trusted FinTech outlet.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-tag"></i>
+                        </div>
+                        <h4>FASTag</h4>
+                        <p>Get new FASTags, recharge existing ones & breeze through tolls. Quick setup at your local store.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Businesses Services -->
+            <div class="tab-content" id="businesses">
+                <div class="services-grid-finkeda">
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <h4>Domestic Money Transfer (DMT)</h4>
+                        <p>Facilitate fast and secure fund transfers across India for your customers.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h4>Micro ATM (mATM)</h4>
+                        <p>Provide cash withdrawals, deposits, and fund transfers from your shop.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-fingerprint"></i>
+                        </div>
+                        <h4>Aadhaar Enabled Payment System (AePS)</h4>
+                        <p>Let customers withdraw cash or check balances using just their Aadhaar.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <h4>Travel Services</h4>
+                        <p>Offer bus, hotel, and flight bookings online right from your counter.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Insurance Services</h4>
+                        <p>Offer health, motor, travel & life insurance to customers with quick, verified onboarding.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-cash-register"></i>
+                        </div>
+                        <h4>Cash Management System (CMS)</h4>
+                        <p>Collect EMIs to streamline loan collection and manage cash effectively.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <h4>Utility Bill Payments</h4>
+                        <p>Accept utility bill payments like electricity, water, FASTag, credit cards & mobile bills instantly.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h4>Credit Card Bill Payment</h4>
+                        <p>Accept Credit Card Bill Payments at Your Counter.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                    <div class="service-card-finkeda">
+                        <div class="service-icon-finkeda">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <h4>PAN Card Services</h4>
+                        <p>Register or update PAN cards quickly for your walk-in customers.</p>
+                        <div class="service-brand">Western Payer</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Journey Section -->
+    <section class="journey-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Journey</h2>
+                <p>From 1 merchant to 45,000+, we're building India's financial backbone with inclusive, hyperlocal access.</p>
+            </div>
+            <div class="journey-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2019 - 2020</div>
+                    <h4>Established In Rajasthan</h4>
+                    <p>Established in Rajasthan, marking the beginning of our journey.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2020 - 2021</div>
+                    <h4>Digital Payment Solutions</h4>
+                    <p>Started offering digital payment solutions in rural areas as a Business Correspondent (BC) partner.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2021 - 2022</div>
+                    <h4>AePS Services</h4>
+                    <p>Rolled out AePS, Micro ATM and more services across small villages and towns in India.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2022 - 2023</div>
+                    <h4>Travel Services</h4>
+                    <p>We expanded our offerings to offer a diverse range of travel services.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2023 - 2024</div>
+                    <h4>Digital Insurance</h4>
+                    <p>We introduced digital insurance as part of our ongoing effort to make necessary financial services more accessible.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2024 - 2025</div>
+                    <h4>Credit & Wealth Building</h4>
+                    <p>We are broadening our financial offerings to provide underprivileged communities with access to credit and wealth-building opportunities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section class="partners-section">
+        <div class="container">
+            <h2>Our Partners</h2>
+            <div class="partners-grid">
+                <div class="partner-item payment-gateway">
+                    <img src="image/Best-Payment-Gateway.png" alt="Best Payment Gateway Partners" class="payment-gateway-logo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Gallery Section -->
+    <section class="image-gallery-section">
+        <div class="container">
+            <div class="image-gallery-grid">
+                <div class="gallery-image-item">
+                    <img src="image/img.png" alt="Western Payer Service" class="gallery-image">
+                </div>
+                <div class="gallery-image-item">
+                    <img src="image/img (1).png" alt="Western Payer Service" class="gallery-image">
+                </div>
+                <div class="gallery-image-item">
+                    <img src="image/img (2).png" alt="Western Payer Service" class="gallery-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-us">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose Us</h2>
+                <p>Western Payer is solving the everyday Withdrawal money from your EMI Cards problems that rural India faces with simple, local-first rural Withdrawal services.</p>
+            </div>
+            <div class="problems-solutions">
+                <div class="problem-solution">
+                    <h4>Lack of Digital Finance in Small Towns</h4>
+                    <p>With micro ATMs & AePS, we've made advanced finance feel just like neighbourhood shopping.</p>
+                </div>
+                <div class="problem-solution">
+                    <h4>Fragmented Financial Services</h4>
+                    <p>Individuals from rural areas often need to travel to different villages for their banking and financial needs.</p>
+                </div>
+                <div class="problem-solution">
+                    <h4>No Access to Investment Options</h4>
+                    <p>There are limited wealth-building products available in small towns and rural regions.</p>
+                </div>
+                <div class="problem-solution">
+                    <h4>Limited Income Opportunities for Local Shops</h4>
+                    <p>Local merchants not only deal with thin profit margins but also have limited income opportunities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2>What Our Customers Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-item">
+                    <div class="testimonial-content">
+                        <p>"Earlier I was very worried about Bajaj card withdrawal but this site has provided me a lot of convenience."</p>
+                        <div class="testimonial-author">
+                            <strong>— Anjali Mehra</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item">
+                    <div class="testimonial-content">
+                        <p>"I really liked this website and I told my friends about it."</p>
+                        <div class="testimonial-author">
+                            <strong>— Hemant Kohli</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog-section">
+        <div class="container">
+            <h2>Our Blog</h2>
+            <div class="blog-grid">
+                <div class="blog-item">
+                    <div class="blog-date">Oct. 13, 2025</div>
+                    <h4>Types of Mutual Funds in India: Beginner's Investment Guide</h4>
+                    <a href="#" class="blog-link">Continue Reading</a>
+                </div>
+                <div class="blog-item">
+                    <div class="blog-date">Oct. 09, 2025</div>
+                    <h4>Top 5 Benefits of Using Credit Cards for Your Utility Bill Payments</h4>
+                    <a href="#" class="blog-link">Continue Reading</a>
+                </div>
+                <div class="blog-item">
+                    <div class="blog-date">Sep. 13, 2025</div>
+                    <h4>Bharat BillPay Integration: A Game-Changer for Utility Providers and Fintechs</h4>
+                    <a href="#" class="blog-link">Continue Reading</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>How can I withdraw money?</h4>
+                    <p>For that, you can proceed by clicking on Withdrawal Now and filling in your details.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>When will I get this money?</h4>
+                    <p>Your money will be credited to your account within 3-4 working hours.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Do I have to pay any charges for this?</h4>
+                    <p>You may have to pay a 10% charge for this.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>How can I offer Western Payer financial services at my store?</h4>
+                    <p>You must sign up as a merchant with Western Payer to offer rural financial services in your village. These digital banking services include AePS, utility bill payments, Micro ATM, insurance and more.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <h2>Trusted by Thousands, Withdrawal Every Day</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">50,000</div>
+                    <div class="stat-label">Total Visitors</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">30,000</div>
+                    <div class="stat-label">Average Transaction Value</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">2,03,400</div>
+                    <div class="stat-label">Transactions Per Month</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">350</div>
+                    <div class="stat-label">Total Employees</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Western Payer</h3>
+                    <p>In many small towns and remote areas, it has been a daunting task for people to attain banking services. Not just that, distant bank branches often mean long, costly journeys just to perform basic transactions.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#" id="footerContactUs">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p>Email: help@westernpayer.com</p>
+                    <div class="contact-form-section">
+                        <h5>Send Us a Message</h5>
+                        <form class="visitor-contact-form" id="visitorContactForm">
+                            <input type="email" id="visitorEmail" placeholder="Your Email" required>
+                            <textarea id="visitorMessage" placeholder="Your Message" rows="4" required></textarea>
+                            <button type="submit" class="btn-submit-message">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; Copyright 2025 Western Payer. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="privacy-policy.html">Privacy Policy</a>
+                    <a href="refund-policy.html">Refund Policy</a>
+                    <a href="Terms-conditions.html">Terms and Conditions</a>
+                    <a href="disclaimer.html">Disclaimer</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Withdrawal Charges Calculator Modal -->
+    <div class="modal-overlay" id="chargesCalcModal" style="display:none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Calculate Charges</h3>
+                <button class="modal-close" id="closeChargesCalc" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="calc-form" id="chargesCalcForm">
+                    <div class="form-group" style="margin-bottom: 0.75rem;">
+                        <label for="productSelect">Product</label>
+                        <select id="productSelect" style="width:100%; padding: 0.875rem; border: 2px solid rgba(96, 165, 250, 0.3); border-radius: 10px; background: rgba(30, 41, 59, 0.8); color: #f1f5f9;">
+                            <option value="generic" selected>Select Product</option>
+                            <option value="bajaj">Bajaj Insta EMI Card</option>
+                            <option value="hdfc_easyemi">HDFC EasyEMI Card</option>
+                            <option value="home_credit">Home Credit Ujjwal Card</option>
+                            <option value="zestmoney">ZestMoney</option>
+                            <option value="axio">Axio</option>
+                            <option value="idfc_buy_emi">IDFC Buy EMI Card</option>
+                            <option value="lazypay">LazyPay</option>
+                            <option value="mobikwik_zip">MobiKwik Zip</option>
+                            <option value="credit_card">Credit Card Withdrawal</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="withdrawAmount">Withdrawal amount (₹)</label>
+                            <input type="number" id="withdrawAmount" min="0" step="0.01" placeholder="Enter amount" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="chargeRate">Charge rate (%)</label>
+                            <input type="number" id="chargeRate" min="0" max="100" step="0.01" value="10" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%; margin-top: 0.5rem;">Calculate</button>
+                </form>
+                <div class="calc-result" id="calcResult" style="display:none;">
+                    <div class="result-row">
+                        <span>Charges</span>
+                        <strong id="resCharges">₹0.00</strong>
+                    </div>
+                    <div class="result-row">
+                        <span id="resGstLabel">GST (18%)</span>
+                        <strong id="resGst">₹0.00</strong>
+                    </div>
+                    <div class="result-row total">
+                        <span>Payable amount</span>
+                        <strong id="resNet">₹0.00</strong>
+                    </div>
+                    <p class="result-note">Note: Charge auto-fills by product (default 7.25%, Credit Card 0.5%). GST is fixed at 18% on charges except for Credit Card where it is 5%.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <!-- Firebase Message Helper - Ensures messages are saved to Firebase across all devices -->
+    <script src="firebase-message-helper.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="global-support.js"></script>
+    
+    <!-- Optimized Wallet Balance Loader -->
+    <script src="wallet-balance-loader.js"></script>
+    
+    <script src="script.js"></script>
+    <script src="charges-calculator.js"></script>
+    <script>
+        // Check login status and update UI
+        document.addEventListener('DOMContentLoaded', async function() {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const loginBtn = document.getElementById('loginBtn');
+            const profileSection = document.getElementById('profileSection');
+            const walletSection = document.getElementById('walletSection');
+            const walletBalance = document.getElementById('walletBalance');
+            const userName = document.getElementById('userName');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            // Check if user is logged in
+            if (userData.isLoggedIn && userData.uid) {
+                // Show logged-in UI immediately
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (profileSection) profileSection.style.display = 'block';
+                if (walletSection) walletSection.style.display = 'block';
+                if (userName) userName.textContent = userData.name || 'User';
+                
+                // NOTE: Block check disabled on index.html to prevent navigation issues
+                // Block check will happen on other pages when user navigates
+                
+                // Load profile photo after profile section is displayed
+                if (typeof window.loadAndDisplayProfilePhoto === 'function') {
+                    setTimeout(function() {
+                        window.loadAndDisplayProfilePhoto();
+                    }, 100);
+                }
+                
+                // Wallet balance is automatically loaded by wallet-balance-loader.js
+                // (Already preloaded and cached for instant display!)
+            }
+            
+            // Wallet click functionality - navigate to wallet page
+            const walletContainer = document.querySelector('.wallet-container');
+            if (walletContainer) {
+                walletContainer.addEventListener('click', function() {
+                    window.location.href = 'wallet.html';
+                });
+            }
+            
+            // Profile dropdown functionality
+            if (profileBtn) {
+                profileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    profileBtn.parentElement.classList.toggle('active');
+                });
+            }
+
+            // Open Withdrawal Charges Calculator
+            const openCalc = document.getElementById('openChargesCalc');
+            const calcModal = document.getElementById('chargesCalcModal');
+            const closeCalc = document.getElementById('closeChargesCalc');
+            const calcForm = document.getElementById('chargesCalcForm');
+            const productSelect = document.getElementById('productSelect');
+            const withdrawAmount = document.getElementById('withdrawAmount');
+            const chargeRate = document.getElementById('chargeRate');
+            const calcResult = document.getElementById('calcResult');
+            const resCharges = document.getElementById('resCharges');
+            const resGst = document.getElementById('resGst');
+            const resGstLabel = document.getElementById('resGstLabel');
+            const resNet = document.getElementById('resNet');
+
+            const productRates = {
+                generic: 7.25,
+                bajaj: 7.25,
+                hdfc_easyemi: 7.25,
+                home_credit: 7.25,
+                zestmoney: 7.25,
+                axio: 7.25,
+                idfc_buy_emi: 7.25,
+                lazypay: 7.25,
+                mobikwik_zip: 7.25,
+                credit_card: 0.5
+            };
+
+            // Minimum withdrawal amounts derived from product detail pages
+            const productMinimums = {
+                generic: 1000,
+                bajaj: 30000,           // overview/product info/bajaj card.html
+                hdfc_easyemi: 20000,     // overview/product info/hdfc-easyemi.html
+                home_credit: 20000,      // overview/product info/home-credit.html
+                zestmoney: 30000,        // overview/product info/zest-money.html
+                axio: 5000,              // overview/product info/axio.html
+                idfc_buy_emi: 20000,     // overview/product info/idfc-buy-emi.html
+                lazypay: 10000,          // overview/product info/lazypay.html
+                mobikwik_zip: 20000,     // overview/product info/mobikwik-zip.html
+                credit_card: 20000       // overview/product info/credit-card.html
+            };
+
+            function applyProductMinimum(key) {
+                const minAmt = productMinimums[key] != null ? productMinimums[key] : productMinimums.generic;
+                withdrawAmount.min = String(minAmt);
+                withdrawAmount.placeholder = 'Minimum ₹' + minAmt.toLocaleString();
+                const current = parseFloat(withdrawAmount.value || '0');
+                if (!current || current < minAmt) {
+                    withdrawAmount.value = String(minAmt);
+                }
+            }
+
+            function openChargesModal() {
+                calcModal.style.display = 'flex';
+                // ensure dropdown closes behind modal
+                profileBtn.parentElement.classList.remove('active');
+                if (productSelect) {
+                    productSelect.value = 'generic';
+                    chargeRate.value = productRates['generic'];
+                    applyProductMinimum('generic');
+                }
+                withdrawAmount.focus();
+            }
+
+            function closeChargesModal() {
+                calcModal.style.display = 'none';
+            }
+
+            if (openCalc) {
+                openCalc.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openChargesModal();
+                });
+            }
+            if (closeCalc) {
+                closeCalc.addEventListener('click', function() {
+                    closeChargesModal();
+                });
+            }
+            if (calcModal) {
+                calcModal.addEventListener('click', function(e) {
+                    if (e.target === calcModal) {
+                        closeChargesModal();
+                    }
+                });
+            }
+
+            // ESC key closes modal
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && calcModal && calcModal.style.display !== 'none') {
+                    closeChargesModal();
+                }
+            });
+
+            // Update charge rate, GST label, and minimum when product changes
+            if (productSelect) {
+                productSelect.addEventListener('change', function() {
+                    const key = productSelect.value;
+                    if (productRates[key] != null) {
+                        chargeRate.value = productRates[key];
+                    }
+                    // Update GST label based on product
+                    if (resGstLabel) {
+                        resGstLabel.textContent = key === 'credit_card' ? 'GST (5%)' : 'GST (18%)';
+                    }
+                    applyProductMinimum(key);
+                });
+            }
+
+            // Calculator submit
+            if (calcForm) {
+                calcForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const key = productSelect ? productSelect.value : 'generic';
+                    const minAmt = productMinimums[key] != null ? productMinimums[key] : productMinimums.generic;
+                    const amount = parseFloat(withdrawAmount.value || '0');
+                    const rate = parseFloat(chargeRate.value || '0');
+                    if (isNaN(amount) || amount < minAmt) {
+                        alert(`Please enter at least the minimum amount: ₹${minAmt.toLocaleString()}`);
+                        withdrawAmount.value = String(minAmt);
+                        return;
+                    }
+                    const charges = (amount * rate) / 100;
+                    const gstRate = key === 'credit_card' ? 0.05 : 0.18;
+                    const gst = charges * gstRate; // GST depends on product
+                    const net = charges + gst; // payable amount is fee + GST
+                    resCharges.textContent = `₹${charges.toFixed(2)}`;
+                    resGst.textContent = `₹${gst.toFixed(2)}`;
+                    resNet.textContent = `₹${net.toFixed(2)}`;
+                    calcResult.style.display = 'block';
+                });
+            }
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                    profileBtn.parentElement.classList.remove('active');
+                }
+            });
+            
+            // Logout functionality
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    
+                    // Show confirmation
+                    if (confirm('Are you sure you want to logout?')) {
+                        try {
+                            // Sign out from Firebase
+                            await firebaseAuth.signOut();
+                            
+                            // Clear user data
+                            localStorage.removeItem('userData');
+                            
+                            // Hide profile and wallet sections, show login button
+                            if (profileSection) profileSection.style.display = 'none';
+                            if (walletSection) walletSection.style.display = 'none';
+                            if (loginBtn) loginBtn.style.display = 'inline-block';
+                            
+                            // Close dropdown
+                            if (profileBtn && profileBtn.parentElement) {
+                                profileBtn.parentElement.classList.remove('active');
+                            }
+                            
+                            // Show success message
+                            alert('You have been logged out successfully!');
+                        } catch (error) {
+                            console.error('Error signing out:', error);
+                            alert('Error signing out. Please try again.');
+                        }
+                    }
+                });
+            }
+        });
+
+        // Random Stats Generator - Changes numbers daily
+        function generateDailyRandomStats() {
+            // Get today's date as a seed for consistent daily random numbers
+            const today = new Date();
+            const dateString = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            
+            // Simple hash function to create a seed from the date
+            let seed = 0;
+            for (let i = 0; i < dateString.length; i++) {
+                seed = ((seed << 5) - seed + dateString.charCodeAt(i)) & 0xffffffff;
+            }
+            
+            // Simple pseudo-random number generator using the seed
+            function seededRandom() {
+                seed = (seed * 9301 + 49297) % 233280;
+                return seed / 233280;
+            }
+            
+            // Generate random numbers for each stat
+            const stats = [
+                {
+                    element: document.querySelector('.stat-item:nth-child(1) .stat-number'),
+                    baseValue: 50000,
+                    variation: 0.3, // 30% variation
+                    label: 'Total Visitors'
+                },
+                {
+                    element: document.querySelector('.stat-item:nth-child(2) .stat-number'),
+                    baseValue: 30000,
+                    variation: 0.4, // 40% variation
+                    label: 'Average Transaction Value'
+                },
+                {
+                    element: document.querySelector('.stat-item:nth-child(3) .stat-number'),
+                    baseValue: 203400,
+                    variation: 0.25, // 25% variation
+                    label: 'Transactions Per Month'
+                },
+                {
+                    element: document.querySelector('.stat-item:nth-child(4) .stat-number'),
+                    baseValue: 350,
+                    variation: 0.2, // 20% variation
+                    label: 'Total Employees'
+                }
+            ];
+            
+            // Update each stat with a random number based on today's seed
+            stats.forEach(stat => {
+                if (stat.element) {
+                    const randomFactor = 0.5 + (seededRandom() * stat.variation);
+                    const newValue = Math.round(stat.baseValue * randomFactor);
+                    
+                    // Format the number with commas
+                    const formattedValue = newValue.toLocaleString();
+                    stat.element.textContent = formattedValue;
+                }
+            });
+        }
+        
+        // Run the random stats generator when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            generateDailyRandomStats();
+            
+            // Handle visitor contact form submission
+            const visitorContactForm = document.getElementById('visitorContactForm');
+            if (visitorContactForm) {
+                visitorContactForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const email = document.getElementById('visitorEmail').value;
+                    const message = document.getElementById('visitorMessage').value;
+                    
+                    if (email && message) {
+                        // Get user data if logged in
+                        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                        
+                        // Store message in Firebase
+                        const contactMessage = {
+                            name: userData.name || 'Visitor',
+                            email: email,
+                            userId: userData.uid || null,
+                            phone: userData.phone || userData.mobile || null,
+                            message: message,
+                            source: 'contact'
+                        };
+                        
+                        // Save to Firebase if available
+                        if (typeof window.firebaseDb !== 'undefined') {
+                            try {
+                                const database = window.firebaseDb;
+                                const messageRef = database.ref('contactMessages').push();
+                                
+                                await messageRef.set({
+                                    id: messageRef.key,
+                                    name: contactMessage.name,
+                                    email: contactMessage.email,
+                                    userId: contactMessage.userId,
+                                    phone: contactMessage.phone,
+                                    message: contactMessage.message,
+                                    source: contactMessage.source,
+                                    timestamp: firebase.database.ServerValue.TIMESTAMP,
+                                    read: false
+                                });
+                                
+                                console.log('✅ Contact message saved to Firebase');
+                                alert('Thank you for your message! We will get back to you soon.');
+                                // Clear the form
+                                document.getElementById('visitorEmail').value = '';
+                                document.getElementById('visitorMessage').value = '';
+                            } catch (error) {
+                                console.error('❌ Error saving message to Firebase:', error);
+                                console.error('Error details:', {
+                                    message: error.message,
+                                    code: error.code,
+                                    stack: error.stack
+                                });
+                                
+                                // Check if it's a permission error
+                                if (error.code === 'PERMISSION_DENIED') {
+                                    console.error('⚠️ PERMISSION DENIED: Firebase database rules need to allow writing to contactMessages');
+                                    alert('⚠️ Message could not be sent due to a server configuration issue.\n\nPlease contact support directly or try again later.');
+                                } else {
+                                    // Fallback to localStorage
+                                    contactMessage.timestamp = new Date().toISOString();
+                                    const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                                    messages.push(contactMessage);
+                                    localStorage.setItem('contactMessages', JSON.stringify(messages));
+                                    console.log('⚠️ Message saved to localStorage as fallback');
+                                    alert('Thank you for your message! We will get back to you soon.\n\n(Note: Message saved locally. Admin will receive it after system update.)');
+                                }
+                                // Clear the form
+                                document.getElementById('visitorEmail').value = '';
+                                document.getElementById('visitorMessage').value = '';
+                            }
+                        } else {
+                            // Firebase not available - show error
+                            alert('⚠️ CRITICAL: Unable to connect to server!\n\n' +
+                                  'Your message was NOT saved because Firebase is not available.\n\n' +
+                                  'Please check your internet connection and try again.\n\n' +
+                                  'If the problem persists, contact support directly.');
+                            // DO NOT save to localStorage - it won't sync across devices
+                            // User needs to know message wasn't saved
+                        }
+                    }
+                });
+            }
+            
+            // Support Modal Handler
+            const openSupportModalBtn = document.getElementById('openSupportModal');
+            const footerContactUs = document.getElementById('footerContactUs');
+            const supportModal = document.getElementById('supportModal');
+            const closeSupportModalBtn = document.getElementById('closeSupportModal');
+            const supportForm = document.getElementById('supportForm');
+            
+            // Function to open support modal
+            function openSupportModal() {
+                if (supportModal) {
+                    supportModal.classList.add('active');
+                    // Close profile menu if open
+                    const profileDropdown = document.querySelector('.profile-dropdown');
+                    if (profileDropdown) {
+                        profileDropdown.classList.remove('active');
+                    }
+                }
+            }
+            
+            if (openSupportModalBtn) {
+                openSupportModalBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openSupportModal();
+                });
+            }
+            
+            // Footer Contact Us link
+            if (footerContactUs) {
+                footerContactUs.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openSupportModal();
+                });
+            }
+            
+            if (closeSupportModalBtn) {
+                closeSupportModalBtn.addEventListener('click', function() {
+                    if (supportModal) {
+                        supportModal.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Close modal when clicking outside
+            if (supportModal) {
+                supportModal.addEventListener('click', function(e) {
+                    if (e.target === supportModal) {
+                        supportModal.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Cancel button handler
+            const cancelSupportBtn = document.getElementById('cancelSupportBtn');
+            if (cancelSupportBtn) {
+                cancelSupportBtn.addEventListener('click', function() {
+                    if (supportModal) {
+                        supportModal.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Handle support form submission
+            if (supportForm) {
+                supportForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const message = document.getElementById('supportMessage').value;
+                    
+                    if (!message.trim()) {
+                        alert('Please enter your message.');
+                        return;
+                    }
+                    
+                    // Get user data if logged in
+                    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                    const userEmail = userData.email || 'Unknown';
+                    const userName = userData.name || 'User';
+                    const userId = userData.uid || null;
+                    const userPhone = userData.phone || userData.mobile || null;
+                    
+                    // Store message in Firebase
+                    const contactMessage = {
+                        name: userName,
+                        email: userEmail,
+                        userId: userId,
+                        phone: userPhone,
+                        message: message,
+                        source: 'support'
+                    };
+                    
+                    // Save to Firebase if available
+                    if (typeof window.firebaseDb !== 'undefined') {
+                        try {
+                            const database = window.firebaseDb;
+                            const messageRef = database.ref('contactMessages').push();
+                            
+                            await messageRef.set({
+                                id: messageRef.key,
+                                name: contactMessage.name,
+                                email: contactMessage.email,
+                                userId: contactMessage.userId,
+                                phone: contactMessage.phone,
+                                message: contactMessage.message,
+                                source: contactMessage.source,
+                                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                                read: false
+                            });
+                            
+                            console.log('✅ Support message saved to Firebase');
+                            alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                            // Clear the form
+                            document.getElementById('supportMessage').value = '';
+                            // Close modal
+                            if (supportModal) {
+                                supportModal.classList.remove('active');
+                            }
+                        } catch (error) {
+                            console.error('❌ Error saving message to Firebase:', error);
+                            console.error('Error details:', {
+                                message: error.message,
+                                code: error.code,
+                                stack: error.stack
+                            });
+                            
+                            // Check if it's a permission error
+                            if (error.code === 'PERMISSION_DENIED') {
+                                console.error('⚠️ PERMISSION DENIED: Firebase database rules need to allow writing to contactMessages');
+                                alert('⚠️ Message could not be sent due to a server configuration issue.\n\nPlease contact support directly or try again later.');
+                            } else {
+                                // Fallback to localStorage
+                                contactMessage.timestamp = new Date().toISOString();
+                                const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                                messages.push(contactMessage);
+                                localStorage.setItem('contactMessages', JSON.stringify(messages));
+                                console.log('⚠️ Message saved to localStorage as fallback');
+                                alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.\n\n(Note: Message saved locally. Admin will receive it after system update.)');
+                            }
+                            // Clear the form
+                            document.getElementById('supportMessage').value = '';
+                            // Close modal
+                            if (supportModal) {
+                                supportModal.classList.remove('active');
+                            }
+                        }
+                    } else {
+                        // Firebase not available - show error
+                        alert('⚠️ CRITICAL: Unable to connect to server!\n\n' +
+                              'Your message was NOT saved because Firebase is not available.\n\n' +
+                              'Please check your internet connection and try again.\n\n' +
+                              'If the problem persists, contact support directly.');
+                        // DO NOT save to localStorage - it won't sync across devices
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <!-- Support Modal -->
+    <div class="support-modal-overlay" id="supportModal">
+        <div class="support-modal">
+            <div class="support-modal-header">
+                <h3><i class="fas fa-headset"></i> Contact Support</h3>
+                <button class="support-modal-close" id="closeSupportModal">&times;</button>
+            </div>
+            <form id="supportForm">
+                <div class="support-form-group">
+                    <label for="supportMessage">Your Message</label>
+                    <textarea id="supportMessage" placeholder="Please describe your issue or question. We'll get back to you as soon as possible." rows="6" required></textarea>
+                </div>
+                <div class="support-modal-actions">
+                    <button type="button" class="btn-cancel-support" id="cancelSupportBtn">Cancel</button>
+                    <button type="submit" class="btn-send-support">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>

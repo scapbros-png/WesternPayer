@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Western Payer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .messages-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 140px 2rem 4rem;
+        }
+
+        .messages-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .messages-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .messages-header h1 {
+            color: #f1f5f9;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .messages-header p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        .messages-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .messages-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message-item {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .message-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(96, 165, 250, 0.5);
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.2);
+        }
+
+        .message-item.unread {
+            border-left: 4px solid #60a5fa;
+            background: rgba(96, 165, 250, 0.1);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+            gap: 1rem;
+        }
+
+        .message-subject {
+            color: #f1f5f9;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .message-from {
+            color: #60a5fa;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .message-date {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .message-preview {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-top: 0.5rem;
+        }
+
+        .message-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #60a5fa;
+            color: white;
+            border-radius: 12px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: 0.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 5rem;
+            color: #60a5fa;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h2 {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: rgba(96, 165, 250, 0.2);
+            border-color: rgba(96, 165, 250, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-back-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        .btn-back-icon i {
+            font-size: 1rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+            padding: 0;
+        }
+
+        .btn-back-icon:hover {
+            background: rgba(96, 165, 250, 0.2);
+            border-color: rgba(96, 165, 250, 0.5);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+        }
+
+        .message-item.read {
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .messages-page {
+                padding: 120px 1rem 2rem;
+            }
+
+            .messages-header h1 {
+                font-size: 2rem;
+            }
+
+            .message-header {
+                flex-direction: column;
+            }
+
+            .message-date {
+                align-self: flex-start;
+            }
+
+            .empty-state i {
+                font-size: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="index.html">
+                        <img src="image/header logo.png" alt="Western Payer" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="login.html" class="btn-login" id="loginBtn">Login</a>
+                    <div class="wallet-section" id="walletSection" style="display: none;">
+                        <div class="wallet-container">
+                            <i class="fas fa-wallet"></i>
+                            <div class="wallet-info">
+                                <span class="wallet-label"></span>
+                                <span class="wallet-balance" id="walletBalance">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-section" id="profileSection" style="display: none;">
+                        <div class="profile-dropdown">
+                            <button class="profile-btn" id="profileBtn">
+                                <i class="fas fa-user-circle"></i>
+                            </button>
+                            <div class="profile-menu" id="profileMenu">
+                                <div class="profile-header">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span id="userName">User</span>
+                                </div>
+                                <div class="profile-divider"></div>
+                                <a href="my-profile.html" class="profile-link">
+                                    <i class="fas fa-user"></i>
+                                    My Profile
+                                </a>
+                                <a href="settings.html" class="profile-link">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <a href="orders.html" class="profile-link">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Orders
+                                </a>
+                                <a href="messages.html" class="profile-link">
+                                    <i class="fas fa-envelope"></i>
+                                    Messages
+                                </a>
+                                <a href="#" class="profile-link" id="openSupportModal">
+                                    <i class="fas fa-headset"></i>
+                                    Support
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="#" class="profile-link logout" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Messages Page Content -->
+    <section class="messages-page">
+        <div class="messages-container">
+            <!-- No Data Message (shown if not logged in) -->
+            <div id="noDataMessage" class="no-data-message" style="display: none;">
+                <div class="messages-card">
+                    <i class="fas fa-lock"></i>
+                    <h2>Please Login First</h2>
+                    <p>You need to be logged in to view your messages.</p>
+                    <a href="login.html" class="btn-back">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Go to Login
+                    </a>
+                </div>
+            </div>
+
+            <!-- Messages Content (shown if logged in) -->
+            <div id="messagesContent" style="display: none;">
+                <div class="messages-header">
+                    <h1><i class="fas fa-envelope"></i> My Messages</h1>
+                    <p>Stay updated with notifications from Western Payer</p>
+                </div>
+
+                <div class="messages-card">
+                    <div class="messages-list" id="messagesList">
+                        <!-- Messages will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="global-support.js"></script>
+    
+    <!-- Optimized Wallet Balance Loader -->
+    <script src="wallet-balance-loader.js"></script>
+    
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const loginBtn = document.getElementById('loginBtn');
+            const profileSection = document.getElementById('profileSection');
+            const walletSection = document.getElementById('walletSection');
+            const walletBalance = document.getElementById('walletBalance');
+            const userName = document.getElementById('userName');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const noDataMessage = document.getElementById('noDataMessage');
+            const messagesContent = document.getElementById('messagesContent');
+            
+            // Initialize wallet balance if not exists
+            if (!localStorage.getItem('walletBalance')) {
+                localStorage.setItem('walletBalance', '0.00');
+            }
+            
+            // Check if user is logged in
+            if (userData.isLoggedIn && userData.uid) {
+                // Show logged-in UI immediately (don't wait for block check)
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (profileSection) profileSection.style.display = 'block';
+                if (walletSection) walletSection.style.display = 'block';
+                if (userName) userName.textContent = userData.name || 'User';
+                
+                // Check if user is blocked (non-blocking, async check)
+                // Only check if dbHelper is available to prevent errors
+                if (typeof window.dbHelper !== 'undefined' && typeof window.dbHelper.getUserProfile === 'function') {
+                    setTimeout(async function() {
+                        try {
+                            const isBlocked = await window.checkUserBlockedStatus();
+                            // If blocked, the function will handle redirect
+                        } catch (error) {
+                            console.error('Error checking block status:', error);
+                            // Don't log out user on error - just continue
+                        }
+                    }, 500); // Delay to ensure page is fully loaded
+                }
+                
+                // Load profile photo after profile section is displayed
+                if (typeof window.loadAndDisplayProfilePhoto === 'function') {
+                    setTimeout(function() {
+                        window.loadAndDisplayProfilePhoto();
+                    }, 100);
+                }
+                
+                // Display wallet balance
+                const balance = localStorage.getItem('walletBalance') || '0.00';
+                walletBalance.textContent = '₹' + parseFloat(balance).toLocaleString('en-IN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                // Show messages content and hide no data message
+                messagesContent.style.display = 'block';
+                noDataMessage.style.display = 'none';
+
+                // Load messages
+                await loadMessages(userData.uid);
+            } else {
+                // Show no data message and hide messages content
+                noDataMessage.style.display = 'block';
+                messagesContent.style.display = 'none';
+            }
+            
+            // Wallet click functionality - navigate to wallet page
+            const walletContainer = document.querySelector('.wallet-container');
+            if (walletContainer) {
+                walletContainer.addEventListener('click', function() {
+                    window.location.href = 'wallet.html';
+                });
+            }
+            
+            // Profile dropdown functionality
+            if (profileBtn) {
+                profileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    profileBtn.parentElement.classList.toggle('active');
+                });
+            }
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (profileBtn && profileMenu && !profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                    profileBtn.parentElement.classList.remove('active');
+                }
+            });
+            
+            // Logout functionality
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    if (confirm('Are you sure you want to logout?')) {
+                        try {
+                            await firebaseAuth.signOut();
+                    localStorage.removeItem('userData');
+                    window.location.href = 'login.html';
+                        } catch (error) {
+                            console.error('Error signing out:', error);
+                            alert('Error signing out. Please try again.');
+                        }
+                    }
+                });
+            }
+        });
+
+        // Load Messages Function
+        async function loadMessages(userId) {
+            const messagesList = document.getElementById('messagesList');
+            
+            try {
+                const database = window.firebaseDb;
+                const messagesSnapshot = await database.ref(`users/${userId}/notifications`).once('value');
+                const messages = messagesSnapshot.val() || {};
+                
+                if (!messages || Object.keys(messages).length === 0) {
+                    messagesList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <h2>No Messages Yet</h2>
+                            <p>You don't have any messages yet. Messages from admin will appear here.</p>
+                            <a href="index.html" class="btn-back-icon" title="Back to Home">
+                                <i class="fas fa-home"></i>
+                            </a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Convert to array and sort by timestamp (newest first)
+                const messagesArray = Object.keys(messages).map(key => ({
+                    id: key,
+                    ...messages[key]
+                }))
+                .sort((a, b) => {
+                    const timestampA = a.timestamp || 0;
+                    const timestampB = b.timestamp || 0;
+                    return timestampB - timestampA;
+                });
+
+                // Display messages
+                messagesList.innerHTML = messagesArray.map(msg => createMessageItem(msg)).join('');
+
+                // Add click handlers for marking messages as read
+                messagesArray.forEach(msg => {
+                    if (!msg.read) {
+                        const messageElement = document.getElementById(`message-${msg.id}`);
+                        if (messageElement) {
+                            messageElement.addEventListener('click', function() {
+                                markMessageAsRead(userId, msg.id);
+                            });
+                        }
+                    }
+                });
+
+                // Update notification badge after loading messages
+                if (typeof window.updateMessageNotificationBadge === 'function') {
+                    window.updateMessageNotificationBadge();
+                }
+
+            } catch (error) {
+                console.error('Error loading messages:', error);
+                messagesList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h2>Error Loading Messages</h2>
+                        <p>There was an error loading your messages. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Generate random Indian name with surname based on message ID (consistent for same message)
+        function generateIndianName(messageId) {
+            const indianNames = {
+                boys: [
+                    'Arjun', 'Rohan', 'Aryan', 'Vikram', 'Karan', 'Rahul', 'Siddharth', 'Aditya',
+                    'Dev', 'Kabir', 'Ishaan', 'Aman', 'Vivaan', 'Arnav', 'Yash', 'Rishabh',
+                    'Aarav', 'Advik', 'Ansh', 'Dhruv', 'Krishna', 'Shivam', 'Ved',
+                    'Aayush', 'Krish', 'Mihir', 'Neel', 'Pranav', 'Reyansh', 'Sai', 'Tanish'
+                ],
+                girls: [
+                    'Priya', 'Ananya', 'Kavya', 'Isha', 'Meera', 'Saanvi', 'Anika', 'Diya',
+                    'Aaradhya', 'Anvi', 'Avni', 'Ira', 'Myra', 'Riya', 'Sara', 'Zara',
+                    'Aditi', 'Advika', 'Amara', 'Kiara', 'Navya', 'Pihu',
+                    'Shreya', 'Tara', 'Vanya', 'Vedika', 'Yashvi', 'Aanya', 'Anaya'
+                ],
+                surnames: [
+                    'Sharma', 'Patel', 'Kumar', 'Singh', 'Gupta', 'Reddy', 'Mehta', 'Verma',
+                    'Agarwal', 'Shah', 'Malhotra', 'Jain', 'Bansal', 'Kapoor', 'Chopra', 'Desai',
+                    'Nair', 'Iyer', 'Menon', 'Pillai', 'Rao', 'Narayan', 'Krishnan', 'Subramanian',
+                    'Joshi', 'Pandey', 'Yadav', 'Khan', 'Ali', 'Hussain', 'Ahmad', 'Sheikh'
+                ]
+            };
+            
+            // Use message ID to generate consistent name (convert to number)
+            let seed = 0;
+            if (messageId) {
+                for (let i = 0; i < messageId.length; i++) {
+                    seed += messageId.charCodeAt(i);
+                }
+            }
+            
+            // Randomly choose gender and name
+            const isBoy = seed % 2 === 0;
+            const nameList = isBoy ? indianNames.boys : indianNames.girls;
+            const nameIndex = seed % nameList.length;
+            const firstName = nameList[nameIndex];
+            
+            // Generate surname based on message ID (different seed calculation)
+            const surnameSeed = (seed * 31) % indianNames.surnames.length;
+            const surname = indianNames.surnames[surnameSeed];
+            
+            return `${firstName} ${surname}`;
+        }
+
+        // Create Message Item
+        function createMessageItem(msg) {
+            const date = new Date(msg.timestamp).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            const isRead = msg.read || false;
+            const messageClass = isRead ? 'message-item read' : 'message-item unread';
+            const badge = isRead ? '' : '<span class="message-badge">NEW</span>';
+            
+            // Generate Indian name for this message
+            const senderName = generateIndianName(msg.id);
+
+            return `
+                <div class="${messageClass}" id="message-${msg.id}">
+                    <div class="message-header">
+                        <div style="flex: 1;">
+                            <div class="message-subject">
+                                ${msg.subject || 'Message from Western Payer'}
+                                ${badge}
+                            </div>
+                            <div class="message-from">
+                                <i class="fas fa-user-shield"></i> From: ${senderName}
+                            </div>
+                        </div>
+                        <div class="message-date">
+                            <i class="fas fa-clock"></i> ${date}
+                        </div>
+                    </div>
+                    <div class="message-preview">
+                        ${msg.message || ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Mark Message as Read
+        async function markMessageAsRead(userId, messageId) {
+            try {
+                const database = window.firebaseDb;
+                await database.ref(`users/${userId}/notifications/${messageId}/read`).set(true);
+                
+                // Update UI
+                const messageElement = document.getElementById(`message-${messageId}`);
+                if (messageElement) {
+                    messageElement.classList.remove('unread');
+                    messageElement.classList.add('read');
+                    
+                    // Remove NEW badge
+                    const badge = messageElement.querySelector('.message-badge');
+                    if (badge) {
+                        badge.remove();
+                    }
+                }
+                
+                // Update notification badge after marking message as read
+                if (typeof window.updateMessageNotificationBadge === 'function') {
+                    window.updateMessageNotificationBadge();
+                }
+            } catch (error) {
+                console.error('Error marking message as read:', error);
+            }
+        }
+        
+        // Support Modal Handler
+        const openSupportModalBtn = document.getElementById('openSupportModal');
+        const supportModal = document.getElementById('supportModal');
+        const closeSupportModalBtn = document.getElementById('closeSupportModal');
+        const supportForm = document.getElementById('supportForm');
+        
+        if (openSupportModalBtn) {
+            openSupportModalBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (supportModal) {
+                    supportModal.classList.add('active');
+                    const profileDropdown = document.querySelector('.profile-dropdown');
+                    if (profileDropdown) {
+                        profileDropdown.classList.remove('active');
+                    }
+                }
+            });
+        }
+        
+        if (closeSupportModalBtn) {
+            closeSupportModalBtn.addEventListener('click', function() {
+                if (supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        if (supportModal) {
+            supportModal.addEventListener('click', function(e) {
+                if (e.target === supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        const cancelSupportBtn = document.getElementById('cancelSupportBtn');
+        if (cancelSupportBtn) {
+            cancelSupportBtn.addEventListener('click', function() {
+                if (supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        if (supportForm) {
+            supportForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const message = document.getElementById('supportMessage').value;
+                
+                if (!message.trim()) {
+                    alert('Please enter your message.');
+                    return;
+                }
+                
+                const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                const userEmail = userData.email || 'Unknown';
+                const userName = userData.name || 'User';
+                const userId = userData.uid || null;
+                const userPhone = userData.phone || userData.mobile || null;
+                
+                const contactMessage = {
+                    name: userName,
+                    email: userEmail,
+                    userId: userId,
+                    phone: userPhone,
+                    message: message,
+                    source: 'support'
+                };
+                
+                // Save to Firebase if available
+                if (typeof window.firebaseDb !== 'undefined') {
+                    try {
+                        const database = window.firebaseDb;
+                        const messageRef = database.ref('contactMessages').push();
+                        
+                        await messageRef.set({
+                            id: messageRef.key,
+                            name: contactMessage.name,
+                            email: contactMessage.email,
+                            userId: contactMessage.userId,
+                            phone: contactMessage.phone,
+                            message: contactMessage.message,
+                            source: contactMessage.source,
+                            timestamp: firebase.database.ServerValue.TIMESTAMP,
+                            read: false
+                        });
+                        
+                        console.log('✅ Support message saved to Firebase');
+                        alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                        document.getElementById('supportMessage').value = '';
+                        if (supportModal) {
+                            supportModal.classList.remove('active');
+                        }
+                    } catch (error) {
+                        console.error('Error saving message to Firebase:', error);
+                        // Fallback to localStorage
+                        contactMessage.timestamp = new Date().toISOString();
+                        const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                        messages.push(contactMessage);
+                        localStorage.setItem('contactMessages', JSON.stringify(messages));
+                        alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                        document.getElementById('supportMessage').value = '';
+                        if (supportModal) {
+                            supportModal.classList.remove('active');
+                        }
+                    }
+                } else {
+                    // Fallback: Save to localStorage
+                    contactMessage.timestamp = new Date().toISOString();
+                    const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                    messages.push(contactMessage);
+                    localStorage.setItem('contactMessages', JSON.stringify(messages));
+                    alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                    document.getElementById('supportMessage').value = '';
+                    if (supportModal) {
+                        supportModal.classList.remove('active');
+                    }
+                }
+            });
+        }
+    </script>
+    
+    <!-- Support Modal -->
+    <div class="support-modal-overlay" id="supportModal">
+        <div class="support-modal">
+            <div class="support-modal-header">
+                <h3><i class="fas fa-headset"></i> Contact Support</h3>
+                <button class="support-modal-close" id="closeSupportModal">&times;</button>
+            </div>
+            <form id="supportForm">
+                <div class="support-form-group">
+                    <label for="supportMessage">Your Message</label>
+                    <textarea id="supportMessage" placeholder="Please describe your issue or question. We'll get back to you as soon as possible." rows="6" required></textarea>
+                </div>
+                <div class="support-modal-actions">
+                    <button type="button" class="btn-cancel-support" id="cancelSupportBtn">Cancel</button>
+                    <button type="submit" class="btn-send-support">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

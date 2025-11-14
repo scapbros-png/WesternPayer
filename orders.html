@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - Western Payer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .orders-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 120px 2rem 4rem;
+        }
+
+        .orders-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .orders-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .orders-icon-large {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.4);
+        }
+
+        .orders-icon-large i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .orders-header h1 {
+            color: #f1f5f9;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .orders-header p {
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+
+        .orders-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card.pending .stat-icon {
+            color: #fbbf24;
+        }
+
+        .stat-card.approved .stat-icon {
+            color: #10b981;
+        }
+
+        .stat-card.rejected .stat-icon {
+            color: #ef4444;
+        }
+
+        .stat-value {
+            color: #f1f5f9;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .order-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(96, 165, 250, 0.2);
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .order-id {
+            color: #60a5fa;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: monospace;
+        }
+
+        .order-status {
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .order-status.pending {
+            background: rgba(251, 191, 36, 0.2);
+            border: 1px solid rgba(251, 191, 36, 0.4);
+            color: #fbbf24;
+        }
+
+        .order-status.approved {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+        }
+
+        .order-status.rejected {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+        }
+
+        .order-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .order-detail-item {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .order-detail-label {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .order-detail-label i {
+            color: #60a5fa;
+        }
+
+        .order-detail-value {
+            color: #f1f5f9;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .order-date {
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .order-date i {
+            color: #60a5fa;
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 20px;
+        }
+
+        .no-orders i {
+            font-size: 4rem;
+            color: #60a5fa;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .no-orders h2 {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .no-orders p {
+            color: #94a3b8;
+            margin-bottom: 2rem;
+        }
+
+        .btn-browse {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-browse:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(96, 165, 250, 0.4);
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 3rem;
+            color: #60a5fa;
+        }
+
+        .loading-spinner i {
+            font-size: 3rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .orders-page {
+                padding: 100px 1rem 2rem;
+            }
+
+            .orders-header h1 {
+                font-size: 2rem;
+            }
+
+            .order-card {
+                padding: 1.5rem;
+            }
+
+            .order-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .order-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="index.html">
+                        <img src="image/header logo.png" alt="Western Payer" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="login.html" class="btn-login" id="loginBtn">Login</a>
+                    <div class="wallet-section" id="walletSection" style="display: none;">
+                        <div class="wallet-container">
+                            <i class="fas fa-wallet"></i>
+                            <div class="wallet-info">
+                                <span class="wallet-label"></span>
+                                <span class="wallet-balance" id="walletBalance">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-section" id="profileSection" style="display: none;">
+                        <div class="profile-dropdown">
+                            <button class="profile-btn" id="profileBtn">
+                                <i class="fas fa-user-circle"></i>
+                            </button>
+                            <div class="profile-menu" id="profileMenu">
+                                <div class="profile-header">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span id="userName">User</span>
+                                </div>
+                                <div class="profile-divider"></div>
+                                <a href="my-profile.html" class="profile-link">
+                                    <i class="fas fa-user"></i>
+                                    My Profile
+                                </a>
+                                <a href="settings.html" class="profile-link">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <a href="orders.html" class="profile-link">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Orders
+                                </a>
+                                <a href="messages.html" class="profile-link">
+                                    <i class="fas fa-envelope"></i>
+                                    Messages
+                                </a>
+                                <a href="#" class="profile-link" id="openSupportModal">
+                                    <i class="fas fa-headset"></i>
+                                    Support
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="#" class="profile-link logout" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Orders Page Content -->
+    <section class="orders-page">
+        <div class="orders-container">
+            <!-- Orders Header -->
+            <div class="orders-header">
+                <div class="orders-icon-large">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <h1>My Orders</h1>
+                <p>Track and manage your orders</p>
+            </div>
+
+            <!-- Orders Stats -->
+            <div class="orders-stats" id="ordersStats">
+                <div class="stat-card pending">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-value" id="pendingCount">0</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card approved">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-value" id="approvedCount">0</div>
+                    <div class="stat-label">Approved</div>
+                </div>
+                <div class="stat-card rejected">
+                    <div class="stat-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-value" id="rejectedCount">0</div>
+                    <div class="stat-label">Rejected</div>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div class="loading-spinner" id="loadingSpinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading your orders...</p>
+            </div>
+
+            <!-- Orders List -->
+            <div class="orders-list" id="ordersList" style="display: none;">
+                <!-- Orders will be dynamically inserted here -->
+            </div>
+
+            <!-- No Orders Message -->
+            <div class="no-orders" id="noOrdersMessage" style="display: none;">
+                <i class="fas fa-shopping-bag"></i>
+                <h2>No Orders Yet</h2>
+                <p>You haven't placed any orders yet. Start shopping now!</p>
+                <a href="overview/products.html" class="btn-browse">
+                    <i class="fas fa-store"></i>
+                    Browse Products
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="global-support.js"></script>
+    
+    <script src="charges-calculator.js"></script>
+    
+    <!-- Optimized Wallet Balance Loader -->
+    <script src="wallet-balance-loader.js"></script>
+    
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const loginBtn = document.getElementById('loginBtn');
+            const profileSection = document.getElementById('profileSection');
+            const walletSection = document.getElementById('walletSection');
+            const userName = document.getElementById('userName');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            // Check if user is logged in
+            if (!userData.isLoggedIn || !userData.uid) {
+                alert('Please login first to view your orders');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Show logged-in UI immediately (don't wait for block check)
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (profileSection) profileSection.style.display = 'block';
+            if (walletSection) walletSection.style.display = 'block';
+            if (userName) userName.textContent = userData.name || 'User';
+            
+            // Check if user is blocked (non-blocking, async check)
+            // Only check if dbHelper is available to prevent errors
+            if (typeof window.dbHelper !== 'undefined' && typeof window.dbHelper.getUserProfile === 'function') {
+                setTimeout(async function() {
+                    try {
+                        const isBlocked = await window.checkUserBlockedStatus();
+                        // If blocked, the function will handle redirect
+                    } catch (error) {
+                        console.error('Error checking block status:', error);
+                        // Don't log out user on error - just continue
+                    }
+                }, 500); // Delay to ensure page is fully loaded
+            }
+            
+            // Load profile photo after profile section is displayed
+            if (typeof window.loadAndDisplayProfilePhoto === 'function') {
+                setTimeout(function() {
+                    window.loadAndDisplayProfilePhoto();
+                }, 100);
+            }
+
+            // Wallet click functionality
+            const walletContainer = document.querySelector('.wallet-container');
+            if (walletContainer) {
+                walletContainer.addEventListener('click', function() {
+                    window.location.href = 'wallet.html';
+                });
+            }
+
+            // Profile dropdown functionality
+            if (profileBtn) {
+                profileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    profileBtn.parentElement.classList.toggle('active');
+                });
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (profileBtn && profileMenu && !profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                    profileBtn.parentElement.classList.remove('active');
+                }
+            });
+
+            // Logout functionality
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    if (confirm('Are you sure you want to logout?')) {
+                        try {
+                            await firebaseAuth.signOut();
+                            localStorage.removeItem('userData');
+                            window.location.href = 'login.html';
+                        } catch (error) {
+                            console.error('Error signing out:', error);
+                            alert('Error signing out. Please try again.');
+                        }
+                    }
+                });
+            }
+
+            // Load orders from Firebase
+            await loadOrders(userData.uid);
+        });
+
+        async function loadOrders(userId) {
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const ordersList = document.getElementById('ordersList');
+            const noOrdersMessage = document.getElementById('noOrdersMessage');
+            const pendingCount = document.getElementById('pendingCount');
+            const approvedCount = document.getElementById('approvedCount');
+            const rejectedCount = document.getElementById('rejectedCount');
+
+            try {
+                console.log('Loading orders for user:', userId);
+                
+                // Ensure dbHelper is available
+                if (typeof window.dbHelper === 'undefined') {
+                    console.error('dbHelper not available!');
+                    throw new Error('Database helper not initialized');
+                }
+                
+                // Get orders from Firebase using dbHelper
+                const orders = await window.dbHelper.getUserOrders(userId);
+                
+                console.log('Orders received:', orders);
+
+                // Hide loading spinner
+                loadingSpinner.style.display = 'none';
+
+                if (!orders || Object.keys(orders).length === 0) {
+                    console.log('No orders found');
+                    noOrdersMessage.style.display = 'block';
+                    return;
+                }
+
+                // Convert orders object to array, filter out wallet top-ups, and sort by date (newest first)
+                const ordersArray = Object.keys(orders).map(key => ({
+                    id: key,
+                    ...orders[key]
+                }))
+                .filter(order => {
+                    // Filter out wallet top-up orders
+                    const productName = (order.productName || '').toLowerCase();
+                    return !productName.includes('wallet top-up') && 
+                           !productName.includes('wallet topup') &&
+                           !productName.includes('wallet add');
+                })
+                .sort((a, b) => {
+                    const dateA = new Date(a.orderDate || a.timestamp || 0);
+                    const dateB = new Date(b.orderDate || b.timestamp || 0);
+                    return dateB - dateA;
+                });
+
+                console.log('Orders array (wallet top-ups filtered):', ordersArray);
+
+                // Count orders by status
+                let pending = 0, approved = 0, rejected = 0;
+                ordersArray.forEach(order => {
+                    if (order.status === 'pending') pending++;
+                    else if (order.status === 'approved') approved++;
+                    else if (order.status === 'rejected') rejected++;
+                });
+
+                pendingCount.textContent = pending;
+                approvedCount.textContent = approved;
+                rejectedCount.textContent = rejected;
+
+                // Display orders
+                ordersList.style.display = 'flex';
+                ordersList.innerHTML = ordersArray.map(order => createOrderCard(order)).join('');
+
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                loadingSpinner.style.display = 'none';
+                noOrdersMessage.style.display = 'block';
+                noOrdersMessage.innerHTML = `
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h2>Error Loading Orders</h2>
+                    <p>Unable to load your orders. Please try again later.<br>Error: ${error.message}</p>
+                    <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: #60a5fa; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                        <i class="fas fa-redo"></i> Retry
+                    </button>
+                `;
+            }
+        }
+
+        function createOrderCard(order) {
+            const statusClass = order.status || 'pending';
+            const statusIcon = statusClass === 'approved' ? 'fa-check-circle' : 
+                              statusClass === 'rejected' ? 'fa-times-circle' : 'fa-clock';
+            const statusText = statusClass.charAt(0).toUpperCase() + statusClass.slice(1);
+            
+            const orderDate = new Date(order.orderDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            return `
+                <div class="order-card">
+                    <div class="order-header">
+                        <div class="order-id">Order #${order.orderId || order.id}</div>
+                        <div class="order-status ${statusClass}">
+                            <i class="fas ${statusIcon}"></i>
+                            ${statusText}
+                        </div>
+                    </div>
+                    <div class="order-details">
+                        <div class="order-detail-item">
+                            <div class="order-detail-label">
+                                <i class="fas fa-box"></i>
+                                Product
+                            </div>
+                            <div class="order-detail-value">${order.productName || 'Product'}</div>
+                        </div>
+                        <div class="order-detail-item">
+                            <div class="order-detail-label">
+                                <i class="fas fa-rupee-sign"></i>
+                                Amount Paid
+                            </div>
+                            <div class="order-detail-value">₹${parseFloat(order.amount || 0).toLocaleString('en-IN', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            })}</div>
+                        </div>
+                        ${order.withdrawalAmount ? `
+                        <div class="order-detail-item">
+                            <div class="order-detail-label">
+                                <i class="fas fa-money-bill-wave"></i>
+                                Withdrawal Amount
+                            </div>
+                            <div class="order-detail-value" style="color: #10b981; font-weight: 700;">₹${parseFloat(order.withdrawalAmount || 0).toLocaleString('en-IN', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            })}</div>
+                        </div>
+                        ` : ''}
+                        <div class="order-detail-item">
+                            <div class="order-detail-label">
+                                <i class="fas fa-credit-card"></i>
+                                Payment Method
+                            </div>
+                            <div class="order-detail-value">${order.paymentMethod || 'Wallet'}</div>
+                        </div>
+                    </div>
+                    <div class="order-date">
+                        <i class="fas fa-calendar-alt"></i>
+                        Ordered on ${orderDate}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Support Modal Handler
+        const openSupportModalBtn = document.getElementById('openSupportModal');
+        const supportModal = document.getElementById('supportModal');
+        const closeSupportModalBtn = document.getElementById('closeSupportModal');
+        const supportForm = document.getElementById('supportForm');
+        
+        if (openSupportModalBtn) {
+            openSupportModalBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (supportModal) {
+                    supportModal.classList.add('active');
+                    const profileDropdown = document.querySelector('.profile-dropdown');
+                    if (profileDropdown) {
+                        profileDropdown.classList.remove('active');
+                    }
+                }
+            });
+        }
+        
+        if (closeSupportModalBtn) {
+            closeSupportModalBtn.addEventListener('click', function() {
+                if (supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        if (supportModal) {
+            supportModal.addEventListener('click', function(e) {
+                if (e.target === supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        const cancelSupportBtn = document.getElementById('cancelSupportBtn');
+        if (cancelSupportBtn) {
+            cancelSupportBtn.addEventListener('click', function() {
+                if (supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        if (supportForm) {
+            supportForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const message = document.getElementById('supportMessage').value;
+                
+                if (!message.trim()) {
+                    alert('Please enter your message.');
+                    return;
+                }
+                
+                const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                const userEmail = userData.email || 'Unknown';
+                const userName = userData.name || 'User';
+                const userId = userData.uid || null;
+                const userPhone = userData.phone || userData.mobile || null;
+                
+                const contactMessage = {
+                    name: userName,
+                    email: userEmail,
+                    userId: userId,
+                    phone: userPhone,
+                    message: message,
+                    timestamp: new Date().toISOString(),
+                    source: 'support'
+                };
+                
+                const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                messages.push(contactMessage);
+                localStorage.setItem('contactMessages', JSON.stringify(messages));
+                
+                alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                
+                document.getElementById('supportMessage').value = '';
+                
+                if (supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+    </script>
+    
+    <!-- Support Modal -->
+    <div class="support-modal-overlay" id="supportModal">
+        <div class="support-modal">
+            <div class="support-modal-header">
+                <h3><i class="fas fa-headset"></i> Contact Support</h3>
+                <button class="support-modal-close" id="closeSupportModal">&times;</button>
+            </div>
+            <form id="supportForm">
+                <div class="support-form-group">
+                    <label for="supportMessage">Your Message</label>
+                    <textarea id="supportMessage" placeholder="Please describe your issue or question. We'll get back to you as soon as possible." rows="6" required></textarea>
+                </div>
+                <div class="support-modal-actions">
+                    <button type="button" class="btn-cancel-support" id="cancelSupportBtn">Cancel</button>
+                    <button type="submit" class="btn-send-support">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

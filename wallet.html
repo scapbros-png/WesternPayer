@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wallet - Western Payer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .wallet-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 120px 2rem 4rem;
+        }
+
+        .wallet-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .wallet-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .wallet-icon-large {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .wallet-icon-large i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .wallet-header h1 {
+            color: #f1f5f9;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .wallet-header p {
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+
+        .balance-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .balance-label {
+            color: #94a3b8;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .balance-amount {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .balance-currency {
+            color: #cbd5e1;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .wallet-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .action-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(96, 165, 250, 0.5);
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.2);
+        }
+
+        .action-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .action-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .action-icon.add {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .action-icon.withdraw {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .action-header h3 {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .action-description {
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .wallet-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group-wallet {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label-wallet {
+            color: #cbd5e1;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-input-wallet {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid rgba(96, 165, 250, 0.3);
+            color: #f1f5f9;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input-wallet:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+
+        .form-input-wallet::placeholder {
+            color: #64748b;
+        }
+
+        .btn-wallet {
+            width: 100%;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-withdraw {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        .btn-withdraw:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-wallet:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .quick-amounts {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .quick-amount-btn {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .quick-amount-btn:hover {
+            background: rgba(96, 165, 250, 0.2);
+            border-color: rgba(96, 165, 250, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .quick-amount-btn.active {
+            background: #60a5fa;
+            color: white;
+            border-color: #60a5fa;
+        }
+
+        .transaction-history {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .transaction-history h2 {
+            color: #f1f5f9;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .transaction-history h2 i {
+            color: #60a5fa;
+        }
+
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .transaction-item {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .transaction-item:hover {
+            border-color: rgba(96, 165, 250, 0.4);
+            transform: translateX(5px);
+        }
+
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .transaction-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .transaction-icon.add {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .transaction-icon.withdraw {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .transaction-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .transaction-type {
+            color: #f1f5f9;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .transaction-date {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        .transaction-amount {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .transaction-amount.add {
+            color: #10b981;
+        }
+
+        .transaction-amount.withdraw {
+            color: #f59e0b;
+        }
+
+        .no-transactions {
+            text-align: center;
+            padding: 3rem;
+            color: #94a3b8;
+        }
+
+        .no-transactions i {
+            font-size: 4rem;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+            display: block;
+            opacity: 0.5;
+        }
+
+        .success-message-wallet {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        .error-message-wallet {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-button {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            margin-top: 2rem;
+        }
+
+        .back-button:hover {
+            background: rgba(96, 165, 250, 0.2);
+            border-color: rgba(96, 165, 250, 0.5);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .wallet-page {
+                padding: 100px 1rem 2rem;
+            }
+
+            .balance-amount {
+                font-size: 3rem;
+            }
+
+            .wallet-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-amounts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .transaction-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .transaction-amount {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="index.html">
+                        <img src="image/header logo.png" alt="Western Payer" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="./login.html" class="btn-login" id="loginBtn">Login</a>
+                    <div class="wallet-section" id="walletSection" style="display: none;">
+                        <div class="wallet-container">
+                            <i class="fas fa-wallet"></i>
+                            <div class="wallet-info">
+                                <span class="wallet-label"></span>
+                                <span class="wallet-balance" id="walletBalance">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-section" id="profileSection" style="display: none;">
+                        <div class="profile-dropdown">
+                            <button class="profile-btn" id="profileBtn">
+                                <i class="fas fa-user-circle"></i>
+                            </button>
+                            <div class="profile-menu" id="profileMenu">
+                                <div class="profile-header">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span id="userName">User</span>
+                                </div>
+                                <div class="profile-divider"></div>
+                                <a href="my-profile.html" class="profile-link">
+                                    <i class="fas fa-user"></i>
+                                    My Profile
+                                </a>
+                                <a href="settings.html" class="profile-link">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <a href="orders.html" class="profile-link">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Orders
+                                </a>
+                                <a href="messages.html" class="profile-link">
+                                    <i class="fas fa-envelope"></i>
+                                    Messages
+                                </a>
+                                <a href="#" class="profile-link" id="openSupportModal">
+                                    <i class="fas fa-headset"></i>
+                                    Support
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="#" class="profile-link" id="openChargesCalc">
+                                    <i class="fas fa-calculator"></i>
+                                    Calculate Charges
+                                </a>
+                                <a href="#" class="profile-link logout" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Wallet Page Content -->
+    <section class="wallet-page">
+        <div class="wallet-container">
+            <!-- Wallet Header -->
+            <div class="wallet-header">
+                <div class="wallet-icon-large">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <h1>My Wallet</h1>
+                <p>Manage your balance, add funds, and withdraw money</p>
+            </div>
+
+            <!-- No Login Message -->
+            <div id="noLoginMessage" style="display: none;">
+                <div class="balance-card">
+                    <i class="fas fa-lock" style="font-size: 4rem; color: #60a5fa; margin-bottom: 1rem;"></i>
+                    <h2 style="color: #f1f5f9; margin-bottom: 1rem;">Please Login First</h2>
+                    <p style="color: #94a3b8; margin-bottom: 2rem;">You need to be logged in to access your wallet.</p>
+                    <a href="login.html" class="btn-wallet btn-add" style="max-width: 300px; margin: 0 auto;">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Go to Login
+                    </a>
+                </div>
+            </div>
+
+            <!-- Wallet Content -->
+            <div id="walletContent" style="display: none;">
+                <!-- Balance Display -->
+                <div class="balance-card">
+                    <div class="balance-label">Available Balance</div>
+                    <div class="balance-amount" id="balanceDisplay">₹0.00</div>
+                    <div class="balance-currency">Indian Rupees</div>
+                </div>
+
+                <!-- Wallet Actions -->
+                <div class="wallet-actions">
+                    <!-- Add Balance -->
+                    <div class="action-card">
+                        <div class="action-header">
+                            <div class="action-icon add">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <h3>Add Balance</h3>
+                        </div>
+                            <div class="action-description">
+                            Add money to your wallet to make quick transactions
+                            <div style="margin-top: 0.5rem; color: #10b981; font-weight: 600; font-size: 0.9rem;">
+                                <i class="fas fa-info-circle"></i> Amount range: ₹500 - ₹10,000
+                            </div>
+                        </div>
+                        
+                        <div id="successMessageAdd" class="success-message-wallet">
+                            <i class="fas fa-check-circle" style="font-size: 1.25rem;"></i>
+                            <span>Balance added successfully!</span>
+                        </div>
+
+                        <div id="errorMessageAdd" class="error-message-wallet">
+                            <i class="fas fa-exclamation-circle" style="font-size: 1.25rem;"></i>
+                            <span id="errorTextAdd">Minimum amount to add is ₹2,000!</span>
+                        </div>
+
+                        <form class="wallet-form" id="addBalanceForm">
+                            <div class="quick-amounts">
+                                <button type="button" class="quick-amount-btn" onclick="setAmount('add', 500)">₹500</button>
+                                <button type="button" class="quick-amount-btn" onclick="setAmount('add', 1000)">₹1,000</button>
+                                <button type="button" class="quick-amount-btn" onclick="setAmount('add', 5000)">₹5,000</button>
+                                <button type="button" class="quick-amount-btn" onclick="setAmount('add', 10000)">₹10,000</button>
+                            </div>
+                            <div class="form-group-wallet">
+                                <label class="form-label-wallet">Enter Amount (₹500 - ₹10,000)</label>
+                                <input type="number" class="form-input-wallet" id="addAmount" placeholder="Enter amount between ₹500 - ₹10,000" min="500" max="10000" required>
+                            </div>
+                            <button type="submit" class="btn-wallet btn-add" id="addBtn">
+                                <i class="fas fa-plus-circle"></i>
+                                Add Money
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Withdraw Balance -->
+                    <div class="action-card">
+                        <div class="action-header">
+                            <div class="action-icon withdraw">
+                                <i class="fas fa-minus"></i>
+                            </div>
+                            <h3>Withdraw Balance</h3>
+                        </div>
+                        <div class="action-description">
+                            Withdraw money from your wallet to your bank account
+                            <div style="margin-top: 0.5rem; color: #60a5fa; font-weight: 600; font-size: 0.9rem;">
+                                <i class="fas fa-info-circle"></i> Minimum withdrawal: ₹500 | Process takes 1-3 business days
+                            </div>
+                        </div>
+
+                        <div id="errorMessageWithdraw" class="error-message-wallet">
+                            <i class="fas fa-exclamation-circle" style="font-size: 1.25rem;"></i>
+                            <span id="errorText">Insufficient balance!</span>
+                        </div>
+
+                        <form class="wallet-form" id="withdrawBalanceForm">
+                            <div class="quick-amounts">
+                                <button type="button" class="quick-amount-btn" onclick="setAmount('withdraw', 500)">₹500</button>
+                                <button type="button" class="quick-amount-btn" onclick="setAmount('withdraw', 1000)">₹1,000</button>
+                                <button type="button" class="quick-amount-btn" onclick="setAmount('withdraw', 2000)">₹2,000</button>
+                                <button type="button" class="quick-amount-btn" onclick="setAmount('withdraw', 5000)">₹5,000</button>
+                            </div>
+                            <div class="form-group-wallet">
+                                <label class="form-label-wallet">Enter Amount (Minimum ₹500)</label>
+                                <input type="number" class="form-input-wallet" id="withdrawAmount" placeholder="Enter amount to withdraw (minimum ₹500)" min="500" required>
+                            </div>
+                            <button type="submit" class="btn-wallet btn-withdraw" id="withdrawBtn">
+                                <i class="fas fa-arrow-right"></i>
+                                Withdraw Money
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Transaction History -->
+                <div class="transaction-history">
+                    <h2>
+                        <i class="fas fa-history"></i>
+                        Transaction History
+                    </h2>
+                    <div class="transaction-list" id="transactionList">
+                        <div class="no-transactions">
+                            <i class="fas fa-receipt"></i>
+                            <p>No transactions yet</p>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="index.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="global-support.js"></script>
+    
+    <script src="charges-calculator.js"></script>
+    
+    <!-- Optimized Wallet Balance Loader -->
+    <script src="wallet-balance-loader.js"></script>
+    
+    <script src="script.js"></script>
+    <script>
+        // PERFORMANCE OPTIMIZATION: Preload data before DOM is ready
+        let walletDataPromise = null;
+        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+        
+        // Start loading wallet data immediately if user is logged in
+        if (userData.isLoggedIn && userData.uid && typeof dbHelper !== 'undefined') {
+            console.log('⚡ Preloading wallet data...');
+            walletDataPromise = Promise.all([
+                dbHelper.getUserWallet(userData.uid),
+                dbHelper.getTransactions(userData.uid)
+            ]).catch(error => {
+                console.error('Preload error:', error);
+                return [null, null];
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const loginBtn = document.getElementById('loginBtn');
+            const profileSection = document.getElementById('profileSection');
+            const walletSection = document.getElementById('walletSection');
+            const walletBalance = document.getElementById('walletBalance');
+            const userName = document.getElementById('userName');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const noLoginMessage = document.getElementById('noLoginMessage');
+            const walletContent = document.getElementById('walletContent');
+
+            // Check if user is logged in
+            if (userData.isLoggedIn && userData.uid) {
+                // Show logged-in UI immediately (don't wait for block check)
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (profileSection) profileSection.style.display = 'block';
+                if (walletSection) walletSection.style.display = 'block';
+                if (userName) userName.textContent = userData.name || 'User';
+                if (walletContent) walletContent.style.display = 'block';
+                if (noLoginMessage) noLoginMessage.style.display = 'none';
+                
+                // Check if user is blocked (non-blocking, async check)
+                // Only check if dbHelper is available to prevent errors
+                if (typeof window.dbHelper !== 'undefined' && typeof window.dbHelper.getUserProfile === 'function') {
+                    setTimeout(async function() {
+                        try {
+                            const isBlocked = await window.checkUserBlockedStatus();
+                            // If blocked, the function will handle redirect
+                        } catch (error) {
+                            console.error('Error checking block status:', error);
+                            // Don't log out user on error - just continue
+                        }
+                    }, 500); // Delay to ensure page is fully loaded
+                }
+                
+                // Load profile photo after profile section is displayed
+                if (typeof window.loadAndDisplayProfilePhoto === 'function') {
+                    setTimeout(function() {
+                        window.loadAndDisplayProfilePhoto();
+                    }, 100);
+                }
+
+                // Load wallet data from Firebase (use preloaded data if available)
+                if (walletDataPromise) {
+                    console.log('⚡ Using preloaded data...');
+                    await loadWalletDataFromPreload(userData.uid, walletDataPromise);
+                } else {
+                    await loadWalletData(userData.uid);
+                }
+            } else {
+                noLoginMessage.style.display = 'block';
+                walletContent.style.display = 'none';
+            }
+
+            // Wallet click functionality - already on wallet page
+            const walletContainer = document.querySelector('.nav-buttons .wallet-container');
+            if (walletContainer) {
+                walletContainer.style.cursor = 'default';
+                walletContainer.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Already on wallet page, scroll to top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            // Profile dropdown functionality
+            if (profileBtn) {
+                profileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    profileBtn.parentElement.classList.toggle('active');
+                });
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (profileBtn && profileMenu && !profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                    profileBtn.parentElement.classList.remove('active');
+                }
+            });
+
+            // Logout functionality
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    if (confirm('Are you sure you want to logout?')) {
+                        try {
+                            await firebaseAuth.signOut();
+                            localStorage.removeItem('userData');
+                            window.location.href = 'login.html';
+                        } catch (error) {
+                            console.error('Error signing out:', error);
+                            alert('Error signing out. Please try again.');
+                        }
+                    }
+                });
+            }
+
+            // Add Balance Form
+            document.getElementById('addBalanceForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const amount = parseFloat(document.getElementById('addAmount').value);
+                const MINIMUM_ADD_AMOUNT = 500;
+                const MAXIMUM_ADD_AMOUNT = 10000;
+                
+                if (amount <= 0) {
+                    alert('Please enter a valid amount');
+                    return;
+                }
+
+                // Check minimum amount requirement
+                if (amount < MINIMUM_ADD_AMOUNT) {
+                    const errorMsg = document.getElementById('errorMessageAdd');
+                    document.getElementById('errorTextAdd').textContent = `Minimum amount to add is ₹${MINIMUM_ADD_AMOUNT.toLocaleString('en-IN')}!`;
+                    errorMsg.style.display = 'flex';
+                    setTimeout(() => {
+                        errorMsg.style.display = 'none';
+                    }, 3000);
+                    return;
+                }
+
+                // Check maximum amount requirement
+                if (amount > MAXIMUM_ADD_AMOUNT) {
+                    const errorMsg = document.getElementById('errorMessageAdd');
+                    document.getElementById('errorTextAdd').textContent = `Maximum amount to add is ₹${MAXIMUM_ADD_AMOUNT.toLocaleString('en-IN')}!`;
+                    errorMsg.style.display = 'flex';
+                    setTimeout(() => {
+                        errorMsg.style.display = 'none';
+                    }, 3000);
+                    return;
+                }
+
+                // Store the amount in localStorage and redirect to payment page
+                localStorage.setItem('walletAddAmount', amount.toFixed(2));
+                localStorage.setItem('paymentType', 'wallet_add');
+                
+                // Redirect to payment page
+                window.location.href = 'overview/product info/payment.html?amount=' + amount + '&type=wallet_add';
+            });
+
+            // Withdraw Balance Form
+            document.getElementById('withdrawBalanceForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const amount = parseFloat(document.getElementById('withdrawAmount').value);
+                const MINIMUM_WITHDRAW_AMOUNT = 500;
+                
+                if (amount <= 0) {
+                    alert('Please enter a valid amount');
+                    return;
+                }
+
+                // Check minimum withdrawal amount
+                if (amount < MINIMUM_WITHDRAW_AMOUNT) {
+                    const errorMsg = document.getElementById('errorMessageWithdraw');
+                    document.getElementById('errorText').textContent = `Minimum withdrawal amount is ₹${MINIMUM_WITHDRAW_AMOUNT.toLocaleString('en-IN')}!`;
+                    errorMsg.style.display = 'flex';
+                    setTimeout(() => {
+                        errorMsg.style.display = 'none';
+                    }, 3000);
+                    return;
+                }
+
+                // Get current balance from Firebase
+                const walletData = await dbHelper.getUserWallet(userData.uid);
+                const currentBalance = walletData.balance || 0;
+
+                if (amount > currentBalance) {
+                    const errorMsg = document.getElementById('errorMessageWithdraw');
+                    document.getElementById('errorText').textContent = 'Insufficient balance!';
+                    errorMsg.style.display = 'flex';
+                    setTimeout(() => {
+                        errorMsg.style.display = 'none';
+                    }, 3000);
+                    return;
+                }
+
+                // Store the withdrawal amount and redirect to withdraw page
+                localStorage.setItem('withdrawalAmount', amount.toFixed(2));
+                window.location.href = 'withdraw.html?amount=' + amount;
+            });
+        });
+
+        // Load wallet data from preloaded promise (FASTEST!)
+        async function loadWalletDataFromPreload(userId, dataPromise) {
+            const startTime = performance.now();
+            try {
+                // Show loading state
+                const balanceDisplay = document.getElementById('balanceDisplay');
+                const transactionList = document.getElementById('transactionList');
+                
+                balanceDisplay.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                transactionList.innerHTML = '<div class="no-transactions"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>';
+                
+                // First, show cached balance immediately (if available)
+                const cachedBalance = localStorage.getItem('cachedWalletBalance_' + userId);
+                const cacheTime = localStorage.getItem('cachedWalletBalance_time_' + userId);
+                const now = Date.now();
+                
+                if (cachedBalance && cacheTime && (now - parseInt(cacheTime)) < 5000) {
+                    updateBalanceDisplay(parseFloat(cachedBalance));
+                }
+                
+                // Wait for preloaded data (already fetching in background!)
+                const [walletData, transactions] = await dataPromise;
+                
+                if (walletData && transactions !== null) {
+                    // Update balance display
+                    const currentBalance = walletData.balance || 0;
+                    updateBalanceDisplay(currentBalance);
+                    
+                    // Cache the balance
+                    localStorage.setItem('cachedWalletBalance_' + userId, currentBalance.toString());
+                    localStorage.setItem('cachedWalletBalance_time_' + userId, now.toString());
+                    
+                    // Load transaction history
+                    loadTransactionHistory(transactions);
+                    
+                    const loadTime = (performance.now() - startTime).toFixed(0);
+                    console.log(`⚡ Wallet loaded in ${loadTime}ms (using preload)`);
+                } else {
+                    // Fallback to regular load if preload failed
+                    await loadWalletData(userId);
+                }
+            } catch (error) {
+                console.error('Error loading preloaded wallet data:', error);
+                // Fallback to regular load
+                await loadWalletData(userId);
+            }
+        }
+
+        // Load wallet data from Firebase (OPTIMIZED)
+        async function loadWalletData(userId) {
+            const startTime = performance.now();
+            try {
+                // Show loading state
+                const balanceDisplay = document.getElementById('balanceDisplay');
+                const transactionList = document.getElementById('transactionList');
+                
+                balanceDisplay.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                transactionList.innerHTML = '<div class="no-transactions"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>';
+                
+                // First, try to show cached balance immediately (if available)
+                const cachedBalance = localStorage.getItem('cachedWalletBalance_' + userId);
+                const cacheTime = localStorage.getItem('cachedWalletBalance_time_' + userId);
+                const now = Date.now();
+                
+                // If cache is less than 5 seconds old, show it immediately
+                if (cachedBalance && cacheTime && (now - parseInt(cacheTime)) < 5000) {
+                    updateBalanceDisplay(parseFloat(cachedBalance));
+                }
+                
+                // Fetch both wallet and transactions in parallel (much faster!)
+                const [walletData, transactions] = await Promise.all([
+                    dbHelper.getUserWallet(userId),
+                    dbHelper.getTransactions(userId)
+                ]);
+                
+                // Update balance display
+                const currentBalance = walletData.balance || 0;
+                updateBalanceDisplay(currentBalance);
+                
+                // Cache the balance for faster future loads
+                localStorage.setItem('cachedWalletBalance_' + userId, currentBalance.toString());
+                localStorage.setItem('cachedWalletBalance_time_' + userId, now.toString());
+                
+                // Load transaction history
+                loadTransactionHistory(transactions);
+                
+                const loadTime = (performance.now() - startTime).toFixed(0);
+                console.log(`✓ Wallet loaded in ${loadTime}ms`);
+            } catch (error) {
+                console.error('Error loading wallet data:', error);
+                document.getElementById('balanceDisplay').textContent = 'Error';
+                document.getElementById('transactionList').innerHTML = `
+                    <div class="no-transactions">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p style="color: #ef4444;">Error loading data. Please refresh.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Update balance display
+        function updateBalanceDisplay(balance) {
+            const balanceDisplay = document.getElementById('balanceDisplay');
+            const walletBalance = document.getElementById('walletBalance');
+            
+            const formattedBalance = '₹' + balance.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            balanceDisplay.textContent = formattedBalance;
+            if (walletBalance) {
+                walletBalance.textContent = formattedBalance;
+            }
+        }
+
+        // Set quick amount
+        function setAmount(type, amount) {
+            const inputId = type === 'add' ? 'addAmount' : 'withdrawAmount';
+            document.getElementById(inputId).value = amount;
+            
+            // Remove active class from all buttons in the same form
+            const form = document.getElementById(inputId).closest('.wallet-form');
+            form.querySelectorAll('.quick-amount-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Add transaction to history
+        function addTransaction(type, amount) {
+            let transactions = JSON.parse(localStorage.getItem('walletTransactions') || '[]');
+            
+            const transaction = {
+                id: Date.now(),
+                type: type,
+                amount: amount,
+                date: new Date().toISOString(),
+                balance: parseFloat(localStorage.getItem('walletBalance'))
+            };
+            
+            transactions.unshift(transaction); // Add to beginning
+            
+            // Keep only last 10 transactions
+            if (transactions.length > 10) {
+                transactions = transactions.slice(0, 10);
+            }
+            
+            localStorage.setItem('walletTransactions', JSON.stringify(transactions));
+        }
+
+        // Load transaction history
+        function loadTransactionHistory(transactions = []) {
+            const transactionList = document.getElementById('transactionList');
+            
+            if (!transactions || transactions.length === 0) {
+                transactionList.innerHTML = `
+                    <div class="no-transactions">
+                        <i class="fas fa-receipt"></i>
+                        <p>No transactions yet</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            transactionList.innerHTML = transactions.map(transaction => {
+                // Handle both timestamp (Firebase) and date (legacy) formats
+                const date = transaction.timestamp 
+                    ? new Date(transaction.timestamp) 
+                    : new Date(transaction.date);
+                    
+                const formattedDate = date.toLocaleString('en-IN', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                const isAdd = transaction.type === 'add';
+                const sign = isAdd ? '+' : '-';
+                const icon = isAdd ? 'fa-plus' : 'fa-minus';
+                const typeClass = isAdd ? 'add' : 'withdraw';
+                const typeLabel = isAdd ? 'Balance Added' : 'Balance Withdrawn';
+                
+                return `
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div class="transaction-icon ${typeClass}">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <div class="transaction-type">${typeLabel}</div>
+                                <div class="transaction-date">${formattedDate}</div>
+                            </div>
+                        </div>
+                        <div class="transaction-amount ${typeClass}">
+                            ${sign}₹${transaction.amount.toLocaleString('en-IN', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            })}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        // Support Modal Handler
+        const openSupportModalBtn = document.getElementById('openSupportModal');
+        const supportModal = document.getElementById('supportModal');
+        const closeSupportModalBtn = document.getElementById('closeSupportModal');
+        const supportForm = document.getElementById('supportForm');
+        
+        if (openSupportModalBtn) {
+            openSupportModalBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (supportModal) {
+                    supportModal.classList.add('active');
+                    const profileDropdown = document.querySelector('.profile-dropdown');
+                    if (profileDropdown) {
+                        profileDropdown.classList.remove('active');
+                    }
+                }
+            });
+        }
+        
+        if (closeSupportModalBtn) {
+            closeSupportModalBtn.addEventListener('click', function() {
+                if (supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        if (supportModal) {
+            supportModal.addEventListener('click', function(e) {
+                if (e.target === supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        const cancelSupportBtn = document.getElementById('cancelSupportBtn');
+        if (cancelSupportBtn) {
+            cancelSupportBtn.addEventListener('click', function() {
+                if (supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+        
+        if (supportForm) {
+            supportForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const message = document.getElementById('supportMessage').value;
+                
+                if (!message.trim()) {
+                    alert('Please enter your message.');
+                    return;
+                }
+                
+                const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                const userEmail = userData.email || 'Unknown';
+                const userName = userData.name || 'User';
+                const userId = userData.uid || null;
+                const userPhone = userData.phone || userData.mobile || null;
+                
+                const contactMessage = {
+                    name: userName,
+                    email: userEmail,
+                    userId: userId,
+                    phone: userPhone,
+                    message: message,
+                    timestamp: new Date().toISOString(),
+                    source: 'support'
+                };
+                
+                const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                messages.push(contactMessage);
+                localStorage.setItem('contactMessages', JSON.stringify(messages));
+                
+                alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                
+                document.getElementById('supportMessage').value = '';
+                
+                if (supportModal) {
+                    supportModal.classList.remove('active');
+                }
+            });
+        }
+    </script>
+    
+    <!-- Support Modal -->
+    <div class="support-modal-overlay" id="supportModal">
+        <div class="support-modal">
+            <div class="support-modal-header">
+                <h3><i class="fas fa-headset"></i> Contact Support</h3>
+                <button class="support-modal-close" id="closeSupportModal">&times;</button>
+            </div>
+            <form id="supportForm">
+                <div class="support-form-group">
+                    <label for="supportMessage">Your Message</label>
+                    <textarea id="supportMessage" placeholder="Please describe your issue or question. We'll get back to you as soon as possible." rows="6" required></textarea>
+                </div>
+                <div class="support-modal-actions">
+                    <button type="button" class="btn-cancel-support" id="cancelSupportBtn">Cancel</button>
+                    <button type="submit" class="btn-send-support">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

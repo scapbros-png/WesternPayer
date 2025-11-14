@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Management - Admin Panel</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .admin-header h1 {
+            color: #f1f5f9;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-header p {
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(96, 165, 250, 0.3);
+        }
+
+        .stat-card.pending {
+            border-color: rgba(251, 191, 36, 0.5);
+        }
+
+        .stat-card.approved {
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+
+        .stat-card.rejected {
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card.pending .stat-icon {
+            color: #fbbf24;
+        }
+
+        .stat-card.approved .stat-icon {
+            color: #10b981;
+        }
+
+        .stat-card.rejected .stat-icon {
+            color: #ef4444;
+        }
+
+        .stat-card.total .stat-icon {
+            color: #60a5fa;
+        }
+
+        .stat-value {
+            color: #f1f5f9;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #cbd5e1;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .filter-btn:hover {
+            border-color: rgba(96, 165, 250, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .orders-table-container {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            overflow-x: auto;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table thead th {
+            background: rgba(30, 41, 59, 0.8);
+            color: #60a5fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .orders-table tbody tr {
+            border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .orders-table tbody tr:hover {
+            background: rgba(30, 41, 59, 0.5);
+        }
+
+        .orders-table tbody td {
+            padding: 1.25rem 1rem;
+            color: #cbd5e1;
+            vertical-align: middle;
+        }
+
+        .order-id {
+            color: #60a5fa;
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .customer-name {
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+
+        .product-name {
+            color: #a78bfa;
+            font-weight: 500;
+        }
+
+        .order-amount {
+            color: #10b981;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .order-date {
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .order-status {
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .order-status.pending {
+            background: rgba(251, 191, 36, 0.2);
+            border: 1px solid rgba(251, 191, 36, 0.4);
+            color: #fbbf24;
+        }
+
+        .order-status.approved {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+        }
+
+        .order-status.rejected {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-approve {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-approve:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-reject {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-reject:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-approve:disabled,
+        .btn-reject:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 3rem;
+            color: #60a5fa;
+        }
+
+        .loading-spinner i {
+            font-size: 3rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 3rem;
+            color: #94a3b8;
+        }
+
+        .no-orders i {
+            font-size: 4rem;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn {
+            background: rgba(96, 165, 250, 0.2);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(96, 165, 250, 0.3);
+            border-color: rgba(96, 165, 250, 0.5);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .admin-header h1 {
+                font-size: 2rem;
+            }
+
+            .orders-table {
+                font-size: 0.85rem;
+            }
+
+            .orders-table thead th,
+            .orders-table tbody td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .filter-tabs {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Back to Dashboard
+        </a>
+
+        <div class="admin-header">
+            <h1><i class="fas fa-shopping-bag"></i> Orders Management</h1>
+            <p>View and manage all customer orders</p>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <div class="stat-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="stat-value" id="totalOrders">0</div>
+                <div class="stat-label">Total Orders</div>
+            </div>
+            <div class="stat-card pending">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-value" id="pendingOrders">0</div>
+                <div class="stat-label">Pending</div>
+            </div>
+            <div class="stat-card approved">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-value" id="approvedOrders">0</div>
+                <div class="stat-label">Approved</div>
+            </div>
+            <div class="stat-card rejected">
+                <div class="stat-icon">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="stat-value" id="rejectedOrders">0</div>
+                <div class="stat-label">Rejected</div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-btn active" data-filter="all">All Orders</button>
+            <button class="filter-btn" data-filter="pending">Pending</button>
+            <button class="filter-btn" data-filter="approved">Approved</button>
+            <button class="filter-btn" data-filter="rejected">Rejected</button>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading orders...</p>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="orders-table-container" id="ordersTableContainer" style="display: none;">
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Amount Paid</th>
+                        <th>Withdrawal Amount</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                    <!-- Orders will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- No Orders Message -->
+        <div class="no-orders" id="noOrdersMessage" style="display: none;">
+            <i class="fas fa-shopping-bag"></i>
+            <h2>No Orders Found</h2>
+            <p>There are no orders in the system yet.</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    
+    <script>
+        let allOrders = [];
+        let currentFilter = 'all';
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check admin authentication
+            const adminSession = JSON.parse(localStorage.getItem('adminSession') || '{}');
+            if (!adminSession.isLoggedIn) {
+                alert('Please login as admin first');
+                window.location.href = 'admin%20login.html';
+                return;
+            }
+
+            // Load orders
+            await loadAllOrders();
+
+            // Setup filter buttons
+            setupFilterButtons();
+        });
+
+        async function loadAllOrders() {
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const ordersTableContainer = document.getElementById('ordersTableContainer');
+            const noOrdersMessage = document.getElementById('noOrdersMessage');
+
+            try {
+                const fetchedOrders = await dbHelper.getAllOrders();
+                
+                // Filter out wallet top-up orders
+                allOrders = fetchedOrders.filter(order => {
+                    const productName = (order.productName || '').toLowerCase();
+                    return !productName.includes('wallet top-up') && 
+                           !productName.includes('wallet topup') &&
+                           !productName.includes('wallet add');
+                });
+
+                console.log('Total orders fetched:', fetchedOrders.length);
+                console.log('Orders after filtering wallet top-ups:', allOrders.length);
+
+                loadingSpinner.style.display = 'none';
+
+                if (allOrders.length === 0) {
+                    noOrdersMessage.style.display = 'block';
+                    return;
+                }
+
+                // Sort orders by date (newest first)
+                allOrders.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
+
+                // Update statistics
+                updateStatistics();
+
+                // Display orders
+                ordersTableContainer.style.display = 'block';
+                displayOrders(allOrders);
+
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                loadingSpinner.style.display = 'none';
+                noOrdersMessage.style.display = 'block';
+            }
+        }
+
+        function updateStatistics() {
+            const total = allOrders.length;
+            const pending = allOrders.filter(o => o.status === 'pending').length;
+            const approved = allOrders.filter(o => o.status === 'approved').length;
+            const rejected = allOrders.filter(o => o.status === 'rejected').length;
+
+            document.getElementById('totalOrders').textContent = total;
+            document.getElementById('pendingOrders').textContent = pending;
+            document.getElementById('approvedOrders').textContent = approved;
+            document.getElementById('rejectedOrders').textContent = rejected;
+        }
+
+        function displayOrders(orders) {
+            const tbody = document.getElementById('ordersTableBody');
+            
+            // Filter orders based on current filter
+            let filteredOrders = orders;
+            if (currentFilter !== 'all') {
+                filteredOrders = orders.filter(o => o.status === currentFilter);
+            }
+
+            if (filteredOrders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #94a3b8;">No orders found for this filter</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filteredOrders.map(order => createOrderRow(order)).join('');
+        }
+
+        function createOrderRow(order) {
+            const orderDate = new Date(order.orderDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            const statusClass = order.status || 'pending';
+            const statusText = statusClass.charAt(0).toUpperCase() + statusClass.slice(1);
+
+            const showActions = statusClass === 'pending';
+
+            return `
+                <tr>
+                    <td><span class="order-id">${order.orderId || order.orderKey}</span></td>
+                    <td><span class="customer-name">${order.customerName || 'N/A'}</span></td>
+                    <td><span class="product-name">${order.productName || 'Product'}</span></td>
+                    <td><span class="order-amount">₹${parseFloat(order.amount || 0).toLocaleString('en-IN', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })}</span></td>
+                    <td><span class="order-amount" style="color: ${order.withdrawalAmount ? '#10b981' : '#94a3b8'}; font-weight: ${order.withdrawalAmount ? '700' : '400'};">
+                        ${order.withdrawalAmount ? '₹' + parseFloat(order.withdrawalAmount).toLocaleString('en-IN', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }) : 'N/A'}
+                    </span></td>
+                    <td><span class="order-date">${orderDate}</span></td>
+                    <td><span class="order-status ${statusClass}">${statusText}</span></td>
+                    <td>
+                        ${showActions ? `
+                            <div class="action-buttons">
+                                <button class="btn-approve" onclick="approveOrder('${order.userId}', '${order.orderKey}')">
+                                    <i class="fas fa-check"></i> Approve
+                                </button>
+                                <button class="btn-reject" onclick="rejectOrder('${order.userId}', '${order.orderKey}')">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            </div>
+                        ` : `<span class="order-status ${statusClass}">${statusText}</span>`}
+                    </td>
+                </tr>
+            `;
+        }
+
+        async function approveOrder(userId, orderKey) {
+            if (!confirm('Are you sure you want to approve this order?')) {
+                return;
+            }
+
+            try {
+                await dbHelper.updateOrderStatus(userId, orderKey, 'approved', 'Order approved by admin');
+                alert('Order approved successfully!');
+                await loadAllOrders();
+            } catch (error) {
+                console.error('Error approving order:', error);
+                alert('Error approving order. Please try again.');
+            }
+        }
+
+        async function rejectOrder(userId, orderKey) {
+            const reason = prompt('Enter reason for rejection (optional):');
+            if (reason === null) return; // User clicked cancel
+
+            try {
+                await dbHelper.updateOrderStatus(userId, orderKey, 'rejected', reason || 'Order rejected by admin');
+                alert('Order rejected successfully!');
+                await loadAllOrders();
+            } catch (error) {
+                console.error('Error rejecting order:', error);
+                alert('Error rejecting order. Please try again.');
+            }
+        }
+
+        function setupFilterButtons() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    // Update filter
+                    currentFilter = this.dataset.filter;
+                    // Display filtered orders
+                    displayOrders(allOrders);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+

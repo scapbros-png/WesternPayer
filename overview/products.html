@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Products - Western Payer</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .products-section {
+            margin-top: 80px;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: calc(100vh - 80px);
+        }
+
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .products-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .products-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .products-header p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: rgba(96, 165, 250, 0.4);
+        }
+
+
+        .product-icon {
+            width: 180px;
+            height: 180px;
+            background: transparent;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .product-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .product-card p {
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+        }
+
+        .product-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .product-features li {
+            color: #cbd5e1;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .product-features li i {
+            color: #10b981;
+            font-size: 0.8rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-continue {
+            background: #000000;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-continue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-continue:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-back {
+            background: rgba(30, 41, 59, 0.8);
+            color: #cbd5e1;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-back:hover {
+            background: rgba(30, 41, 59, 1);
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+
+
+        @media (max-width: 768px) {
+            .products-header h1 {
+                font-size: 2rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="../index.html">
+                        <img src="../image/header logo.png" alt="Western Payer" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="../login.html" class="btn-login" id="loginBtn">Login</a>
+                    <div class="wallet-section" id="walletSection" style="display: none;">
+                        <div class="wallet-container">
+                            <i class="fas fa-wallet"></i>
+                            <div class="wallet-info">
+                                <span class="wallet-label"></span>
+                                <span class="wallet-balance" id="walletBalance">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-section" id="profileSection" style="display: none;">
+                        <div class="profile-dropdown">
+                            <button class="profile-btn" id="profileBtn">
+                                <i class="fas fa-user-circle"></i>
+                            </button>
+                            <div class="profile-menu" id="profileMenu">
+                                <div class="profile-header">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span id="userName">User</span>
+                                </div>
+                                <div class="profile-divider"></div>
+                                <a href="../my-profile.html" class="profile-link">
+                                    <i class="fas fa-user"></i>
+                                    My Profile
+                                </a>
+                                <a href="../settings.html" class="profile-link">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <a href="../orders.html" class="profile-link">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Orders
+                                </a>
+                                <a href="../messages.html" class="profile-link">
+                                    <i class="fas fa-envelope"></i>
+                                    Messages
+                                </a>
+                                <a href="#" class="profile-link" id="openSupportModal">
+                                    <i class="fas fa-headset"></i>
+                                    Support
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="#" class="profile-link logout" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="products-container">
+            <div class="products-header">
+                <h1>Select Your Product for Withdrawal</h1>
+                <p>Withdrawal money from your EMI Cards with cheepest fee</p>
+            </div>
+
+            <div class="products-grid">
+                <div class="product-card" data-product="bajaj-card" onclick="window.location.href='product info/bajaj card.html'">
+                    <div class="product-icon">
+                        <img src="../image/bajaj card.png" alt="Bajaj Card" class="product-img">
+                    </div>
+                    <h3>Bajaj Finserv Insta EMI Card</h3>
+                    <p>The Bajaj Finserv Insta EMI Card is an existing EMI card that allows you to withdraw money from your EMI card.</p>
+                </div>
+
+                <div class="product-card" data-product="lazypay" onclick="window.location.href='product info/lazypay.html'">
+                    <div class="product-icon">
+                        <img src="../image/lazypay.png" alt="LazyPay" class="product-img">
+                    </div>
+                    <h3>LazyPay</h3>
+                    <p>Buy now, pay later with instant credit approval</p>
+                </div>
+
+                <div class="product-card" data-product="credit-card" onclick="window.location.href='product info/credit-card.html'">
+                    <div class="product-icon">
+                        <img src="../image/credit card.png" alt="Credit Card" class="product-img">
+                    </div>
+                    <h3>Credit Card</h3>
+                    <p>0.5% withdrawal fee on all transactions</p>
+                </div>
+
+                <div class="product-card" data-product="home-credit" onclick="window.location.href='product info/home-credit.html'">
+                    <div class="product-icon">
+                        <img src="../image/home credit.png" alt="Home Credit" class="product-img">
+                    </div>
+                    <h3>Home Credit Ujjwak EMI Card</h3>
+                    <p>Withdrawal your EMI Limit with Home Credit Ujjwal EMI Card and enjoy the benefit of easy repayments.</p>
+                </div>
+
+                <div class="product-card" data-product="axio" onclick="window.location.href='product info/axio.html'">
+                    <div class="product-icon">
+                        <img src="../image/axio.png" alt="Axio" class="product-img">
+                    </div>
+                    <h3>Axio</h3>
+                    <p>Shop now, pay later with flexible EMI options</p>
+                </div>
+
+                <div class="product-card" data-product="idfc-buy-emi" onclick="window.location.href='product info/idfc-buy-emi.html'">
+                    <div class="product-icon">
+                        <img src="../image/idfc buy emi card.png" alt="IDFC Buy EMI Card" class="product-img">
+                    </div>
+                    <h3>IDFC Buy EMI Card</h3>
+                    <p>Convert purchases into easy EMIs instantly</p>
+                </div>
+
+                <div class="product-card" data-product="hdfc-easyemi" onclick="window.location.href='product info/hdfc-easyemi.html'">
+                    <div class="product-icon">
+                        <img src="../image/hdfc easy emi card.png" alt="HDFC EasyEMi Card" class="product-img">
+                    </div>
+                    <h3>HDFC EasyEMI Card</h3>
+                    <p>Flexible EMI conversion with instant approval</p>
+                </div>
+
+                <div class="product-card" data-product="zest-money" onclick="window.location.href='product info/zest-money.html'">
+                    <div class="product-icon">
+                        <img src="../image/zestmoney.png" alt="Zest Money" class="product-img">
+                    </div>
+                    <h3>Zest Money</h3>
+                    <p>Instant credit for purchases with flexible repayment</p>
+                </div>
+
+                <div class="product-card" data-product="mobikwik-zip" onclick="window.location.href='product info/mobikwik-zip.html'">
+                    <div class="product-icon">
+                        <img src="../image/mobikwik zip.png" alt="Mobikwik Zip" class="product-img">
+                    </div>
+                    <h3>Mobikwik Zip Pay Later</h3>
+                    <p>Buy now, pay later with instant credit approval</p>
+                </div>
+
+                <div class="product-card" data-product="amazon-pay-later" onclick="window.location.href='product info/amazon-pay-later.html'">
+                    <div class="product-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon Pay Later" class="product-img">
+                    </div>
+                    <h3>Amazon Pay Later Withdrawal</h3>
+                    <p>Withdraw money from your Amazon Pay Later credit limit</p>
+                </div>
+
+            </div>
+
+            <div class="action-buttons">
+                <a href="../index.html" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="../global-support.js"></script>
+    
+    <!-- Optimized Wallet Balance Loader -->
+    <script src="../wallet-balance-loader.js"></script>
+    <script src="../charges-calculator.js"></script>
+    <script src="../script.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check login status and update UI
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const loginBtn = document.getElementById('loginBtn');
+            const profileSection = document.getElementById('profileSection');
+            const walletSection = document.getElementById('walletSection');
+            const walletBalance = document.getElementById('walletBalance');
+            const userName = document.getElementById('userName');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            // Check if user is logged in
+            if (userData.isLoggedIn && userData.uid) {
+                // Show logged-in UI immediately (don't wait for block check)
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (profileSection) profileSection.style.display = 'block';
+                if (walletSection) walletSection.style.display = 'block';
+                if (userName) userName.textContent = userData.name || 'User';
+                
+                // Check if user is blocked (non-blocking, async check)
+                // Only check if dbHelper is available to prevent errors
+                if (typeof window.dbHelper !== 'undefined' && typeof window.dbHelper.getUserProfile === 'function') {
+                    setTimeout(async function() {
+                        try {
+                            const isBlocked = await window.checkUserBlockedStatus();
+                            // If blocked, the function will handle redirect
+                        } catch (error) {
+                            console.error('Error checking block status:', error);
+                            // Don't log out user on error - just continue
+                        }
+                    }, 500); // Delay to ensure page is fully loaded
+                }
+                
+                // Load profile photo after profile section is displayed
+                if (typeof window.loadAndDisplayProfilePhoto === 'function') {
+                    setTimeout(function() {
+                        window.loadAndDisplayProfilePhoto();
+                    }, 100);
+                }
+                
+                // Wallet balance is automatically loaded by wallet-balance-loader.js
+                // (Already preloaded and cached for instant display!)
+            }
+            
+            // Wallet click functionality - navigate to wallet page
+            const walletContainer = document.querySelector('.wallet-container');
+            if (walletContainer) {
+                walletContainer.addEventListener('click', function() {
+                    window.location.href = '../wallet.html';
+                });
+            }
+            
+            // Profile dropdown functionality
+            if (profileBtn) {
+                profileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (profileBtn.parentElement) {
+                        profileBtn.parentElement.classList.toggle('active');
+                    }
+                });
+            }
+            
+            // Close dropdown when clicking outside
+            if (profileBtn && profileMenu) {
+                document.addEventListener('click', function(e) {
+                    if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                        if (profileBtn.parentElement) {
+                            profileBtn.parentElement.classList.remove('active');
+                        }
+                    }
+                });
+            }
+            
+            // Logout functionality
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    
+                    // Show confirmation
+                    if (confirm('Are you sure you want to logout?')) {
+                        try {
+                            // Sign out from Firebase
+                            if (typeof firebaseAuth !== 'undefined') {
+                                await firebaseAuth.signOut();
+                            }
+                            
+                            // Clear user data
+                            localStorage.removeItem('userData');
+                            
+                            // Hide profile and wallet sections, show login button
+                            if (profileSection) profileSection.style.display = 'none';
+                            if (walletSection) walletSection.style.display = 'none';
+                            if (loginBtn) loginBtn.style.display = 'inline-block';
+                            
+                            // Close dropdown
+                            if (profileBtn && profileBtn.parentElement) {
+                                profileBtn.parentElement.classList.remove('active');
+                            }
+                            
+                            // Show success message
+                            alert('You have been logged out successfully!');
+                        } catch (error) {
+                            console.error('Error signing out:', error);
+                            alert('Error signing out. Please try again.');
+                        }
+                    }
+                });
+            }
+
+        });
+    </script>
+    
+    <!-- Support Modal Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const openSupportModalBtn = document.getElementById('openSupportModal');
+            const supportModal = document.getElementById('supportModal');
+            const closeSupportModalBtn = document.getElementById('closeSupportModal');
+            const cancelSupportBtn = document.getElementById('cancelSupportBtn');
+            const supportForm = document.getElementById('supportForm');
+            
+            if (openSupportModalBtn) {
+                openSupportModalBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (supportModal) {
+                        supportModal.classList.add('active');
+                        // Close profile menu if open
+                        const profileDropdown = document.querySelector('.profile-dropdown');
+                        if (profileDropdown) {
+                            profileDropdown.classList.remove('active');
+                        }
+                    }
+                });
+            }
+            
+            if (closeSupportModalBtn) {
+                closeSupportModalBtn.addEventListener('click', function() {
+                    if (supportModal) {
+                        supportModal.classList.remove('active');
+                    }
+                });
+            }
+            
+            if (supportModal) {
+                supportModal.addEventListener('click', function(e) {
+                    if (e.target === supportModal) {
+                        supportModal.classList.remove('active');
+                    }
+                });
+            }
+            
+            if (cancelSupportBtn) {
+                cancelSupportBtn.addEventListener('click', function() {
+                    if (supportModal) {
+                        supportModal.classList.remove('active');
+                    }
+                });
+            }
+            
+            if (supportForm) {
+                supportForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const message = document.getElementById('supportMessage').value;
+                    
+                    if (!message.trim()) {
+                        alert('Please enter your message.');
+                        return;
+                    }
+                    
+                    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                    const userEmail = userData.email || 'Unknown';
+                    const userName = userData.name || 'User';
+                    const userId = userData.uid || null;
+                    const userPhone = userData.phone || userData.mobile || null;
+                    
+                    const contactMessage = {
+                        name: userName,
+                        email: userEmail,
+                        userId: userId,
+                        phone: userPhone,
+                        message: message,
+                        timestamp: new Date().toISOString(),
+                        source: 'support'
+                    };
+                    
+                    const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                    messages.push(contactMessage);
+                    localStorage.setItem('contactMessages', JSON.stringify(messages));
+                    
+                    alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                    
+                    document.getElementById('supportMessage').value = '';
+                    
+                    if (supportModal) {
+                        supportModal.classList.remove('active');
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <!-- Support Modal -->
+    <div class="support-modal-overlay" id="supportModal">
+        <div class="support-modal">
+            <div class="support-modal-header">
+                <h3><i class="fas fa-headset"></i> Contact Support</h3>
+                <button class="support-modal-close" id="closeSupportModal">&times;</button>
+            </div>
+            <form id="supportForm">
+                <div class="support-form-group">
+                    <label for="supportMessage">Your Message</label>
+                    <textarea id="supportMessage" placeholder="Please describe your issue or question. We'll get back to you as soon as possible." rows="6" required></textarea>
+                </div>
+                <div class="support-modal-actions">
+                    <button type="button" class="btn-cancel-support" id="cancelSupportBtn">Cancel</button>
+                    <button type="submit" class="btn-send-support">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HDFC EasyEMI Card - Western Payer</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .product-detail-section {
+            margin-top: 80px;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: calc(100vh - 80px);
+        }
+
+        .product-detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .product-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .product-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .product-header p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+        }
+
+        .product-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-image-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image {
+            width: 300px;
+            height: 300px;
+            background: #ffffff;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 15px;
+        }
+
+        .product-details {
+            background: #ffffff;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .product-details h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+            transition: color 0.3s ease;
+        }
+
+        .product-details h2:hover {
+            color: #3b82f6;
+        }
+
+        .product-details h2 .toggle-arrow {
+            font-size: 1.2rem;
+            color: #3b82f6;
+            transition: transform 0.3s ease;
+            margin-left: 0.75rem;
+        }
+
+        .product-details h2.collapsed .toggle-arrow {
+            transform: rotate(-90deg);
+        }
+
+        .product-info-content {
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            max-height: 2000px;
+            opacity: 1;
+        }
+
+        .product-info-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+            margin-bottom: 0;
+        }
+
+        .product-details h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .product-details p {
+            color: #475569;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .product-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1rem;
+        }
+
+        .product-features li {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .product-features li i {
+            color: #10b981;
+            font-size: 1rem;
+        }
+
+        .withdrawal-info {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .withdrawal-info h3 {
+            color: #10b981;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .withdrawal-info p {
+            color: #475569;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-continue {
+            background: #000000;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-continue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-back {
+            background: rgba(30, 41, 59, 0.8);
+            color: #cbd5e1;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-back:hover {
+            background: rgba(30, 41, 59, 1);
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+
+        .card-details-section {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .card-details-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #1e293b;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 10px;
+            background: #ffffff;
+            color: #1e293b;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .validation-icon {
+            position: absolute;
+            right: 15px;
+            top: 70%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+        }
+
+        .validation-icon.valid {
+            opacity: 1;
+            color: #10b981;
+        }
+
+        .validation-icon.processing {
+            opacity: 1;
+            color: #60a5fa;
+            animation: spin 1s linear infinite;
+        }
+
+        .validation-icon.processing i {
+            display: block;
+        }
+
+        .validation-icon.valid i {
+            display: block;
+        }
+
+        @keyframes spin {
+            0% { transform: translateY(-50%) rotate(0deg); }
+            100% { transform: translateY(-50%) rotate(360deg); }
+        }
+
+        .validation-icon i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-group input:focus {
+            padding-right: 3rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #64748b;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-submit {
+            background: #000000;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message h4 {
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-message p {
+            color: #475569;
+            margin-bottom: 0.5rem;
+        }
+
+        .customer-name {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .success-icon {
+            color: #10b981;
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .product-header h1 {
+                font-size: 2rem;
+            }
+            
+            .product-info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="../../index.html">
+                        <img src="../../image/header logo.png" alt="Western Payer" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="../../login.html" class="btn-login" id="loginBtn">Login</a>
+                    <div class="wallet-section" id="walletSection" style="display: none;">
+                        <div class="wallet-container">
+                            <i class="fas fa-wallet"></i>
+                            <div class="wallet-info">
+                                <span class="wallet-label"></span>
+                                <span class="wallet-balance" id="walletBalance">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-section" id="profileSection" style="display: none;">
+                        <div class="profile-dropdown">
+                            <button class="profile-btn" id="profileBtn">
+                                <i class="fas fa-user-circle"></i>
+                            </button>
+                            <div class="profile-menu" id="profileMenu">
+                                <div class="profile-header">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span id="userName">User</span>
+                                </div>
+                                <div class="profile-divider"></div>
+                                <a href="../../my-profile.html" class="profile-link">
+                                    <i class="fas fa-user"></i>
+                                    My Profile
+                                </a>
+                                <a href="../../settings.html" class="profile-link">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <a href="../../orders.html" class="profile-link">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Orders
+                                </a>
+                                <a href="../../messages.html" class="profile-link">
+                                    <i class="fas fa-envelope"></i>
+                                    Messages
+                                </a>
+                                <a href="#" class="profile-link" id="openSupportModal">
+                                    <i class="fas fa-headset"></i>
+                                    Support
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="#" class="profile-link logout" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Product Detail Section -->
+    <section class="product-detail-section">
+        <div class="product-detail-container">
+            <div class="product-header">
+                <h1>HDFC EasyEMI Card</h1>
+                <p>Flexible EMI conversion with instant approval</p>
+            </div>
+
+            <div class="product-info-grid">
+                <div class="product-image-section">
+                    <div class="product-image">
+                        <img src="../../image/hdfc easy emi card.png" alt="HDFC EasyEMI Card" class="product-img">
+                    </div>
+                    
+                    <!-- Reviews Section -->
+                    <div class="reviews-section" id="reviewsSection" style="background: #ffffff; padding: 1rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); border: 1px solid rgba(0, 0, 0, 0.08); margin-top: 1.5rem; width: 100%; text-align: center;">
+                        <!-- Initial placeholder - will be replaced by JavaScript -->
+                        <div class="reviews-summary-section" style="padding: 0.75rem 1rem; background: #f8fafc; border-radius: 10px; margin-bottom: 0; border: 1px solid #e2e8f0;">
+                            <div class="rating-display" style="display: flex; align-items: center; justify-content: center; gap: 0.6rem; height: 30px; margin-bottom: 0.25rem;">
+                                <div class="stars-large" style="color: #10b981; font-size: 1rem; white-space: nowrap; display: inline-flex; align-items: center; flex-shrink: 0;">
+                                    <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                                </div>
+                                <div class="rating-info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; min-width: 75px; height: 30px;">
+                                    <span class="rating-value-large" style="font-size: 1.2rem; font-weight: 800; color: #1e293b; line-height: 1; white-space: nowrap; height: 1.2rem; display: flex; align-items: center; margin: 0;">0.0</span>
+                                    <span class="rating-count-text" style="font-size: 0.75rem; color: #64748b; white-space: nowrap; text-align: center; height: 0.85rem; display: flex; align-items: center; margin: 0;">0 Reviews</span>
+                                </div>
+                            </div>
+                            <div style="width: 100%; margin-top: 0.1rem; text-align: center;">
+                                <button class="btn-show-reviews" id="showReviewsBtn" style="background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%); color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 6px; font-weight: 600; font-size: 0.7rem; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.3rem; justify-content: center;">
+                                    <i class="fas fa-chevron-down" style="font-size: 0.65rem;"></i> Show Reviews
+                                </button>
+                            </div>
+                        </div>
+                        <style>
+                            .reviews-summary-section {
+                                padding: 0.75rem 1rem;
+                                background: #f8fafc;
+                                border-radius: 10px;
+                                margin-bottom: 0;
+                                border: 1px solid #e2e8f0;
+                            }
+
+                            .rating-display {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 0.6rem;
+                                height: 30px;
+                                margin-bottom: 0.25rem;
+                            }
+
+                            .stars-large {
+                                color: #10b981;
+                                font-size: 1rem;
+                                white-space: nowrap;
+                                display: inline-flex;
+                                align-items: center;
+                                flex-shrink: 0;
+                            }
+
+                            .rating-info {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                flex-shrink: 0;
+                                min-width: 75px;
+                                height: 30px;
+                            }
+
+                            .rating-value-large {
+                                font-size: 1.2rem;
+                                font-weight: 800;
+                                color: #1e293b;
+                                line-height: 1;
+                                white-space: nowrap;
+                                height: 1.2rem;
+                                display: flex;
+                                align-items: center;
+                                margin: 0;
+                            }
+
+                            .rating-count-text {
+                                font-size: 0.75rem;
+                                color: #64748b;
+                                white-space: nowrap;
+                                text-align: center;
+                                height: 0.85rem;
+                                display: flex;
+                                align-items: center;
+                                margin: 0;
+                            }
+
+                            .btn-show-reviews {
+                                background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+                                color: white;
+                                border: none;
+                                padding: 0.3rem 0.6rem;
+                                border-radius: 6px;
+                                font-weight: 600;
+                                font-size: 0.7rem;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 0.3rem;
+                                justify-content: center;
+                            }
+
+                            .btn-show-reviews:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+                            }
+
+                            .btn-show-reviews.active {
+                                background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+                            }
+
+                            .reviews-expanded-section {
+                                margin-top: 1rem;
+                                padding-top: 1rem;
+                                border-top: 1px solid #e2e8f0;
+                            }
+
+                            .reviews-list-container {
+                                margin-bottom: 1.5rem;
+                            }
+
+                            .reviews-list {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 1.5rem;
+                            }
+
+                            .review-item {
+                                padding: 1.25rem;
+                                background: #ffffff;
+                                border-radius: 10px;
+                                border: 1px solid #e2e8f0;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                                text-align: left;
+                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                            }
+
+                            .reviewer-name {
+                                font-weight: 600;
+                                color: #1e293b !important;
+                                font-size: 1.1rem !important;
+                                margin-bottom: 0.5rem;
+                                display: block;
+                                text-align: left;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                            }
+
+                            .review-rating {
+                                color: #10b981 !important;
+                                font-size: 0.75rem !important;
+                                white-space: nowrap;
+                                display: inline-flex;
+                                align-items: center;
+                                text-align: left;
+                            }
+
+                            .review-rating i {
+                                font-size: 0.75rem !important;
+                            }
+
+                            .review-date {
+                                color: #64748b !important;
+                                font-size: 0.75rem !important;
+                                display: block;
+                                margin-bottom: 0.75rem;
+                                text-align: left;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                            }
+
+                            .review-text {
+                                color: #475569 !important;
+                                line-height: 1.6;
+                                font-size: 1rem !important;
+                                display: block;
+                                text-align: left;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                            }
+
+                            .no-reviews {
+                                text-align: center;
+                                padding: 3rem 1rem;
+                                color: #64748b;
+                            }
+
+                            .no-reviews i {
+                                font-size: 3rem;
+                                margin-bottom: 1rem;
+                                color: #cbd5e1;
+                            }
+
+                            .customer-review-form-section {
+                                background: #ffffff;
+                                padding: 1.5rem;
+                                border-radius: 10px;
+                                border: 1px solid #e2e8f0;
+                                margin-top: 1.5rem;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                                display: block !important;
+                                visibility: visible !important;
+                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                            }
+
+                            .customer-review-form-section h3 {
+                                font-size: 1.5rem;
+                                font-weight: 700;
+                                color: #1e293b !important;
+                                margin-bottom: 1.5rem;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                            }
+
+                            .customer-review-form-section h3 i {
+                                color: #10b981;
+                                margin-right: 0.5rem;
+                            }
+
+                            .customer-review-form-section .form-group {
+                                margin-bottom: 1.5rem;
+                            }
+
+                            .customer-review-form-section .form-group label {
+                                display: block;
+                                color: #1e293b !important;
+                                font-weight: 600;
+                                margin-bottom: 0.5rem;
+                                font-size: 1rem !important;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                            }
+
+                            .customer-review-form-section .form-group input[type="text"],
+                            .customer-review-form-section .form-group textarea {
+                                width: 100%;
+                                padding: 0.75rem;
+                                border: 1px solid #e2e8f0;
+                                border-radius: 8px;
+                                background: #ffffff;
+                                color: #1e293b !important;
+                                font-size: 1rem !important;
+                                transition: all 0.3s ease;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                            }
+
+                            .customer-review-form-section .form-group input:focus,
+                            .customer-review-form-section .form-group textarea:focus {
+                                outline: none;
+                                border-color: #60a5fa;
+                                box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+                            }
+
+                            .rating-input {
+                                display: flex;
+                                flex-direction: row;
+                                justify-content: flex-start;
+                                gap: 0.3rem;
+                            }
+
+                            .rating-input input[type="radio"] {
+                                display: none;
+                            }
+
+                            .rating-input .star-label {
+                                cursor: pointer;
+                                color: #cbd5e1;
+                                font-size: 1.5rem;
+                                transition: all 0.2s ease;
+                            }
+
+                            .rating-input .star-label i {
+                                transition: all 0.2s ease;
+                            }
+
+                            .btn-submit-review {
+                                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                                color: white;
+                                border: none;
+                                padding: 1rem 2rem;
+                                border-radius: 10px;
+                                font-weight: 600;
+                                font-size: 1rem;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                width: 100%;
+                                justify-content: center;
+                            }
+
+                            .btn-submit-review:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+                            }
+
+                            .btn-submit-review:disabled {
+                                opacity: 0.6;
+                                cursor: not-allowed;
+                                transform: none;
+                            }
+
+                            @media (max-width: 768px) {
+                                .reviews-summary-section {
+                                    padding: 0.75rem 1rem;
+                                    display: block;
+                                }
+
+                                .rating-display {
+                                    width: 100%;
+                                    justify-content: center;
+                                    margin-bottom: 0.25rem;
+                                }
+                            }
+                        </style>
+                    </div>
+                </div>
+
+                <div class="product-details">
+                    <h2 onclick="toggleProductInfo(this)" class="collapsed">
+                        <span>What is HDFC EasyEMI Card?</span>
+                        <i class="fas fa-chevron-down toggle-arrow"></i>
+                    </h2>
+                    <div class="product-info-content collapsed">
+                        <p>HDFC EasyEMI Card offers flexible EMI conversion with instant approval. Convert your purchases into easy installments and enjoy the convenience of spreading your payments over time.</p>
+
+                        <div class="withdrawal-info">
+                            <h3><i class="fas fa-info-circle"></i> Withdrawal Information</h3>
+                            <p><strong>Withdrawal Fee:</strong> Starting from 7.25% per transaction</p>
+                            <p><strong>Processing Time:</strong> Instant to 3-4 Working hours</p>
+                            <p><strong>Minimum Amount:</strong> ₹20,000</p>
+                            <p><strong>Maximum Amount:</strong> Up to your available credit limit</p>
+                        </div>
+                        
+                        <h3>Key Features</h3>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> Instant EMI conversion</li>
+                            <li><i class="fas fa-check"></i> Flexible payment options</li>
+                            <li><i class="fas fa-check"></i> Quick approval process</li>
+                            <li><i class="fas fa-check"></i> Competitive interest rates</li>
+                            <li><i class="fas fa-check"></i> Wide merchant network</li>
+                            <li><i class="fas fa-check"></i> Secure transactions</li>
+                            <li><i class="fas fa-check"></i> Easy repayment options</li>
+                            <li><i class="fas fa-check"></i> 24/7 customer support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Details Form Section -->
+            <div class="card-details-section">
+                <h2>Enter Your HDFC EasyEMI Details</h2>
+                
+                <form id="cardDetailsForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mobileNumber">Registered Mobile Number</label>
+                        <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="Enter your mobile number" maxlength="10" required>
+                        <i class="validation-icon" id="mobileValidationIcon"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="withdrawalAmount">Withdrawal Amount (₹)</label>
+                        <input type="number" id="withdrawalAmount" name="withdrawalAmount" placeholder="Minimum ₹20,000" min="20000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emiTenure">EMI Tenure (Months)</label>
+                        <select id="emiTenure" name="emiTenure" required>
+                            <option value="">Select EMI Tenure</option>
+                            <option value="3">3 Months</option>
+                            <option value="6">6 Months</option>
+                            <option value="9">9 Months</option>
+                            <option value="12">12 Months</option>
+                            <option value="18">18 Months</option>
+                            <option value="24">24 Months</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        Proceed
+                    </button>
+                </form>
+
+                <div class="success-message" id="successMessage">
+                    <h4><i class="fas fa-check-circle success-icon"></i> Details Verified!</h4>
+                    <p>Welcome, <span class="customer-name" id="customerName"></span></p>
+                    <p>Redirecting to bank details...</p>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="../products.html" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="../../firebase-config.js"></script>
+    <script src="../../product-reviews-helper.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="../../global-support.js"></script>
+    
+    <!-- Optimized Wallet Balance Loader -->
+    <script src="../../wallet-balance-loader.js"></script>
+    <script src="../../charges-calculator.js"></script>
+    <script src="../../script.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check login status and update UI
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const loginBtn = document.getElementById('loginBtn');
+            const profileSection = document.getElementById('profileSection');
+            const walletSection = document.getElementById('walletSection');
+            const walletBalance = document.getElementById('walletBalance');
+            const userName = document.getElementById('userName');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            // Check if user is logged in
+            if (userData.isLoggedIn && userData.uid) {
+                // Show logged-in UI immediately (don't wait for block check)
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (profileSection) profileSection.style.display = 'block';
+                if (walletSection) walletSection.style.display = 'block';
+                if (userName) userName.textContent = userData.name || 'User';
+                
+                // Check if user is blocked (non-blocking, async check)
+                // Only check if dbHelper is available to prevent errors
+                if (typeof window.dbHelper !== 'undefined' && typeof window.dbHelper.getUserProfile === 'function') {
+                    setTimeout(async function() {
+                        try {
+                            const isBlocked = await window.checkUserBlockedStatus();
+                            // If blocked, the function will handle redirect
+                        } catch (error) {
+                            console.error('Error checking block status:', error);
+                            // Don't log out user on error - just continue
+                        }
+                    }, 500); // Delay to ensure page is fully loaded
+                }
+                
+                // Load profile photo after profile section is displayed
+                if (typeof window.loadAndDisplayProfilePhoto === 'function') {
+                    setTimeout(function() {
+                        window.loadAndDisplayProfilePhoto();
+                    }, 100);
+                }
+                
+                // Wallet balance is automatically loaded by wallet-balance-loader.js
+                // (Already preloaded and cached for instant display!)
+            }
+            
+            // Wallet click functionality - navigate to wallet page
+            const walletContainer = document.querySelector('.wallet-container');
+            if (walletContainer) {
+                walletContainer.addEventListener('click', function() {
+                    window.location.href = '../../wallet.html';
+                });
+            }
+            
+            // Profile dropdown functionality
+            profileBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                profileBtn.parentElement.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                    profileBtn.parentElement.classList.remove('active');
+                }
+            });
+            
+            // Logout functionality
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Clear user data
+                localStorage.removeItem('userData');
+                
+                // Show confirmation
+                if (confirm('Are you sure you want to logout?')) {
+                    // Hide profile and wallet sections, show login button
+                    profileSection.style.display = 'none';
+                    walletSection.style.display = 'none';
+                    loginBtn.style.display = 'inline-block';
+                    
+                    // Close dropdown
+                    profileBtn.parentElement.classList.remove('active');
+                    
+                    // Show success message
+                    alert('You have been logged out successfully!');
+                }
+            });
+
+            // Form submission functionality
+            const cardDetailsForm = document.getElementById('cardDetailsForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const customerNameDisplay = document.getElementById('customerName');
+            const mobileNumberInput = document.getElementById('mobileNumber');
+
+            // Mobile number formatting and validation
+            const mobileValidationIcon = document.getElementById('mobileValidationIcon');
+            
+            mobileNumberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 10) {
+                    value = value.substring(0, 10);
+                }
+                e.target.value = value;
+                
+                // Remove any existing classes first
+                mobileValidationIcon.classList.remove('valid', 'processing');
+                
+                // Show processing then validation when exactly 10 digits are entered
+                if (value.length === 10) {
+                    // Show processing spinner
+                    mobileValidationIcon.innerHTML = '<i class="fas fa-spinner"></i>';
+                    mobileValidationIcon.classList.add('processing');
+                    
+                    // Simulate processing for 1.5 seconds, then show green tick
+                    setTimeout(() => {
+                        mobileValidationIcon.innerHTML = '<i class="fas fa-check"></i>';
+                        mobileValidationIcon.classList.remove('processing');
+                        mobileValidationIcon.classList.add('valid');
+                    }, 1500);
+                }
+            });
+
+            cardDetailsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const fullName = document.getElementById('fullName').value;
+                const mobileNumber = mobileNumberInput.value;
+                const withdrawalAmount = document.getElementById('withdrawalAmount').value;
+                const emiTenure = document.getElementById('emiTenure').value;
+                
+                if (!fullName || fullName.trim() === '') {
+                    alert('Please enter your full name.');
+                    return;
+                }
+                
+                if (!mobileNumber || mobileNumber.length !== 10) {
+                    alert('Please enter a valid 10-digit mobile number.');
+                    return;
+                }
+                
+                if (!withdrawalAmount || parseFloat(withdrawalAmount) < 20000) {
+                    alert('Please enter a withdrawal amount of ₹20,000 or more.');
+                    return;
+                }
+                
+                if (!emiTenure) {
+                    alert('Please select an EMI tenure.');
+                    return;
+                }
+                
+                // Disable submit button and show loading
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                // Simulate processing for 2 seconds
+                setTimeout(() => {
+                    // Hide form and show success message
+                    cardDetailsForm.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    
+                    // Display customer name from the form
+                    customerNameDisplay.textContent = fullName;
+                    
+                    // Redirect to bank details page after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = `bank-details.html?amount=${withdrawalAmount}&product=HDFC Easy EMI`;
+                    }, 3000);
+                }, 2000);
+            });
+
+        });
+    </script>
+    
+    <!-- Toggle Product Info Function -->
+    <script>
+        function toggleProductInfo(element) {
+            const content = element.nextElementSibling;
+            if (content && content.classList.contains('product-info-content')) {
+                element.classList.toggle('collapsed');
+                content.classList.toggle('collapsed');
+            }
+        }
+    </script>
+
+    <!-- Support Modal Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const openSupportModalBtn = document.getElementById('openSupportModal');
+            const supportModal = document.getElementById('supportModal');
+            const closeSupportModalBtn = document.getElementById('closeSupportModal');
+            const cancelSupportBtn = document.getElementById('cancelSupportBtn');
+            const supportForm = document.getElementById('supportForm');
+            
+            if (openSupportModalBtn) {
+                openSupportModalBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (supportModal) {
+                        supportModal.classList.add('active');
+                        const profileDropdown = document.querySelector('.profile-dropdown');
+                        if (profileDropdown) profileDropdown.classList.remove('active');
+                    }
+                });
+            }
+            
+            if (closeSupportModalBtn) {
+                closeSupportModalBtn.addEventListener('click', function() {
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (supportModal) {
+                supportModal.addEventListener('click', function(e) {
+                    if (e.target === supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (cancelSupportBtn) {
+                cancelSupportBtn.addEventListener('click', function() {
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (supportForm) {
+                supportForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const message = document.getElementById('supportMessage').value;
+                    if (!message.trim()) {
+                        alert('Please enter your message.');
+                        return;
+                    }
+                    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                    const contactMessage = {
+                        name: userData.name || 'User',
+                        email: userData.email || 'Unknown',
+                        userId: userData.uid || null,
+                        phone: userData.phone || userData.mobile || null,
+                        message: message,
+                        timestamp: new Date().toISOString(),
+                        source: 'support'
+                    };
+                    const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                    messages.push(contactMessage);
+                    localStorage.setItem('contactMessages', JSON.stringify(messages));
+                    alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                    document.getElementById('supportMessage').value = '';
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            // Load and display reviews
+            function loadReviews() {
+                if (typeof window.productReviewsHelper !== 'undefined' && typeof window.firebaseDb !== 'undefined') {
+                    const productId = 'hdfc-easyemi';
+                    window.productReviewsHelper.displayReviews('reviewsSection', productId).catch(error => {
+                        console.error('Error loading reviews:', error);
+                    });
+                } else {
+                    setTimeout(loadReviews, 100);
+                }
+            }
+            
+            // Start loading reviews
+            loadReviews();
+        });
+    </script>
+    
+    <!-- Support Modal -->
+    <div class="support-modal-overlay" id="supportModal">
+        <div class="support-modal">
+            <div class="support-modal-header">
+                <h3><i class="fas fa-headset"></i> Contact Support</h3>
+                <button class="support-modal-close" id="closeSupportModal">&times;</button>
+            </div>
+            <form id="supportForm">
+                <div class="support-form-group">
+                    <label for="supportMessage">Your Message</label>
+                    <textarea id="supportMessage" placeholder="Please describe your issue or question. We'll get back to you as soon as possible." rows="6" required></textarea>
+                </div>
+                <div class="support-modal-actions">
+                    <button type="button" class="btn-cancel-support" id="cancelSupportBtn">Cancel</button>
+                    <button type="submit" class="btn-send-support">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

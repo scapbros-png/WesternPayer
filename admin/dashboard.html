@@ -1,0 +1,3091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Western Payer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid rgba(96, 165, 250, 0.3);
+            padding: 1.5rem 2rem;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-left h1 i {
+            color: #667eea;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .admin-info {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(96, 165, 250, 0.2);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-icon.messages {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .stat-icon.pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .stat-icon.withdrawals {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .stat-icon.approved {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #f1f5f9;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(96, 165, 250, 0.2);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover {
+            color: #60a5fa;
+        }
+
+        .tab-btn.active {
+            color: #60a5fa;
+            border-bottom-color: #60a5fa;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .content-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: rgba(96, 165, 250, 0.1);
+            color: #60a5fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-bottom: 2px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .data-table td {
+            padding: 1rem;
+            color: #cbd5e1;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+        }
+
+        .data-table td:last-child {
+            min-width: 450px;
+            white-space: nowrap;
+        }
+
+        /* Contact Messages Table - Column Widths */
+        #messagesTable th:nth-child(6),
+        #messagesTable td:nth-child(6) {
+            /* Message column - make it wider */
+            width: 35%;
+            min-width: 300px;
+            max-width: 500px;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+
+        #messagesTable th:last-child,
+        #messagesTable td:last-child {
+            /* Action column - make it smaller */
+            width: 12%;
+            min-width: 120px;
+            max-width: 150px;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .action-buttons-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.4rem;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+
+        .data-table tr:hover {
+            background: rgba(96, 165, 250, 0.05);
+        }
+
+        /* Send Message Modal */
+        .message-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message-modal-overlay.active {
+            display: flex;
+        }
+
+        .message-modal {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .message-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .message-modal-header h3 {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .message-modal-close {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .message-modal-close:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .message-form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .message-form-group label {
+            display: block;
+            color: #94a3b8;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .message-form-group input,
+        .message-form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 8px;
+            color: #f1f5f9;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .message-form-group input:focus,
+        .message-form-group textarea:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .message-form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .message-form-group .customer-info {
+            background: rgba(96, 165, 250, 0.1);
+            padding: 0.75rem;
+            border-radius: 8px;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+        }
+
+        .message-modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-send-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-send-message:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-send-message:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-cancel-message {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            padding: 0.75rem 2rem;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel-message:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-badge.pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .status-badge.approved {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-badge.rejected {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .action-btn {
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            min-width: 40px;
+            flex-shrink: 0;
+        }
+
+        .action-btn.approve {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .action-btn.reject {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .action-btn.view-details {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .action-btn.send-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .detail-view {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #94a3b8;
+            font-weight: 600;
+            min-width: 150px;
+        }
+
+        .detail-value {
+            color: #cbd5e1;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-wrapper {
+                overflow-x: scroll;
+            }
+
+            .data-table {
+                min-width: 800px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="header-content">
+            <div class="header-left">
+                <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <div class="admin-info">
+                    <i class="fas fa-user"></i> <span id="adminName">Admin</span>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Contact Messages</span>
+                    <div class="stat-icon messages">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="totalMessages">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Pending Add Money</span>
+                    <div class="stat-icon pending">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="pendingAddMoney">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Regular Withdrawals</span>
+                    <div class="stat-icon withdrawals">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="totalWithdrawals">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Approved Today</span>
+                    <div class="stat-icon approved">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="approvedToday">0</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="messages">
+                <i class="fas fa-envelope"></i> Contact Messages
+            </button>
+            <button class="tab-btn" data-tab="sendmessages">
+                <i class="fas fa-paper-plane"></i> Send Messages
+            </button>
+            <button class="tab-btn" data-tab="addmoney">
+                <i class="fas fa-plus-circle"></i> Add Money Requests
+            </button>
+            <button class="tab-btn" data-tab="withdrawals">
+                <i class="fas fa-money-bill-wave"></i> Regular Withdrawals
+            </button>
+            <button class="tab-btn" data-tab="userdetails">
+                <i class="fas fa-users-cog"></i> User Login Details
+            </button>
+            <button class="tab-btn" onclick="window.location.href='admin%20order.html'">
+                <i class="fas fa-shopping-bag"></i> Orders Management
+            </button>
+            <button class="tab-btn" data-tab="reviews">
+                <i class="fas fa-star"></i> Product Reviews
+            </button>
+        </div>
+
+        <!-- Tab Contents -->
+        <!-- Contact Messages -->
+        <div class="tab-content active" id="messages">
+            <div class="content-card">
+                <div class="content-header">
+                    <h2 class="content-title">Contact Messages</h2>
+                    <button class="action-btn approve" onclick="loadMessages()" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-sync-alt"></i> Refresh Messages
+                    </button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="messagesTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>User ID</th>
+                                <th>Phone</th>
+                                <th>Message</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messagesBody">
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <i class="fas fa-inbox"></i>
+                                        <p>No messages yet</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Send Messages Tab -->
+        <div class="tab-content" id="sendmessages">
+            <div class="content-card">
+                <div class="content-header">
+                    <h2 class="content-title">Send Message to Any User</h2>
+                    <button class="action-btn send-message" onclick="openSendMessageModalManual()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-paper-plane"></i> Send New Message
+                    </button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Wallet Balance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersBody">
+                            <tr>
+                                <td colspan="5">
+                                    <div class="empty-state">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        <p>Loading users...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Money Requests -->
+        <div class="tab-content" id="addmoney">
+            <div class="content-card">
+                <div class="content-header">
+                    <h2 class="content-title">Add Money Requests</h2>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Email</th>
+                                <th>Amount</th>
+                                <th>Transaction ID</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="addMoneyBody">
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <i class="fas fa-wallet"></i>
+                                        <p>No add money requests</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Regular Withdrawals -->
+        <div class="tab-content" id="withdrawals">
+            <div class="content-card">
+                <div class="content-header">
+                    <h2 class="content-title">Regular Withdrawal Requests</h2>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin: 0;">Product transactions are managed in Orders Management</p>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Email</th>
+                                <th>Amount</th>
+                                <th>Bank Details</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="withdrawalsBody">
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <p>No withdrawal requests</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Login Details Tab -->
+        <div class="tab-content" id="userdetails">
+            <div class="content-card">
+                <div class="content-header">
+                    <h2 class="content-title">User Login Details</h2>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin: 0;">View all registered user information</p>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="userDetailsTable">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Account Type</th>
+                                <th>Wallet Balance</th>
+                                <th>Status</th>
+                                <th>Registration Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userDetailsBody">
+                            <tr>
+                                <td colspan="9">
+                                    <div class="empty-state">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        <p>Loading user details...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- User Details Modal -->
+        <div class="message-modal-overlay" id="userDetailsModal">
+            <div class="message-modal">
+                <div class="message-modal-header">
+                    <h3><i class="fas fa-user-circle"></i> User Login Details</h3>
+                    <button class="message-modal-close" id="closeUserDetailsModal">&times;</button>
+                </div>
+                <div style="padding: 1rem 0;">
+                    <div class="detail-view">
+                        <div class="detail-item">
+                            <span class="detail-label">User ID:</span>
+                            <span class="detail-value" id="detailUserId" style="font-family: monospace; font-size: 0.85rem;">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Full Name:</span>
+                            <span class="detail-value" id="detailFullName">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">First Name:</span>
+                            <span class="detail-value" id="detailFirstName">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Last Name:</span>
+                            <span class="detail-value" id="detailLastName">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value" id="detailEmail">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Phone Number:</span>
+                            <span class="detail-value" id="detailPhone">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Account Type:</span>
+                            <span class="detail-value" id="detailAccountType">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Wallet Balance:</span>
+                            <span class="detail-value" id="detailWalletBalance" style="color: #10b981; font-weight: 700;">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Registration Date:</span>
+                            <span class="detail-value" id="detailRegistrationDate">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Password:</span>
+                            <span class="detail-value" style="color: #94a3b8; font-style: italic;">
+                                <i class="fas fa-lock"></i> Encrypted (Not Available)
+                                <br><small style="font-size: 0.8rem; color: #64748b;">Passwords are securely encrypted in Firebase Authentication and cannot be retrieved for security reasons.</small>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="message-modal-actions">
+                    <button type="button" class="btn-cancel-message" id="closeUserDetailsModalBtn">Close</button>
+                    <button type="button" class="btn-send-message" onclick="sendMessageFromDetails()">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Reviews Tab -->
+        <div class="tab-content" id="reviews">
+            <div class="content-card">
+                <div class="content-header">
+                    <h2 class="content-title">Product Reviews Management</h2>
+                    <button class="action-btn approve" onclick="loadProductReviews()" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-sync-alt"></i> Refresh Reviews
+                    </button>
+                    <button class="action-btn approve" onclick="openAddReviewModal()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-plus"></i> Add Review
+                    </button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="reviewsTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Product</th>
+                                <th>Customer</th>
+                                <th>Rating</th>
+                                <th>Review</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reviewsBody">
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <i class="fas fa-star"></i>
+                                        <p>Loading reviews...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Money Modal -->
+        <div class="message-modal-overlay" id="addMoneyModal">
+            <div class="message-modal">
+                <div class="message-modal-header">
+                    <h3><i class="fas fa-plus-circle"></i> Add Money to Wallet</h3>
+                    <button class="message-modal-close" id="closeAddMoneyModal">&times;</button>
+                </div>
+                <form id="addMoneyForm">
+                    <div class="message-form-group">
+                        <label>User</label>
+                        <div class="customer-info" id="addMoneyUserName">-</div>
+                        <input type="hidden" id="addMoneyUserId">
+                    </div>
+                    <div class="message-form-group">
+                        <label>Current Balance</label>
+                        <div class="customer-info" id="addMoneyCurrentBalance">₹0.00</div>
+                    </div>
+                    <div class="message-form-group">
+                        <label for="addMoneyAmount">Amount to Add (₹)</label>
+                        <input type="number" id="addMoneyAmount" min="0.01" step="0.01" placeholder="Enter amount" required>
+                    </div>
+                    <div class="message-form-group">
+                        <label for="addMoneyReason">Reason (Optional)</label>
+                        <input type="text" id="addMoneyReason" placeholder="e.g., Refund, Bonus, Adjustment" value="Admin credit">
+                    </div>
+                    <div class="message-modal-actions">
+                        <button type="button" class="btn-cancel-message" id="cancelAddMoneyBtn">Cancel</button>
+                        <button type="submit" class="btn-send-message" id="submitAddMoneyBtn">
+                            <i class="fas fa-plus"></i> Add Money
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Withdraw Money Modal -->
+        <div class="message-modal-overlay" id="withdrawMoneyModal">
+            <div class="message-modal">
+                <div class="message-modal-header">
+                    <h3><i class="fas fa-minus-circle"></i> Withdraw Money from Wallet</h3>
+                    <button class="message-modal-close" id="closeWithdrawMoneyModal">&times;</button>
+                </div>
+                <form id="withdrawMoneyForm">
+                    <div class="message-form-group">
+                        <label>User</label>
+                        <div class="customer-info" id="withdrawMoneyUserName">-</div>
+                        <input type="hidden" id="withdrawMoneyUserId">
+                    </div>
+                    <div class="message-form-group">
+                        <label>Current Balance</label>
+                        <div class="customer-info" id="withdrawMoneyCurrentBalance">₹0.00</div>
+                    </div>
+                    <div class="message-form-group">
+                        <label for="withdrawMoneyAmount">Amount to Withdraw (₹)</label>
+                        <input type="number" id="withdrawMoneyAmount" min="0.01" step="0.01" placeholder="Enter amount" required>
+                    </div>
+                    <div class="message-form-group">
+                        <label for="withdrawMoneyReason">Reason (Optional)</label>
+                        <input type="text" id="withdrawMoneyReason" placeholder="e.g., Refund, Penalty, Adjustment" value="Admin debit">
+                    </div>
+                    <div class="message-modal-actions">
+                        <button type="button" class="btn-cancel-message" id="cancelWithdrawMoneyBtn">Cancel</button>
+                        <button type="submit" class="btn-send-message" id="submitWithdrawMoneyBtn" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                            <i class="fas fa-minus"></i> Withdraw Money
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add/Edit Review Modal -->
+        <div class="message-modal-overlay" id="reviewModal">
+            <div class="message-modal">
+                <div class="message-modal-header">
+                    <h3><i class="fas fa-star"></i> <span id="reviewModalTitle">Add Review</span></h3>
+                    <button class="message-modal-close" id="closeReviewModal">&times;</button>
+                </div>
+                <form id="reviewForm">
+                    <input type="hidden" id="reviewId">
+                    <input type="hidden" id="reviewProductId">
+                    <div class="message-form-group">
+                        <label for="reviewProductSelect">Product</label>
+                        <select id="reviewProductSelect" required>
+                            <option value="">Select Product</option>
+                        </select>
+                    </div>
+                    <div class="message-form-group">
+                        <label for="reviewCustomerName">Customer Name</label>
+                        <input type="text" id="reviewCustomerName" placeholder="Enter customer name" required>
+                    </div>
+                    <div class="message-form-group">
+                        <label for="reviewRating">Rating</label>
+                        <select id="reviewRating" required>
+                            <option value="5">5 Stars - Excellent</option>
+                            <option value="4">4 Stars - Very Good</option>
+                            <option value="3">3 Stars - Good</option>
+                            <option value="2">2 Stars - Fair</option>
+                            <option value="1">1 Star - Poor</option>
+                        </select>
+                    </div>
+                    <div class="message-form-group">
+                        <label for="reviewText">Review Text</label>
+                        <textarea id="reviewText" placeholder="Enter review text..." rows="5" required></textarea>
+                    </div>
+                    <div class="message-form-group">
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="reviewApproved" checked style="width: auto; margin: 0;">
+                            <span>Approved (visible to customers)</span>
+                        </label>
+                    </div>
+                    <div class="message-modal-actions">
+                        <button type="button" class="btn-cancel-message" id="cancelReviewBtn">Cancel</button>
+                        <button type="submit" class="btn-send-message" id="submitReviewBtn">
+                            <i class="fas fa-save"></i> Save Review
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Send Message Modal -->
+    <div class="message-modal-overlay" id="sendMessageModal">
+        <div class="message-modal">
+            <div class="message-modal-header">
+                <h3><i class="fas fa-envelope"></i> <span id="modalTitle">Send Message</span></h3>
+                <button class="message-modal-close" id="closeMessageModal">&times;</button>
+            </div>
+            <form id="sendMessageForm">
+                <div class="message-form-group">
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="sendToAllUsers" style="width: auto; margin: 0;" onchange="toggleSendToAll()">
+                        <span>Send to All Users</span>
+                    </label>
+                </div>
+                <div class="message-form-group" id="singleUserSection">
+                    <label>To (Email)</label>
+                    <div class="customer-info" id="customerEmailDisplay">-</div>
+                    <input type="hidden" id="customerEmailInput">
+                </div>
+                <div class="message-form-group" id="singleUserNameSection">
+                    <label>Customer Name</label>
+                    <div class="customer-info" id="customerNameDisplay">-</div>
+                    <input type="hidden" id="customerNameInput">
+                </div>
+                <div class="message-form-group">
+                    <label for="messageSubject">Subject</label>
+                    <input type="text" id="messageSubject" placeholder="e.g., Response to your inquiry" value="Message from Western Payer" required>
+                </div>
+                <div class="message-form-group">
+                    <label for="messageContent">Message</label>
+                    <textarea id="messageContent" placeholder="Type your message here..." required></textarea>
+                </div>
+                <div class="message-modal-actions">
+                    <button type="button" class="btn-cancel-message" id="cancelMessageBtn">Cancel</button>
+                    <button type="submit" class="btn-send-message" id="sendMessageBtn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="firebase-admin-helper.js"></script>
+    
+    <script src="../script.js"></script>
+    <script>
+        // Debug function to show errors on page
+        function showError(message, elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="color: #ef4444; text-align: center; padding: 2rem;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Error Loading Data</p>
+                            <p style="font-size: 0.9rem; color: #94a3b8;">${message}</p>
+                            <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 1rem;">Check browser console (F12) for details</p>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Check admin authentication
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Admin Dashboard Loading...');
+            
+            // Check Firebase
+            console.log('✓ Checking Firebase...');
+            if (typeof firebase === 'undefined') {
+                alert('❌ ERROR: Firebase is not loaded!\n\nCheck that firebase-config.js is loading correctly.');
+                return;
+            }
+            console.log('✅ Firebase loaded');
+
+            // Check Firebase Auth
+            if (typeof firebase.auth !== 'function') {
+                alert('❌ ERROR: Firebase Auth SDK is not loaded!\n\nMake sure you have firebase-auth-compat.js script tag loaded before firebase-config.js');
+                return;
+            }
+            console.log('✅ Firebase Auth loaded');
+
+            // Check Firebase Database
+            if (typeof window.firebaseDb === 'undefined') {
+                alert('❌ ERROR: Firebase Database is not initialized!\n\nCheck firebase-config.js for database initialization.');
+                return;
+            }
+            console.log('✅ Firebase Database initialized');
+
+            // Check AdminHelper
+            if (typeof window.adminHelper === 'undefined') {
+                alert('❌ ERROR: AdminHelper is not loaded!\n\nCheck that firebase-admin-helper.js is in the admin folder.');
+                return;
+            }
+            console.log('✅ AdminHelper loaded');
+
+            // Check admin authentication
+            const adminSession = JSON.parse(localStorage.getItem('adminSession') || '{}');
+            
+            if (!adminSession.isLoggedIn) {
+                console.log('❌ Not logged in, redirecting to login page');
+                window.location.href = 'admin%20login.html';
+                return;
+            }
+            console.log('✅ Admin logged in:', adminSession.adminId);
+
+            document.getElementById('adminName').textContent = adminSession.adminId;
+
+            // Load all data with error handling
+            console.log('📊 Loading dashboard data...');
+            
+            try {
+                await loadStatistics();
+                console.log('✅ Statistics loaded');
+            } catch (error) {
+                console.error('❌ Error loading statistics:', error);
+            }
+
+            // Test Firebase connection first
+            console.log('🧪 Testing Firebase connection...');
+            const firebaseTest = await testFirebaseConnection();
+            if (!firebaseTest) {
+                console.error('⚠️ Firebase connection test failed. Check database rules.');
+            }
+            
+            // Load messages and set up real-time listener
+            await loadMessages();
+            setupMessagesRealtimeListener();
+            
+            try {
+                await loadAddMoneyRequests();
+                console.log('✅ Payment requests loaded');
+            } catch (error) {
+                console.error('❌ Error loading payment requests:', error);
+            }
+
+            try {
+                await loadWithdrawalRequests();
+                console.log('✅ Withdrawal requests loaded');
+            } catch (error) {
+                console.error('❌ Error loading withdrawal requests:', error);
+            }
+
+            console.log('✅ Dashboard fully loaded');
+
+            // Tab switching
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+
+                    this.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                    
+                    // Load users when Send Messages tab is opened
+                    if (targetTab === 'sendmessages') {
+                        loadAllUsers();
+                    }
+                    
+                    // Load user details when User Login Details tab is opened
+                    if (targetTab === 'userdetails') {
+                        loadUserDetails();
+                    }
+                    
+                    // Load reviews when Product Reviews tab is opened
+                    if (targetTab === 'reviews') {
+                        loadProductReviews();
+                    }
+                });
+            });
+
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    localStorage.removeItem('adminSession');
+                    window.location.href = 'admin%20login.html';
+                }
+            });
+
+            // Auto-refresh every 30 seconds (messages are handled by real-time listener)
+            setInterval(() => {
+                loadStatistics();
+                loadAddMoneyRequests();
+                loadWithdrawalRequests();
+            }, 30000);
+
+            // Close modal handlers
+            const closeMessageModalBtn = document.getElementById('closeMessageModal');
+            const cancelMessageBtn = document.getElementById('cancelMessageBtn');
+            const sendMessageModal = document.getElementById('sendMessageModal');
+            
+            if (closeMessageModalBtn) {
+                closeMessageModalBtn.addEventListener('click', closeSendMessageModal);
+            }
+            if (cancelMessageBtn) {
+                cancelMessageBtn.addEventListener('click', closeSendMessageModal);
+            }
+            
+            // Close modal when clicking outside
+            if (sendMessageModal) {
+                sendMessageModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeSendMessageModal();
+                    }
+                });
+            }
+            
+            // User Details Modal close handlers
+            const closeUserDetailsModalBtn = document.getElementById('closeUserDetailsModal');
+            const closeUserDetailsModalBtn2 = document.getElementById('closeUserDetailsModalBtn');
+            const userDetailsModal = document.getElementById('userDetailsModal');
+            
+            if (closeUserDetailsModalBtn) {
+                closeUserDetailsModalBtn.addEventListener('click', closeUserDetailsModal);
+            }
+            if (closeUserDetailsModalBtn2) {
+                closeUserDetailsModalBtn2.addEventListener('click', closeUserDetailsModal);
+            }
+            
+            // Close modal when clicking outside
+            if (userDetailsModal) {
+                userDetailsModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeUserDetailsModal();
+                    }
+                });
+            }
+
+            // Add Money Modal handlers
+            const closeAddMoneyModalBtn = document.getElementById('closeAddMoneyModal');
+            const cancelAddMoneyBtn = document.getElementById('cancelAddMoneyBtn');
+            const addMoneyModal = document.getElementById('addMoneyModal');
+            const addMoneyForm = document.getElementById('addMoneyForm');
+
+            if (closeAddMoneyModalBtn) {
+                closeAddMoneyModalBtn.addEventListener('click', closeAddMoneyModal);
+            }
+            if (cancelAddMoneyBtn) {
+                cancelAddMoneyBtn.addEventListener('click', closeAddMoneyModal);
+            }
+            if (addMoneyModal) {
+                addMoneyModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeAddMoneyModal();
+                    }
+                });
+            }
+
+            // Withdraw Money Modal handlers
+            const closeWithdrawMoneyModalBtn = document.getElementById('closeWithdrawMoneyModal');
+            const cancelWithdrawMoneyBtn = document.getElementById('cancelWithdrawMoneyBtn');
+            const withdrawMoneyModal = document.getElementById('withdrawMoneyModal');
+            const withdrawMoneyForm = document.getElementById('withdrawMoneyForm');
+
+            if (closeWithdrawMoneyModalBtn) {
+                closeWithdrawMoneyModalBtn.addEventListener('click', closeWithdrawMoneyModal);
+            }
+            if (cancelWithdrawMoneyBtn) {
+                cancelWithdrawMoneyBtn.addEventListener('click', closeWithdrawMoneyModal);
+            }
+            if (withdrawMoneyModal) {
+                withdrawMoneyModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeWithdrawMoneyModal();
+                    }
+                });
+            }
+
+            // Add Money Form submission
+            if (addMoneyForm) {
+                addMoneyForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const submitBtn = document.getElementById('submitAddMoneyBtn');
+                    const userId = document.getElementById('addMoneyUserId').value;
+                    const amount = parseFloat(document.getElementById('addMoneyAmount').value);
+                    const reason = document.getElementById('addMoneyReason').value || 'Admin credit';
+
+                    if (!amount || amount <= 0) {
+                        alert('Please enter a valid amount.');
+                        return;
+                    }
+
+                    if (!confirm(`Add ₹${amount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})} to this user's wallet?\n\nReason: ${reason}`)) {
+                        return;
+                    }
+
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+                    try {
+                        const result = await adminHelper.addMoneyToWallet(userId, amount, reason);
+                        if (result.success) {
+                            alert(`✅ Money added successfully!\n\nAmount: ₹${amount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}\nNew Balance: ₹${result.newBalance.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}\nReason: ${reason}`);
+                            closeAddMoneyModal();
+                            loadUserDetails(); // Reload the table
+                        } else {
+                            alert('Error adding money: ' + (result.error || 'Unknown error'));
+                        }
+                    } catch (error) {
+                        console.error('Error adding money:', error);
+                        alert('Error adding money: ' + error.message);
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Money';
+                    }
+                });
+            }
+
+            // Withdraw Money Form submission
+            if (withdrawMoneyForm) {
+                withdrawMoneyForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const submitBtn = document.getElementById('submitWithdrawMoneyBtn');
+                    const userId = document.getElementById('withdrawMoneyUserId').value;
+                    const amount = parseFloat(document.getElementById('withdrawMoneyAmount').value);
+                    const reason = document.getElementById('withdrawMoneyReason').value || 'Admin debit';
+                    const currentBalance = parseFloat(document.getElementById('withdrawMoneyCurrentBalance').textContent.replace(/[₹,]/g, ''));
+
+                    if (!amount || amount <= 0) {
+                        alert('Please enter a valid amount.');
+                        return;
+                    }
+
+                    if (amount > currentBalance) {
+                        alert(`Insufficient balance!\n\nCurrent Balance: ₹${currentBalance.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}\nAmount to Withdraw: ₹${amount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
+                        return;
+                    }
+
+                    if (!confirm(`Withdraw ₹${amount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})} from this user's wallet?\n\nReason: ${reason}`)) {
+                        return;
+                    }
+
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+                    try {
+                        const result = await adminHelper.withdrawMoneyFromWallet(userId, amount, reason);
+                        if (result.success) {
+                            alert(`✅ Money withdrawn successfully!\n\nAmount: ₹${amount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}\nNew Balance: ₹${result.newBalance.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}\nReason: ${reason}`);
+                            closeWithdrawMoneyModal();
+                            loadUserDetails(); // Reload the table
+                        } else {
+                            alert('Error withdrawing money: ' + (result.error || 'Unknown error'));
+                        }
+                    } catch (error) {
+                        console.error('Error withdrawing money:', error);
+                        alert('Error withdrawing money: ' + error.message);
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-minus"></i> Withdraw Money';
+                    }
+                });
+            }
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (sendMessageModal && sendMessageModal.classList.contains('active')) {
+                        closeSendMessageModal();
+                    }
+                    if (userDetailsModal && userDetailsModal.classList.contains('active')) {
+                        closeUserDetailsModal();
+                    }
+                    if (addMoneyModal && addMoneyModal.classList.contains('active')) {
+                        closeAddMoneyModal();
+                    }
+                    if (withdrawMoneyModal && withdrawMoneyModal.classList.contains('active')) {
+                        closeWithdrawMoneyModal();
+                    }
+                }
+            });
+        });
+
+        async function loadStatistics() {
+            try {
+                console.log('📊 Fetching payment requests...');
+                const paymentRequests = await adminHelper.getAllPaymentRequests();
+                console.log('✓ Payment requests:', paymentRequests.length, 'found');
+
+                console.log('📊 Fetching withdrawal requests...');
+                const allWithdrawalRequests = await adminHelper.getAllWithdrawalRequests();
+                console.log('✓ All withdrawal requests:', allWithdrawalRequests.length, 'found');
+                
+                // Filter out product transactions from withdrawal count
+                const withdrawalRequests = allWithdrawalRequests.filter(req => 
+                    !req.withdrawalAmount && !req.processingFee
+                );
+                console.log('✓ Regular withdrawal requests:', withdrawalRequests.length, 'found');
+                console.log('✓ Product transactions:', allWithdrawalRequests.length - withdrawalRequests.length, 'excluded from count');
+
+                // Get contact messages count
+                const messages = await adminHelper.getAllContactMessages();
+                console.log('✓ Contact messages:', messages.length, 'found');
+
+                const pendingAddMoney = paymentRequests.filter(t => 
+                    t.paymentType === 'wallet_add' && t.status === 'pending'
+                ).length;
+                console.log('✓ Pending add money:', pendingAddMoney);
+
+                const today = new Date().toDateString();
+                const approvedToday = paymentRequests.filter(t => 
+                    t.paymentType === 'wallet_add' && 
+                    t.status === 'approved' && 
+                    t.approvedAt && new Date(t.approvedAt).toDateString() === today
+                ).length;
+                console.log('✓ Approved today:', approvedToday);
+
+                document.getElementById('totalMessages').textContent = messages.length;
+                document.getElementById('pendingAddMoney').textContent = pendingAddMoney;
+                document.getElementById('totalWithdrawals').textContent = withdrawalRequests.length;
+                document.getElementById('approvedToday').textContent = approvedToday;
+            } catch (error) {
+                console.error('❌ Error loading statistics:', error);
+                console.error('Error details:', error.message);
+                
+                // Show error on stats
+                document.getElementById('totalMessages').textContent = 'ERR';
+                document.getElementById('pendingAddMoney').textContent = 'ERR';
+                document.getElementById('totalWithdrawals').textContent = 'ERR';
+                document.getElementById('approvedToday').textContent = 'ERR';
+                
+                alert('Error loading statistics!\n\n' + error.message + 
+                      '\n\nPlease check:\n1. Firebase database rules are set to allow reading\n2. Database URL is correct in firebase-config.js\n3. Browser console (F12) for more details');
+            }
+        }
+
+        async function loadMessages() {
+            const tbody = document.getElementById('messagesBody');
+            
+            // Show loading state
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 2rem;">
+                        <div class="empty-state">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading messages...</p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            
+            try {
+                console.log('📧 Loading contact messages from Firebase...');
+                
+                // Load messages from Firebase
+                const messages = await adminHelper.getAllContactMessages();
+                console.log('✓ Messages loaded:', messages.length);
+                
+                // Also check localStorage for any old messages that haven't been migrated
+                // NOTE: This only migrates messages from THIS device's localStorage
+                // Messages from other devices' localStorage cannot be accessed
+                // That's why it's CRITICAL that Firebase rules are set so messages go to Firebase, not localStorage
+                const oldMessages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                if (oldMessages.length > 0) {
+                    console.log('⚠️ Found', oldMessages.length, 'old messages in localStorage on THIS device. Migrating to Firebase...');
+                    console.log('⚠️ NOTE: Messages from OTHER devices\' localStorage cannot be migrated - they are lost if not in Firebase');
+                    
+                    let migratedCount = 0;
+                    let failedCount = 0;
+                    
+                    // Migrate old messages to Firebase
+                    for (const oldMsg of oldMessages) {
+                        try {
+                            const result = await adminHelper.saveContactMessage({
+                                name: oldMsg.name,
+                                email: oldMsg.email,
+                                userId: oldMsg.userId,
+                                phone: oldMsg.phone,
+                                message: oldMsg.message,
+                                source: oldMsg.source || 'contact'
+                            });
+                            
+                            if (result.success) {
+                                migratedCount++;
+                            } else {
+                                failedCount++;
+                                console.error('Failed to migrate message:', oldMsg);
+                            }
+                        } catch (error) {
+                            failedCount++;
+                            console.error('Error migrating message:', error);
+                        }
+                    }
+                    
+                    // Clear localStorage after migration attempt
+                    localStorage.removeItem('contactMessages');
+                    
+                    if (migratedCount > 0) {
+                        console.log(`✅ Migrated ${migratedCount} messages from this device's localStorage to Firebase`);
+                    }
+                    if (failedCount > 0) {
+                        console.error(`❌ Failed to migrate ${failedCount} messages - likely due to Firebase permission errors`);
+                        console.error('⚠️ Make sure Firebase database rules allow writing to contactMessages!');
+                    }
+                    
+                    // Reload messages from Firebase
+                    const updatedMessages = await adminHelper.getAllContactMessages();
+                    messages.length = 0;
+                    messages.push(...updatedMessages);
+                }
+
+            if (messages.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <p>No messages yet</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                    // Update statistics
+                    document.getElementById('totalMessages').textContent = '0';
+                return;
+            }
+
+            // Try to get user details from Firebase for each message
+            const messagesWithDetails = await Promise.all(messages.map(async (msg) => {
+                let userId = msg.userId || null;
+                let phone = msg.phone || null;
+                
+                // If we have email but no userId, try to find user by email
+                if (msg.email && !userId && typeof window.adminHelper !== 'undefined') {
+                    try {
+                        const users = await adminHelper.getAllUsers();
+                        const user = users.find(u => u.profile?.email === msg.email);
+                        if (user) {
+                            userId = user.userId;
+                            phone = user.profile?.phone || null;
+                        }
+                    } catch (error) {
+                        console.error('Error fetching user details:', error);
+                    }
+                }
+                
+                // Format userId for display (truncate if long)
+                let userIdDisplay = 'N/A';
+                if (userId) {
+                    userIdDisplay = userId.length > 20 ? userId.substring(0, 20) + '...' : userId;
+                }
+                
+                return {
+                    ...msg,
+                    userId: userIdDisplay,
+                    phone: phone || 'N/A'
+                };
+            }));
+
+            tbody.innerHTML = messagesWithDetails.map((msg, index) => {
+                    // Handle timestamp - it might be a number (Firebase timestamp) or ISO string
+                    let date;
+                    if (typeof msg.timestamp === 'number') {
+                        date = new Date(msg.timestamp).toLocaleString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                    } else if (msg.timestamp) {
+                        date = new Date(msg.timestamp).toLocaleString('en-IN', {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    } else {
+                        date = 'N/A';
+                    }
+
+                    // Escape single quotes in name for onclick
+                    const safeName = (msg.name || 'Unknown').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    const safeEmail = (msg.email || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
+                return `
+                        <tr ${msg.read === false ? 'style="background: rgba(96, 165, 250, 0.1); font-weight: 600;"' : ''}>
+                        <td>${date}</td>
+                            <td>${msg.name || 'Unknown'}</td>
+                            <td>${msg.email || 'N/A'}</td>
+                        <td style="font-family: monospace; font-size: 0.85rem; color: #60a5fa;">${msg.userId}</td>
+                        <td>${msg.phone}</td>
+                            <td style="word-wrap: break-word; white-space: normal; line-height: 1.5;">${(msg.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</td>
+                        <td style="text-align: center;">
+                                <button class="action-btn send-message" onclick="openSendMessageModal('${safeEmail}', '${safeName}')" style="width: 100%;">
+                                <i class="fas fa-paper-plane"></i> Send
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                }).join('');
+                
+                // Update statistics
+                document.getElementById('totalMessages').textContent = messages.length;
+                console.log('✅ Messages table updated');
+            } catch (error) {
+                console.error('❌ Error loading messages:', error);
+                let errorMessage = error.message || 'Unknown error';
+                let helpText = 'Check browser console (F12) for details';
+                
+                // Provide helpful message for permission errors
+                if (error.code === 'PERMISSION_DENIED' || errorMessage.includes('PERMISSION_DENIED')) {
+                    errorMessage = 'Permission Denied: Firebase database rules need to be updated';
+                    helpText = 'Go to Firebase Console → Realtime Database → Rules and add permission for "contactMessages". See FIREBASE_RULES_FOR_CONTACT_MESSAGES.md for details.';
+                }
+                
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="color: #ef4444; text-align: center; padding: 2rem;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Error Loading Messages</p>
+                            <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 1rem;">${errorMessage}</p>
+                            <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 1rem;">${helpText}</p>
+                            ${error.code === 'PERMISSION_DENIED' ? `
+                                <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+                                    <p style="font-weight: 600; margin-bottom: 0.5rem;">Quick Fix:</p>
+                                    <ol style="text-align: left; padding-left: 1.5rem; color: #cbd5e1;">
+                                        <li>Go to <a href="https://console.firebase.google.com/" target="_blank" style="color: #60a5fa;">Firebase Console</a></li>
+                                        <li>Select project: <strong>westernpayer</strong></li>
+                                        <li>Click: <strong>Build → Realtime Database → Rules</strong></li>
+                                        <li>Add this to your rules:</li>
+                                    </ol>
+                                    <pre style="background: rgba(0, 0, 0, 0.3); padding: 1rem; border-radius: 4px; overflow-x: auto; margin-top: 0.5rem; font-size: 0.8rem;"><code>"contactMessages": {
+  ".read": true,
+  ".write": true
+}</code></pre>
+                                    <p style="margin-top: 0.5rem; font-size: 0.85rem;">Then click <strong>PUBLISH</strong> and refresh this page.</p>
+                                </div>
+                            ` : ''}
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+        
+        // Set up real-time listener for new messages
+        function setupMessagesRealtimeListener() {
+            try {
+                const database = window.firebaseDb;
+                if (!database) {
+                    console.error('❌ Firebase database not available for real-time listener');
+                    return;
+                }
+                
+                console.log('🔔 Setting up real-time listener for contact messages...');
+                
+                // Remove any existing listener to prevent duplicates
+                if (window.messagesListener) {
+                    database.ref('contactMessages').off('child_added', window.messagesListener);
+                }
+                
+                // Create listener function
+                window.messagesListener = async function(snapshot) {
+                    console.log('📬 New message received:', snapshot.key);
+                    console.log('📬 Message data:', snapshot.val());
+                    // Reload messages when a new one is added
+                    await loadMessages();
+                    // Update statistics
+                    await loadStatistics();
+                };
+                
+                // Listen for new messages
+                database.ref('contactMessages').on('child_added', window.messagesListener);
+                
+                // Also listen for changes to existing messages
+                database.ref('contactMessages').on('child_changed', async function(snapshot) {
+                    console.log('📝 Message updated:', snapshot.key);
+                    await loadMessages();
+                });
+                
+                console.log('✅ Real-time listener active');
+            } catch (error) {
+                console.error('❌ Error setting up real-time listener:', error);
+                console.error('Error details:', {
+                    message: error.message,
+                    code: error.code,
+                    stack: error.stack
+                });
+                
+                if (error.code === 'PERMISSION_DENIED') {
+                    console.error('⚠️ PERMISSION DENIED: Check Firebase database rules!');
+                }
+            }
+        }
+        
+        // Test function to verify Firebase connection and permissions
+        async function testFirebaseConnection() {
+            try {
+                console.log('🧪 Testing Firebase connection...');
+                const database = window.firebaseDb;
+                if (!database) {
+                    console.error('❌ Firebase database not initialized');
+                    return false;
+                }
+                
+                // Try to read contactMessages
+                console.log('🧪 Testing read permission on contactMessages...');
+                const testSnapshot = await database.ref('contactMessages').limitToFirst(1).once('value');
+                console.log('✅ Read test successful');
+                
+                // Try to write a test message (then delete it)
+                console.log('🧪 Testing write permission on contactMessages...');
+                const testRef = database.ref('contactMessages').push();
+                await testRef.set({
+                    test: true,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+                await testRef.remove();
+                console.log('✅ Write test successful');
+                
+                console.log('✅ All Firebase tests passed!');
+                return true;
+            } catch (error) {
+                console.error('❌ Firebase test failed:', error);
+                if (error.code === 'PERMISSION_DENIED') {
+                    console.error('⚠️ PERMISSION DENIED: Update Firebase database rules!');
+                    alert('⚠️ Firebase Permission Error!\n\n' +
+                          'Your Firebase database rules need to allow reading and writing to contactMessages.\n\n' +
+                          'Go to Firebase Console → Realtime Database → Rules and add:\n\n' +
+                          '"contactMessages": {\n' +
+                          '  ".read": true,\n' +
+                          '  ".write": true\n' +
+                          '}');
+                }
+                return false;
+            }
+        }
+
+        // Send Message Modal Functions
+        function openSendMessageModal(email, customerName) {
+            const modal = document.getElementById('sendMessageModal');
+            const emailDisplay = document.getElementById('customerEmailDisplay');
+            const nameDisplay = document.getElementById('customerNameDisplay');
+            const emailInput = document.getElementById('customerEmailInput');
+            const nameInput = document.getElementById('customerNameInput');
+            
+            // Reset "Send to All Users" checkbox
+            const sendToAllCheckbox = document.getElementById('sendToAllUsers');
+            if (sendToAllCheckbox) {
+                sendToAllCheckbox.checked = false;
+                toggleSendToAll(); // Update UI
+            }
+            
+            emailDisplay.textContent = email;
+            nameDisplay.textContent = customerName;
+            emailInput.value = email;
+            nameInput.value = customerName;
+            
+            // Clear previous values
+            document.getElementById('messageSubject').value = 'Response from Western Payer';
+            document.getElementById('messageContent').value = '';
+            
+            // Update modal title
+            const modalTitle = document.getElementById('modalTitle');
+            if (modalTitle) {
+                modalTitle.textContent = 'Send Message';
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeSendMessageModal() {
+            const modal = document.getElementById('sendMessageModal');
+            modal.classList.remove('active');
+        }
+
+
+        async function loadAddMoneyRequests() {
+            const tbody = document.getElementById('addMoneyBody');
+            try {
+                console.log('💰 Loading add money requests...');
+                const paymentRequests = await adminHelper.getAllPaymentRequests();
+                console.log('✓ All payment requests:', paymentRequests);
+                
+                const addMoneyRequests = paymentRequests.filter(t => t.paymentType === 'wallet_add');
+                console.log('✓ Add money requests found:', addMoneyRequests.length);
+
+            if (addMoneyRequests.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <i class="fas fa-wallet"></i>
+                                <p>No add money requests</p>
+                                <p style="font-size: 0.9rem; color: #94a3b8; margin-top: 1rem;">
+                                    Create test data by:<br>
+                                    1. Signing up on your website<br>
+                                    2. Going to Wallet → Add Money<br>
+                                    3. Submitting a payment request
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                console.log('ℹ️ No add money requests to display');
+                return;
+            }
+
+            // Sort by timestamp (newest first)
+            addMoneyRequests.sort((a, b) => {
+                const timeA = a.timestamp || 0;
+                const timeB = b.timestamp || 0;
+                return timeB - timeA;
+            });
+
+            tbody.innerHTML = addMoneyRequests.map((req, index) => {
+                const date = new Date(req.timestamp).toLocaleString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const status = req.status || 'pending';
+                const customerName = req.userName || 'Guest';
+                const customerEmail = req.userEmail || 'N/A';
+
+                return `
+                    <tr>
+                        <td>${date}</td>
+                        <td>${customerName}</td>
+                        <td>${customerEmail}</td>
+                        <td style="font-weight: 700; color: #10b981;">₹${parseFloat(req.amount).toLocaleString('en-IN')}</td>
+                        <td>${req.transactionId}</td>
+                        <td><span class="status-badge ${status}">${status.toUpperCase()}</span></td>
+                        <td>
+                            ${status === 'pending' ? `
+                                <button class="action-btn approve" onclick="approveAddMoney('${req.userId}', '${req.id}', ${req.amount}, '${req.userName}', '${req.transactionId}')">
+                                    <i class="fas fa-check"></i> Approve
+                                </button>
+                                <button class="action-btn reject" onclick="rejectAddMoney('${req.userId}', '${req.id}', '${req.userName}', '${req.transactionId}')">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            ` : `<span style="color: #94a3b8;">-</span>`}
+                        </td>
+                    </tr>
+                `;
+                }).join('');
+            console.log('✅ Add money requests table updated');
+            } catch (error) {
+                console.error('❌ Error loading add money requests:', error);
+                console.error('Error details:', error.message);
+                console.error('Full error:', error);
+                
+                showError(
+                    error.message || 'Unknown error. Check Firebase database rules and console.', 
+                    'addMoneyBody'
+                );
+                
+                // Also alert the user
+                alert('Error loading add money requests!\n\n' + error.message + 
+                      '\n\nCommon fixes:\n' +
+                      '1. Update Firebase database rules to allow reading\n' +
+                      '2. Clear browser cache (Ctrl+Shift+R)\n' +
+                      '3. Check firebase-config.js has databaseURL\n' +
+                      '4. Check browser console (F12) for more details');
+            }
+        }
+
+        async function approveAddMoney(userId, requestId, amount, userName, transactionId) {
+            const addAmount = parseFloat(amount);
+            
+            if (isNaN(addAmount)) {
+                alert('Error: Invalid amount!');
+                return;
+            }
+
+            // Show confirmation
+            const confirmMessage = `Approve Add Money Request?\n\n` +
+                `Customer: ${userName}\n` +
+                `Transaction ID: ${transactionId}\n` +
+                `Amount to Add: ₹${addAmount.toLocaleString('en-IN')}\n\n` +
+                `This will add money to the customer's wallet.`;
+
+            if (!confirm(confirmMessage)) return;
+
+            try {
+                // Approve the payment and add money to wallet
+                const success = await adminHelper.approvePaymentRequest(userId, requestId, addAmount);
+                
+                if (success) {
+                    alert(`✅ Add Money Request Approved!\n\n` +
+                          `Customer: ${userName}\n` +
+                          `Amount Added: ₹${addAmount.toLocaleString('en-IN')}\n` +
+                          `Transaction ID: ${transactionId}`);
+                    
+                    // Reload data
+                    loadStatistics();
+                    loadAddMoneyRequests();
+                } else {
+                    alert('Error approving request. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error approving payment:', error);
+                alert('Error approving request: ' + error.message);
+            }
+        }
+
+        async function rejectAddMoney(userId, requestId, userName, transactionId) {
+            // Show confirmation
+            const confirmMessage = `Reject Add Money Request?\n\n` +
+                `Customer: ${userName}\n` +
+                `Transaction ID: ${transactionId}\n\n` +
+                `Are you sure you want to reject this request?`;
+
+            if (!confirm(confirmMessage)) return;
+
+            try {
+                const success = await adminHelper.rejectPaymentRequest(userId, requestId);
+                
+                if (success) {
+                    alert(`❌ Add Money Request Rejected!\n\n` +
+                          `Customer: ${userName}\n` +
+                          `Transaction ID: ${transactionId}`);
+                    
+                    // Reload data
+                    loadStatistics();
+                    loadAddMoneyRequests();
+                } else {
+                    alert('Error rejecting request. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error rejecting payment:', error);
+                alert('Error rejecting request: ' + error.message);
+            }
+        }
+
+        async function loadWithdrawalRequests() {
+            const tbody = document.getElementById('withdrawalsBody');
+            try {
+                console.log('💸 Loading withdrawal requests...');
+                const allWithdrawals = await adminHelper.getAllWithdrawalRequests();
+                console.log('✓ All withdrawal requests found:', allWithdrawals.length);
+                
+                // Filter out product transactions (which have withdrawalAmount field)
+                // Only show regular withdrawal requests here
+                const withdrawals = allWithdrawals.filter(req => {
+                    // Product withdrawals have 'withdrawalAmount' and 'processingFee' fields
+                    // Regular withdrawals only have basic withdrawal info
+                    return !req.withdrawalAmount && !req.processingFee;
+                });
+                console.log('✓ Regular withdrawal requests (filtered):', withdrawals.length);
+                console.log('✓ Product transactions (excluded):', allWithdrawals.length - withdrawals.length);
+
+                if (withdrawals.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <p>No regular withdrawal requests</p>
+                                    <p style="font-size: 0.9rem; color: #94a3b8; margin-top: 1rem;">
+                                        This shows only regular withdrawal requests from Wallet → Withdraw.<br>
+                                        <strong>Product transactions are shown in Orders Management.</strong>
+                                    </p>
+                                    <p style="font-size: 0.85rem; color: #60a5fa; margin-top: 0.5rem;">
+                                        💡 Tip: Click "Orders Management" tab to see product-related transactions
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    console.log('ℹ️ No withdrawal requests to display');
+                    return;
+                }
+
+                // Sort by timestamp (newest first)
+                withdrawals.sort((a, b) => {
+                    const timeA = a.timestamp || 0;
+                    const timeB = b.timestamp || 0;
+                    return timeB - timeA;
+                });
+
+                tbody.innerHTML = withdrawals.map(req => {
+                    const date = new Date(req.timestamp).toLocaleString('en-IN', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    const status = req.status || 'pending';
+                    const customerName = req.fullName || req.userName || 'Customer';
+                    const customerEmail = req.email || req.userEmail || 'N/A';
+
+                    return `
+                        <tr>
+                            <td>${date}</td>
+                            <td>${customerName}</td>
+                            <td>${customerEmail}</td>
+                            <td style="font-weight: 700; color: #f59e0b;">₹${parseFloat(req.amount).toLocaleString('en-IN')}</td>
+                            <td>
+                                <div class="detail-view">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Account Number:</span>
+                                        <span class="detail-value">${req.accountNumber}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">IFSC Code:</span>
+                                        <span class="detail-value">${req.ifscCode}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Account Holder:</span>
+                                        <span class="detail-value">${req.accountHolderName}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Mobile:</span>
+                                        <span class="detail-value">${req.mobile || 'N/A'}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge ${status}">${status.toUpperCase()}</span></td>
+                            <td>
+                                ${status === 'pending' ? `
+                                    <button class="action-btn approve" onclick="approveWithdrawal('${req.userId}', '${req.id}', '${customerName}', '${req.transactionId}')">
+                                        <i class="fas fa-check"></i> Approve
+                                    </button>
+                                    <button class="action-btn reject" onclick="rejectWithdrawal('${req.userId}', '${req.id}', '${customerName}', '${req.transactionId}')">
+                                        <i class="fas fa-times"></i> Reject
+                                    </button>
+                                ` : `<span style="color: #94a3b8;">-</span>`}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                console.log('✅ Withdrawal requests table updated');
+            } catch (error) {
+                console.error('❌ Error loading withdrawal requests:', error);
+                console.error('Error details:', error.message);
+                console.error('Full error:', error);
+                
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="color: #ef4444; text-align: center; padding: 2rem;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Error Loading Data</p>
+                            <p style="font-size: 0.9rem; color: #94a3b8;">${error.message || 'Unknown error'}</p>
+                            <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 1rem;">Check browser console (F12) for details</p>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        async function approveWithdrawal(userId, requestId, customerName, transactionId) {
+            // Show confirmation
+            const confirmMessage = `Approve Withdrawal Request?\n\n` +
+                `Customer: ${customerName}\n` +
+                `Transaction ID: ${transactionId || 'N/A'}\n\n` +
+                `Are you sure you want to approve this withdrawal?\n` +
+                `The payment should be processed manually to the customer's bank account.`;
+
+            if (!confirm(confirmMessage)) return;
+
+            try {
+                const success = await adminHelper.approveWithdrawalRequest(userId, requestId);
+                
+                if (success) {
+                    alert(`✅ Withdrawal Request Approved!\n\n` +
+                          `Customer: ${customerName}\n` +
+                          `Transaction ID: ${transactionId || 'N/A'}\n\n` +
+                          `Please process the payment to the customer's bank account.`);
+                    
+                    // Reload data
+                    loadStatistics();
+                    loadWithdrawalRequests();
+                } else {
+                    alert('Error approving request. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error approving withdrawal:', error);
+                alert('Error approving request: ' + error.message);
+            }
+        }
+
+        async function rejectWithdrawal(userId, requestId, customerName, transactionId) {
+            // Show confirmation
+            const confirmMessage = `Reject Withdrawal Request?\n\n` +
+                `Customer: ${customerName}\n` +
+                `Transaction ID: ${transactionId || 'N/A'}\n\n` +
+                `Are you sure you want to reject this request?`;
+
+            if (!confirm(confirmMessage)) return;
+
+            try {
+                const success = await adminHelper.rejectWithdrawalRequest(userId, requestId);
+                
+                if (success) {
+                    alert(`❌ Withdrawal Request Rejected!\n\n` +
+                          `Customer: ${customerName}\n` +
+                          `Transaction ID: ${transactionId || 'N/A'}`);
+                    
+                    // Reload data
+                    loadStatistics();
+                    loadWithdrawalRequests();
+                } else {
+                    alert('Error rejecting request. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error rejecting withdrawal:', error);
+                alert('Error rejecting request: ' + error.message);
+            }
+        }
+
+        // Load All Users Function
+        async function loadAllUsers() {
+            const tbody = document.getElementById('usersBody');
+            try {
+                console.log('👥 Loading all users...');
+                const users = await adminHelper.getAllUsers();
+                console.log('✓ Users found:', users.length);
+
+                if (users.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5">
+                                <div class="empty-state">
+                                    <i class="fas fa-users"></i>
+                                    <p>No users found</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = users.map(user => {
+                    const userName = user.profile.name || 'Unknown';
+                    const userEmail = user.profile.email || 'N/A';
+                    const walletBalance = user.wallet.balance || 0;
+                    const userId = user.userId;
+
+                    return `
+                        <tr>
+                            <td style="font-family: monospace; font-size: 0.85rem;">${userId.substring(0, 12)}...</td>
+                            <td>${userName}</td>
+                            <td>${userEmail}</td>
+                            <td style="font-weight: 700; color: #10b981;">₹${walletBalance.toLocaleString('en-IN', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            })}</td>
+                            <td>
+                                <button class="action-btn send-message" onclick="openSendMessageModal('${userEmail}', '${userName.replace(/'/g, "\\'")}')">
+                                    <i class="fas fa-paper-plane"></i> Send Message
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                console.log('✅ Users table updated');
+            } catch (error) {
+                console.error('❌ Error loading users:', error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="color: #ef4444; text-align: center; padding: 2rem;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Error Loading Users</p>
+                            <p style="font-size: 0.9rem; color: #94a3b8;">${error.message || 'Unknown error'}</p>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Load User Details Function
+        async function loadUserDetails() {
+            const tbody = document.getElementById('userDetailsBody');
+            try {
+                console.log('👥 Loading user login details...');
+                const users = await adminHelper.getAllUsers();
+                console.log('✓ Users found:', users.length);
+
+                if (users.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="9">
+                                <div class="empty-state">
+                                    <i class="fas fa-users"></i>
+                                    <p>No users found</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                // Sort users by registration date (newest first)
+                users.sort((a, b) => {
+                    const dateA = a.profile?.createdAt || 0;
+                    const dateB = b.profile?.createdAt || 0;
+                    return dateB - dateA;
+                });
+
+                tbody.innerHTML = users.map(user => {
+                    const userId = user.userId;
+                    const firstName = user.profile?.firstName || '';
+                    const lastName = user.profile?.lastName || '';
+                    const fullName = user.profile?.name || `${firstName} ${lastName}`.trim() || 'Unknown';
+                    const email = user.profile?.email || 'N/A';
+                    const phone = user.profile?.phone || 'N/A';
+                    const accountType = user.profile?.accountType || 'N/A';
+                    const walletBalance = user.wallet?.balance || 0;
+                    const isBlocked = user.profile?.isBlocked || false;
+                    const createdAt = user.profile?.createdAt;
+                    
+                    let registrationDate = 'N/A';
+                    if (createdAt) {
+                        registrationDate = new Date(createdAt).toLocaleString('en-IN', {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
+
+                    // Capitalize account type
+                    const accountTypeDisplay = accountType.charAt(0).toUpperCase() + accountType.slice(1);
+                    
+                    // Status badge
+                    const statusBadge = isBlocked 
+                        ? '<span class="status-badge rejected"><i class="fas fa-ban"></i> Blocked</span>'
+                        : '<span class="status-badge approved"><i class="fas fa-check-circle"></i> Active</span>';
+
+                    return `
+                        <tr ${isBlocked ? 'style="opacity: 0.7; background: rgba(239, 68, 68, 0.05);"' : ''}>
+                            <td style="font-family: monospace; font-size: 0.85rem; color: #60a5fa;">${userId.substring(0, 20)}...</td>
+                            <td style="font-weight: 600; color: #f1f5f9;">${fullName}</td>
+                            <td>${email}</td>
+                            <td>${phone}</td>
+                            <td><span class="status-badge ${accountType === 'individual' ? 'approved' : accountType === 'business' ? 'pending' : 'rejected'}">${accountTypeDisplay}</span></td>
+                            <td style="font-weight: 700; color: #10b981;">₹${walletBalance.toLocaleString('en-IN', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            })}</td>
+                            <td>${statusBadge}</td>
+                            <td>${registrationDate}</td>
+                            <td>
+                                <div class="action-buttons-container">
+                                    <button class="action-btn send-message" onclick="openSendMessageModal('${email}', '${fullName.replace(/'/g, "\\'")}')" title="Send Message">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                    <button class="action-btn approve" onclick="viewUserFullDetails('${userId}', '${fullName.replace(/'/g, "\\'")}', '${email}', '${phone}', '${accountType}')" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn approve" onclick="openAddMoneyModal('${userId}', '${fullName.replace(/'/g, "\\'")}', ${walletBalance})" title="Add Money" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="action-btn reject" onclick="openWithdrawMoneyModal('${userId}', '${fullName.replace(/'/g, "\\'")}', ${walletBalance})" title="Withdraw Money" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    ${isBlocked 
+                                        ? `<button class="action-btn approve" onclick="unblockUser('${userId}', '${fullName.replace(/'/g, "\\'")}')" title="Unblock User">
+                                            <i class="fas fa-unlock"></i>
+                                        </button>`
+                                        : `<button class="action-btn reject" onclick="blockUser('${userId}', '${fullName.replace(/'/g, "\\'")}')" title="Block User">
+                                            <i class="fas fa-ban"></i>
+                                        </button>`
+                                    }
+                                    <button class="action-btn reject" onclick="removeUser('${userId}', '${fullName.replace(/'/g, "\\'")}')" title="Remove User" style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                console.log('✅ User details table updated');
+            } catch (error) {
+                console.error('❌ Error loading user details:', error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="color: #ef4444; text-align: center; padding: 2rem;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p style="font-weight: 600; margin-bottom: 0.5rem;">Error Loading User Details</p>
+                            <p style="font-size: 0.9rem; color: #94a3b8;">${error.message || 'Unknown error'}</p>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // View User Full Details Function
+        async function viewUserFullDetails(userId, fullName, email, phone, accountType) {
+            try {
+                // Get full user data from Firebase
+                const database = window.firebaseDb;
+                const userSnapshot = await database.ref(`users/${userId}`).once('value');
+                const userData = userSnapshot.val();
+                
+                const profile = userData?.profile || {};
+                const wallet = userData?.wallet || {};
+                
+                // Populate modal with user details
+                document.getElementById('detailUserId').textContent = userId;
+                document.getElementById('detailFullName').textContent = profile.name || fullName || 'N/A';
+                document.getElementById('detailFirstName').textContent = profile.firstName || 'N/A';
+                document.getElementById('detailLastName').textContent = profile.lastName || 'N/A';
+                document.getElementById('detailEmail').textContent = profile.email || email || 'N/A';
+                document.getElementById('detailPhone').textContent = profile.phone || phone || 'N/A';
+                
+                const accountTypeDisplay = (profile.accountType || accountType || 'N/A').charAt(0).toUpperCase() + (profile.accountType || accountType || 'N/A').slice(1);
+                document.getElementById('detailAccountType').textContent = accountTypeDisplay;
+                
+                const walletBalance = wallet.balance || 0;
+                document.getElementById('detailWalletBalance').textContent = `₹${walletBalance.toLocaleString('en-IN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })}`;
+                
+                let registrationDate = 'N/A';
+                if (profile.createdAt) {
+                    registrationDate = new Date(profile.createdAt).toLocaleString('en-IN', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+                document.getElementById('detailRegistrationDate').textContent = registrationDate;
+                
+                // Store current user email for send message function
+                window.currentUserDetailsEmail = profile.email || email;
+                window.currentUserDetailsName = profile.name || fullName;
+                
+                // Show modal
+                document.getElementById('userDetailsModal').classList.add('active');
+            } catch (error) {
+                console.error('Error loading user details:', error);
+                alert('Error loading user details: ' + error.message);
+            }
+        }
+        
+        // Close User Details Modal
+        function closeUserDetailsModal() {
+            document.getElementById('userDetailsModal').classList.remove('active');
+        }
+        
+        // Send message from user details modal
+        function sendMessageFromDetails() {
+            closeUserDetailsModal();
+            if (window.currentUserDetailsEmail && window.currentUserDetailsName) {
+                openSendMessageModal(window.currentUserDetailsEmail, window.currentUserDetailsName);
+            }
+        }
+
+        // Open Add Money Modal
+        function openAddMoneyModal(userId, userName, currentBalance) {
+            document.getElementById('addMoneyUserId').value = userId;
+            document.getElementById('addMoneyUserName').textContent = userName;
+            document.getElementById('addMoneyCurrentBalance').textContent = `₹${currentBalance.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}`;
+            document.getElementById('addMoneyAmount').value = '';
+            document.getElementById('addMoneyReason').value = 'Admin credit';
+            document.getElementById('addMoneyModal').classList.add('active');
+        }
+
+        // Close Add Money Modal
+        function closeAddMoneyModal() {
+            document.getElementById('addMoneyModal').classList.remove('active');
+        }
+
+        // Open Withdraw Money Modal
+        function openWithdrawMoneyModal(userId, userName, currentBalance) {
+            document.getElementById('withdrawMoneyUserId').value = userId;
+            document.getElementById('withdrawMoneyUserName').textContent = userName;
+            document.getElementById('withdrawMoneyCurrentBalance').textContent = `₹${currentBalance.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}`;
+            document.getElementById('withdrawMoneyAmount').value = '';
+            document.getElementById('withdrawMoneyReason').value = 'Admin debit';
+            document.getElementById('withdrawMoneyModal').classList.add('active');
+        }
+
+        // Close Withdraw Money Modal
+        function closeWithdrawMoneyModal() {
+            document.getElementById('withdrawMoneyModal').classList.remove('active');
+        }
+
+        // Block User
+        async function blockUser(userId, userName) {
+            if (!confirm(`Are you sure you want to BLOCK this user?\n\nUser: ${userName}\nUser ID: ${userId.substring(0, 20)}...\n\nThis action will prevent the user from accessing their account.`)) {
+                return;
+            }
+
+            try {
+                const result = await adminHelper.blockUser(userId);
+                if (result.success) {
+                    alert(`✅ User blocked successfully!\n\nUser: ${userName}\n\nThe user has been blocked and cannot access their account.`);
+                    loadUserDetails(); // Reload the table
+                } else {
+                    alert('Error blocking user: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error blocking user:', error);
+                alert('Error blocking user: ' + error.message);
+            }
+        }
+
+        // Unblock User
+        async function unblockUser(userId, userName) {
+            if (!confirm(`Are you sure you want to UNBLOCK this user?\n\nUser: ${userName}\nUser ID: ${userId.substring(0, 20)}...\n\nThe user will be able to access their account again.`)) {
+                return;
+            }
+
+            try {
+                const result = await adminHelper.unblockUser(userId);
+                if (result.success) {
+                    alert(`✅ User unblocked successfully!\n\nUser: ${userName}\n\nThe user can now access their account.`);
+                    loadUserDetails(); // Reload the table
+                } else {
+                    alert('Error unblocking user: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error unblocking user:', error);
+                alert('Error unblocking user: ' + error.message);
+            }
+        }
+
+        // Remove User
+        async function removeUser(userId, userName) {
+            if (!confirm(`⚠️ WARNING: Are you sure you want to REMOVE/DELETE this user?\n\nUser: ${userName}\nUser ID: ${userId.substring(0, 20)}...\n\nThis action is PERMANENT and cannot be undone!\n\nAll user data will be deleted including:\n- Profile information\n- Wallet balance\n- Transaction history\n- Orders\n- Messages\n\nType "DELETE" to confirm:`)) {
+                return;
+            }
+
+            const confirmation = prompt('Type "DELETE" to confirm permanent user removal:');
+            if (confirmation !== 'DELETE') {
+                alert('User removal cancelled. You must type "DELETE" to confirm.');
+                return;
+            }
+
+            try {
+                const result = await adminHelper.removeUser(userId);
+                if (result.success) {
+                    alert(`✅ User removed successfully!\n\nUser: ${userName}\n\nAll user data has been permanently deleted.`);
+                    loadUserDetails(); // Reload the table
+                } else {
+                    alert('Error removing user: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error removing user:', error);
+                alert('Error removing user: ' + error.message);
+            }
+        }
+
+        // Toggle "Send to All Users" functionality
+        function toggleSendToAll() {
+            const sendToAllCheckbox = document.getElementById('sendToAllUsers');
+            const singleUserSection = document.getElementById('singleUserSection');
+            const singleUserNameSection = document.getElementById('singleUserNameSection');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            if (sendToAllCheckbox && sendToAllCheckbox.checked) {
+                // Hide single user fields
+                if (singleUserSection) singleUserSection.style.display = 'none';
+                if (singleUserNameSection) singleUserNameSection.style.display = 'none';
+                // Hide manual inputs if they exist
+                const manualEmailInput = document.getElementById('manualEmailInput');
+                const manualNameInput = document.getElementById('manualNameInput');
+                if (manualEmailInput) manualEmailInput.style.display = 'none';
+                if (manualNameInput) manualNameInput.style.display = 'none';
+                // Hide display divs
+                const emailDisplay = document.getElementById('customerEmailDisplay');
+                const nameDisplay = document.getElementById('customerNameDisplay');
+                if (emailDisplay) emailDisplay.style.display = 'none';
+                if (nameDisplay) nameDisplay.style.display = 'none';
+                // Update modal title
+                if (modalTitle) modalTitle.textContent = 'Send Message to All Users';
+            } else {
+                // Show single user fields
+                if (singleUserSection) singleUserSection.style.display = 'block';
+                if (singleUserNameSection) singleUserNameSection.style.display = 'block';
+                // Show manual inputs if they exist and were visible before
+                const manualEmailInput = document.getElementById('manualEmailInput');
+                const manualNameInput = document.getElementById('manualNameInput');
+                if (manualEmailInput) {
+                    // Check if it was created (exists in DOM)
+                    const emailDisplay = document.getElementById('customerEmailDisplay');
+                    if (emailDisplay && emailDisplay.style.display === 'none') {
+                        manualEmailInput.style.display = 'block';
+                    }
+                }
+                if (manualNameInput) {
+                    const nameDisplay = document.getElementById('customerNameDisplay');
+                    if (nameDisplay && nameDisplay.style.display === 'none') {
+                        manualNameInput.style.display = 'block';
+                    }
+                }
+                // Update modal title
+                if (modalTitle) modalTitle.textContent = 'Send Message';
+            }
+        }
+
+        // Open Send Message Modal Manual (for Send New Message button)
+        function openSendMessageModalManual() {
+            const modal = document.getElementById('sendMessageModal');
+            const emailDisplay = document.getElementById('customerEmailDisplay');
+            const nameDisplay = document.getElementById('customerNameDisplay');
+            const emailInput = document.getElementById('customerEmailInput');
+            const nameInput = document.getElementById('customerNameInput');
+            
+            // Reset "Send to All Users" checkbox
+            const sendToAllCheckbox = document.getElementById('sendToAllUsers');
+            if (sendToAllCheckbox) {
+                sendToAllCheckbox.checked = false;
+            }
+            
+            // Clear fields for manual entry
+            emailDisplay.textContent = '-';
+            nameDisplay.textContent = '-';
+            emailInput.value = '';
+            nameInput.value = '';
+            
+            // Change input fields to allow manual entry
+            const emailDisplayEl = document.getElementById('customerEmailDisplay').parentElement;
+            const nameDisplayEl = document.getElementById('customerNameDisplay').parentElement;
+            
+            // Create email input instead of display
+            if (!document.getElementById('manualEmailInput')) {
+                const emailInputEl = document.createElement('input');
+                emailInputEl.type = 'email';
+                emailInputEl.id = 'manualEmailInput';
+                emailInputEl.placeholder = 'Enter customer email';
+                emailInputEl.className = 'customer-info';
+                emailInputEl.style.background = 'rgba(30, 41, 59, 0.5)';
+                emailInputEl.style.border = '1px solid rgba(96, 165, 250, 0.3)';
+                emailInputEl.style.borderRadius = '8px';
+                emailInputEl.style.padding = '0.75rem';
+                emailInputEl.style.color = '#f1f5f9';
+                emailInputEl.style.fontSize = '0.9rem';
+                emailInputEl.style.width = '100%';
+                
+                emailDisplayEl.appendChild(emailInputEl);
+                
+                const nameInputEl = document.createElement('input');
+                nameInputEl.type = 'text';
+                nameInputEl.id = 'manualNameInput';
+                nameInputEl.placeholder = 'Enter customer name';
+                nameInputEl.className = 'customer-info';
+                nameInputEl.style.background = 'rgba(30, 41, 59, 0.5)';
+                nameInputEl.style.border = '1px solid rgba(96, 165, 250, 0.3)';
+                nameInputEl.style.borderRadius = '8px';
+                nameInputEl.style.padding = '0.75rem';
+                nameInputEl.style.color = '#f1f5f9';
+                nameInputEl.style.fontSize = '0.9rem';
+                nameInputEl.style.width = '100%';
+                
+                nameDisplayEl.appendChild(nameInputEl);
+            }
+            
+            // Hide display divs and show input divs
+            document.getElementById('customerEmailDisplay').style.display = 'none';
+            document.getElementById('customerNameDisplay').style.display = 'none';
+            document.getElementById('manualEmailInput').style.display = 'block';
+            document.getElementById('manualNameInput').style.display = 'block';
+            
+            // Clear previous values
+            document.getElementById('messageSubject').value = 'Message from Western Payer';
+            document.getElementById('messageContent').value = '';
+            
+            // Update modal title
+            const modalTitle = document.getElementById('modalTitle');
+            if (modalTitle) {
+                modalTitle.textContent = 'Send Message';
+            }
+            
+            // Update UI based on checkbox state
+            toggleSendToAll();
+            
+            modal.classList.add('active');
+        }
+
+        // Set up form submission handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const sendMessageForm = document.getElementById('sendMessageForm');
+            if (sendMessageForm && !sendMessageForm.dataset.listenerAttached) {
+                sendMessageForm.dataset.listenerAttached = 'true';
+                sendMessageForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const sendBtn = document.getElementById('sendMessageBtn');
+                    
+                    // Get values from either manual inputs or hidden inputs
+                    const manualEmailInput = document.getElementById('manualEmailInput');
+                    const manualNameInput = document.getElementById('manualNameInput');
+                    
+                    const sendToAllUsers = document.getElementById('sendToAllUsers')?.checked || false;
+                    const subject = document.getElementById('messageSubject').value;
+                    const message = document.getElementById('messageContent').value;
+                    
+                    if (!message) {
+                        alert('Please enter a message.');
+                        return;
+                    }
+                    
+                    // Check if sending to all users
+                    if (sendToAllUsers) {
+                        // Confirm before sending to all users
+                        if (!confirm(`Are you sure you want to send this message to ALL users?\n\nThis will send the message to every registered user in the system.`)) {
+                            return;
+                        }
+                        
+                        // Disable button and show loading
+                        sendBtn.disabled = true;
+                        sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending to All Users...';
+                        
+                        try {
+                            const result = await adminHelper.sendMessageToAllUsers(subject, message);
+                            
+                            if (result.success) {
+                                alert(`✅ Message sent successfully!\n\n` +
+                                      `Sent to: ${result.sentCount} users\n` +
+                                      `Errors: ${result.errorCount} users\n` +
+                                      `Total users: ${result.totalUsers}\n\n` +
+                                      `All users will see this message in their notifications when they log in.`);
+                                
+                                closeSendMessageModal();
+                                
+                                // Reload users if on Send Messages tab
+                                const activeTab = document.querySelector('.tab-btn.active');
+                                if (activeTab && activeTab.dataset.tab === 'sendmessages') {
+                                    loadAllUsers();
+                                }
+                            } else {
+                                alert('Error sending message: ' + (result.error || 'Unknown error'));
+                            }
+                        } catch (error) {
+                            console.error('Error sending message:', error);
+                            alert('Error sending message: ' + error.message);
+                        } finally {
+                            sendBtn.disabled = false;
+                            sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+                        }
+                    } else {
+                        // Send to single user
+                        const customerEmail = manualEmailInput && manualEmailInput.style.display !== 'none' 
+                            ? manualEmailInput.value 
+                            : document.getElementById('customerEmailInput').value;
+                        const customerName = manualNameInput && manualNameInput.style.display !== 'none' 
+                            ? manualNameInput.value 
+                            : document.getElementById('customerNameInput').value;
+                        
+                        if (!customerEmail) {
+                            alert('Please enter a customer email or select "Send to All Users".');
+                            return;
+                        }
+                        
+                        // Disable button and show loading
+                        sendBtn.disabled = true;
+                        sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                        
+                        try {
+                            const result = await adminHelper.sendMessageToCustomer(
+                                customerEmail,
+                                customerName || 'Customer',
+                                subject,
+                                message
+                            );
+                            
+                            if (result.success) {
+                                alert(`✅ Message sent successfully to ${customerName || customerEmail}!\n\n` +
+                                      (result.isRegisteredUser 
+                                        ? 'The customer will see this message in their notifications when they log in.'
+                                        : 'The message has been stored. If the customer registers, they will receive it.'));
+                                
+                                closeSendMessageModal();
+                                
+                                // Reload users if on Send Messages tab
+                                const activeTab = document.querySelector('.tab-btn.active');
+                                if (activeTab && activeTab.dataset.tab === 'sendmessages') {
+                                    loadAllUsers();
+                                }
+                            } else {
+                                alert('Error sending message: ' + (result.error || 'Unknown error'));
+                            }
+                        } catch (error) {
+                            console.error('Error sending message:', error);
+                            alert('Error sending message: ' + error.message);
+                        } finally {
+                            sendBtn.disabled = false;
+                            sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+                        }
+                    }
+                });
+            }
+            
+            // Override openSendMessageModal to handle manual mode
+            if (typeof window.openSendMessageModal !== 'undefined' && !window.openSendMessageModal._overrideSet) {
+                window.openSendMessageModal._overrideSet = true;
+                const originalOpenSendMessageModal = window.openSendMessageModal;
+                window.openSendMessageModal = function(email, customerName) {
+                    // Check if manual inputs exist
+                    if (document.getElementById('manualEmailInput')) {
+                        document.getElementById('manualEmailInput').style.display = 'none';
+                        document.getElementById('manualNameInput').style.display = 'none';
+                        document.getElementById('customerEmailDisplay').style.display = 'block';
+                        document.getElementById('customerNameDisplay').style.display = 'block';
+                    }
+                    
+                    originalOpenSendMessageModal(email, customerName);
+                };
+            }
+        });
+
+        // ========== PRODUCT REVIEWS MANAGEMENT ==========
+
+        // Load all product reviews
+        async function loadProductReviews() {
+            const tbody = document.getElementById('reviewsBody');
+            try {
+                console.log('⭐ Loading product reviews...');
+                const reviews = await adminHelper.getAllProductReviews();
+                console.log('✓ Reviews found:', reviews.length);
+
+                if (reviews.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <i class="fas fa-star"></i>
+                                    <p>No reviews yet</p>
+                                    <p style="font-size: 0.9rem; color: #94a3b8; margin-top: 1rem;">Click "Add Review" to create the first review</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = reviews.map(review => {
+                    const date = new Date(review.timestamp);
+                    const formattedDate = date.toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    const productName = getProductName(review.productId);
+                    const stars = '⭐'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+                    const statusBadge = review.approved 
+                        ? '<span style="background: #10b981; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem;">Approved</span>'
+                        : '<span style="background: #f59e0b; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem;">Pending</span>';
+
+                    const reviewText = review.review.length > 100 
+                        ? review.review.substring(0, 100) + '...' 
+                        : review.review;
+
+                    const sourceBadge = review.submittedBy === 'customer' 
+                        ? '<span style="background: #3b82f6; color: white; padding: 0.25rem 0.5rem; border-radius: 8px; font-size: 0.75rem; margin-left: 0.5rem;"><i class="fas fa-user"></i> Customer</span>'
+                        : '<span style="background: #64748b; color: white; padding: 0.25rem 0.5rem; border-radius: 8px; font-size: 0.75rem; margin-left: 0.5rem;"><i class="fas fa-user-shield"></i> Admin</span>';
+
+                    return `
+                        <tr>
+                            <td>${formattedDate}</td>
+                            <td>${productName}</td>
+                            <td>${review.customerName}${sourceBadge}</td>
+                            <td>${stars}</td>
+                            <td style="max-width: 300px;">${reviewText}</td>
+                            <td>${statusBadge}</td>
+                            <td>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button onclick="editReview('${review.productId}', '${review.id}')" class="action-btn approve" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    ${!review.approved ? `
+                                        <button onclick="approveReview('${review.productId}', '${review.id}')" class="action-btn approve" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                                            <i class="fas fa-check"></i> Approve
+                                        </button>
+                                    ` : ''}
+                                    <button onclick="deleteReview('${review.productId}', '${review.id}')" class="action-btn reject" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading reviews:', error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state" style="color: #ef4444;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p>Error loading reviews</p>
+                                <p style="font-size: 0.9rem; color: #94a3b8;">${error.message}</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Get product name from ID
+        function getProductName(productId) {
+            const products = adminHelper.getProductList();
+            const product = products.find(p => p.id === productId);
+            return product ? product.name : productId;
+        }
+
+        // Open add review modal
+        function openAddReviewModal() {
+            const modal = document.getElementById('reviewModal');
+            const form = document.getElementById('reviewForm');
+            const title = document.getElementById('reviewModalTitle');
+            
+            // Reset form
+            form.reset();
+            document.getElementById('reviewId').value = '';
+            document.getElementById('reviewProductId').value = '';
+            document.getElementById('reviewApproved').checked = true;
+            title.textContent = 'Add Review';
+
+            // Populate product select
+            const productSelect = document.getElementById('reviewProductSelect');
+            const products = adminHelper.getProductList();
+            productSelect.innerHTML = '<option value="">Select Product</option>' +
+                products.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+
+            modal.classList.add('active');
+        }
+
+        // Edit review
+        async function editReview(productId, reviewId) {
+            try {
+                const reviews = await adminHelper.getProductReviews(productId);
+                const review = reviews.find(r => r.id === reviewId);
+                
+                if (!review) {
+                    alert('Review not found');
+                    return;
+                }
+
+                const modal = document.getElementById('reviewModal');
+                const form = document.getElementById('reviewForm');
+                const title = document.getElementById('reviewModalTitle');
+                
+                // Populate form
+                document.getElementById('reviewId').value = reviewId;
+                document.getElementById('reviewProductId').value = productId;
+                document.getElementById('reviewCustomerName').value = review.customerName;
+                document.getElementById('reviewRating').value = review.rating;
+                document.getElementById('reviewText').value = review.review;
+                document.getElementById('reviewApproved').checked = review.approved;
+
+                // Populate product select
+                const productSelect = document.getElementById('reviewProductSelect');
+                const products = adminHelper.getProductList();
+                productSelect.innerHTML = products.map(p => 
+                    `<option value="${p.id}" ${p.id === productId ? 'selected' : ''}>${p.name}</option>`
+                ).join('');
+                productSelect.disabled = true; // Don't allow changing product when editing
+
+                title.textContent = 'Edit Review';
+                modal.classList.add('active');
+            } catch (error) {
+                console.error('Error loading review:', error);
+                alert('Error loading review: ' + error.message);
+            }
+        }
+
+        // Approve review
+        async function approveReview(productId, reviewId) {
+            if (!confirm('Are you sure you want to approve this review?')) return;
+
+            try {
+                const result = await adminHelper.approveProductReview(productId, reviewId);
+                if (result.success) {
+                    alert('✅ Review approved successfully!');
+                    loadProductReviews();
+                } else {
+                    alert('Error approving review: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error approving review:', error);
+                alert('Error approving review: ' + error.message);
+            }
+        }
+
+        // Delete review
+        async function deleteReview(productId, reviewId) {
+            if (!confirm('Are you sure you want to delete this review? This action cannot be undone.')) return;
+
+            try {
+                const result = await adminHelper.deleteProductReview(productId, reviewId);
+                if (result.success) {
+                    alert('✅ Review deleted successfully!');
+                    loadProductReviews();
+                } else {
+                    alert('Error deleting review: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error deleting review:', error);
+                alert('Error deleting review: ' + error.message);
+            }
+        }
+
+        // Handle review form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const reviewForm = document.getElementById('reviewForm');
+            const reviewModal = document.getElementById('reviewModal');
+            const closeReviewModal = document.getElementById('closeReviewModal');
+            const cancelReviewBtn = document.getElementById('cancelReviewBtn');
+            const productSelect = document.getElementById('reviewProductSelect');
+
+            // Close modal handlers
+            if (closeReviewModal) {
+                closeReviewModal.addEventListener('click', () => {
+                    reviewModal.classList.remove('active');
+                });
+            }
+
+            if (cancelReviewBtn) {
+                cancelReviewBtn.addEventListener('click', () => {
+                    reviewModal.classList.remove('active');
+                });
+            }
+
+            if (reviewModal) {
+                reviewModal.addEventListener('click', (e) => {
+                    if (e.target === reviewModal) {
+                        reviewModal.classList.remove('active');
+                    }
+                });
+            }
+
+            // Form submission
+            if (reviewForm) {
+                reviewForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+
+                    const reviewId = document.getElementById('reviewId').value;
+                    const productId = document.getElementById('reviewProductId').value || productSelect.value;
+                    const customerName = document.getElementById('reviewCustomerName').value;
+                    const rating = document.getElementById('reviewRating').value;
+                    const reviewText = document.getElementById('reviewText').value;
+                    const approved = document.getElementById('reviewApproved').checked;
+
+                    if (!productId) {
+                        alert('Please select a product');
+                        return;
+                    }
+
+                    const submitBtn = document.getElementById('submitReviewBtn');
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+                    try {
+                        let result;
+                        if (reviewId) {
+                            // Update existing review
+                            result = await adminHelper.updateProductReview(productId, reviewId, {
+                                rating: rating,
+                                review: reviewText,
+                                customerName: customerName,
+                                approved: approved
+                            });
+                        } else {
+                            // Add new review
+                            result = await adminHelper.addProductReview(productId, {
+                                rating: rating,
+                                review: reviewText,
+                                customerName: customerName,
+                                approved: approved
+                            });
+                        }
+
+                        if (result.success) {
+                            alert('✅ Review saved successfully!');
+                            reviewModal.classList.remove('active');
+                            loadProductReviews();
+                        } else {
+                            let errorMsg = result.error || 'Unknown error';
+                            if (errorMsg.includes('PERMISSION_DENIED')) {
+                                errorMsg = 'Permission Denied!\n\n' +
+                                    'You need to update Firebase database rules to allow writing to productReviews.\n\n' +
+                                    'Go to Firebase Console → Realtime Database → Rules\n' +
+                                    'Add: "productReviews": { ".read": true, ".write": true }\n\n' +
+                                    'See FIREBASE_RULES_FOR_PRODUCT_REVIEWS.md for details.';
+                            }
+                            alert('Error saving review: ' + errorMsg);
+                        }
+                    } catch (error) {
+                        console.error('Error saving review:', error);
+                        let errorMsg = error.message;
+                        if (error.message.includes('PERMISSION_DENIED') || error.code === 'PERMISSION_DENIED') {
+                            errorMsg = 'Permission Denied!\n\n' +
+                                'You need to update Firebase database rules to allow writing to productReviews.\n\n' +
+                                'Go to Firebase Console → Realtime Database → Rules\n' +
+                                'Add: "productReviews": { ".read": true, ".write": true }\n\n' +
+                                'See FIREBASE_RULES_FOR_PRODUCT_REVIEWS.md for details.';
+                        }
+                        alert('Error saving review: ' + errorMsg);
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Review';
+                        productSelect.disabled = false; // Re-enable product select
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

