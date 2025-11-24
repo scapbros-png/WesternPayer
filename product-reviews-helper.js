@@ -368,8 +368,8 @@ const productReviewsHelper = {
         }
         
         // Get correct URLs for login and signup pages
-        const loginUrl = this.getAuthPageUrl('login.html');
-        const signupUrl = this.getAuthPageUrl('signup.html');
+        const loginUrl = this.getAuthPageUrl('WesternPayer/login.html');
+        const signupUrl = this.getAuthPageUrl('WesternPayer/signup.html');
         
         // Create modal
         const modal = document.createElement('div');
